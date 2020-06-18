@@ -10,6 +10,7 @@
 
     <name>com.sensiblemetrics.api.ws</name>
     <description>Parent POM</description>
+    <url>https://github.com/AlexRogalskiy/ws-documents/</url>
     <inceptionYear>2020</inceptionYear>
     <packaging>pom</packaging>
 
@@ -29,6 +30,9 @@
         <version.suffix>alpha</version.suffix>
         <maven.multiModuleProjectDirectory>./</maven.multiModuleProjectDirectory>
 
+        <license.licenseName>default</license.licenseName>
+        <license.licenseResolver>${project.baseUri}src/license</license.licenseResolver>
+
         <skipTests>false</skipTests>
         <failIfNoTests>true</failIfNoTests>
         <compile-tests.skip>false</compile-tests.skip>
@@ -42,6 +46,7 @@
         <allure-report.version>2.13.1</allure-report.version>
 
         <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+        <cxf-spring-boot-starter.version>2.2.1.RELEASE</cxf-spring-boot-starter.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
@@ -104,6 +109,7 @@
         <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
         <maven-dependency-check-plugin.version>5.3.2</maven-dependency-check-plugin.version>
         <maven-site-plugin.version>3.8.2</maven-site-plugin.version>
+        <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
     </properties>
 
     <issueManagement>
@@ -125,6 +131,56 @@
     </ciManagement>
 
     <profiles>
+        <!-- License profile -->
+        <profile>
+            <id>license</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <configuration>
+                            <verbose>false</verbose>
+                            <failOnNotUptodateHeader>false</failOnNotUptodateHeader>
+                            <failOnMissingHeader>false</failOnMissingHeader>
+                            <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+                            <excludes>
+                                <exclude>src/main/resources/META-INF/**</exclude>
+                                <exclude>src/**/resources/application*</exclude>
+                                <exclude>src/test/resources/mockito-extensions/**</exclude>
+                            </excludes>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <inceptionYear>${project.inceptionYear}</inceptionYear>
+                            <organizationName>${project.organization.name}</organizationName>
+                            <licenseName>${license.licenseName}</licenseName>
+                            <licenseResolver>${license.licenseResolver}</licenseResolver>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-license-resources</id>
+                                <phase>generate-resources</phase>
+                                <configuration>
+                                    <includedScopes>runtime,compile</includedScopes>
+                                    <includeTransitiveDependencies>true</includeTransitiveDependencies>
+                                    <fileTemplate>${project.basedir}/src/license/third-party.ftl</fileTemplate>
+                                </configuration>
+                                <goals>
+                                    <goal>add-third-party</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>generate-license-headers</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>update-file-header</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Wsdl profile -->
         <profile>
             <id>wsdl</id>
@@ -448,6 +504,18 @@
 
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
@@ -528,9 +596,6 @@
                     <includes>
                         <include/>
                     </includes>
-                    <!--<suiteXmlFiles>-->
-                    <!--<suiteXmlFile>src/test/resources/suites/${testsuite}.xml</suiteXmlFile>-->
-                    <!--</suiteXmlFiles-->
                     <systemProperties>
                         <mockserver.logLevel>ERROR</mockserver.logLevel>
                         <mockserver.disableSystemOut>true</mockserver.disableSystemOut>
@@ -709,16 +774,69 @@
         <!-- Spring library dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-jdbc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-logging</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- CodeCentric library dependencies -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>cxf-spring-boot-starter</artifactId>
+            <version>${cxf-spring-boot-starter.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.cxf</groupId>-->
+        <!--            <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>-->
+        <!--            <version>3.3.6</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.cxf</groupId>-->
+        <!--            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>-->
+        <!--            <version>3.3.6</version>-->
+        <!--        </dependency>-->
+
+        <!-- HSQL DB library dependencies -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
         </dependency>
 
         <!-- Validation library dependencies -->
@@ -726,6 +844,7 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${validation-api.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Guava library dependencies -->

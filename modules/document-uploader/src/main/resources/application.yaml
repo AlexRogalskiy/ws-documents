@@ -1,0 +1,31 @@
+# SensibleMetrics Document Uploader Server configuration
+---
+soap:
+  service:
+    base.url: /api/documents
+
+spring:
+  application:
+    name: "Document-Uploader-Server"
+  output:
+    ansi:
+      enabled: NEVER
+  messages:
+    basename: i18n/messages
+    # 1 hour
+    cache-duration: 3600
+  mvc:
+    throw-exception-if-no-handler-found: true
+    log-resolved-exception: true
+    async:
+      # 1 hour
+      request-timeout: 3600000
+    locale-resolver: FIXED
+  http:
+    log-request-details: true
+  aop:
+    proxy-target-class: true
+  devtools:
+    add-properties: false
+  main:
+    web-application-type: none

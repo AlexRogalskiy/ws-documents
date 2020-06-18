@@ -6,9 +6,15 @@ import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Role;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.convert.support.DefaultConversionService;
+
+import java.util.List;
 
 @Configuration
 @ConditionalOnProperty(prefix = WsEndpointProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
@@ -20,4 +26,12 @@ public abstract class WsAddressingConfiguration {
      * Default configuration {@link Marker} instance
      */
     private static final Marker DEFAULT_CONFIGURATION_MARKER = MarkerFactory.getMarker("WsAddressingConfiguration");
+
+    @Bean
+    @Description("Conversion service bean")
+    public ConversionService conversionService(final List<Converter<?, ?>> converters) {
+        final DefaultConversionService defaultConversionService = new DefaultConversionService();
+        converters.forEach(defaultConversionService::addConverter);
+        return defaultConversionService;
+    }
 }
