@@ -15,11 +15,12 @@
     <description>Document Uploader WebService API</description>
     <url>https://github.com/AlexRogalskiy/ws-documents/document-uploader</url>
     <inceptionYear>2020</inceptionYear>
-    <artifactId>core</artifactId>
+    <artifactId>document-uploader</artifactId>
     <packaging>jar</packaging>
 
     <properties>
         <commons.version>0.1.0-SNAPSHOT</commons.version>
+        <spring-boot-maven-plugin.version>2.2.4.RELEASE</spring-boot-maven-plugin.version>
     </properties>
 
     <build>
@@ -40,6 +41,21 @@
                 <filtering>true</filtering>
             </testResource>
         </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>

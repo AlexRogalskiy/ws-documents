@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
     <property name="LOG_DIR" value="/var/log/application"/>
     <property name="LOG_FILE" value="LogFile"/>
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.apache.cxf" level="INFO"/>
+    <logger name="com.sensiblemetrics.api.ws.*" level="WARN" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <!-- Logstash configuration -->
+    <appender name="LOG_STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"service_name":"WS-DocumentUploader 1.0"}</customFields>
+            <fieldNames>
+                <message>log_msg</message>
+            </fieldNames>
+        </encoder>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+    </appender>
+
+    <!-- Console configuration -->
     <appender name="OUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!-- File configuration -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -24,10 +46,6 @@
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
-
-    <logger name="com.sensiblemetrics.api.ws.*" level="WARN" additivity="false">
-        <appender-ref ref="FILE"/>
-    </logger>src
 
     <root level="info">
         <appender-ref ref="OUT"/>

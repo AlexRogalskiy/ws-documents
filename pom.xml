@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <maven.version>3.6.0</maven.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -45,11 +45,11 @@
 
         <allure-report.version>2.13.1</allure-report.version>
 
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
-        <cxf-spring-boot-starter.version>2.2.1.RELEASE</cxf-spring-boot-starter.version>
+        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
+        <logstash-logback-encoder.version>6.3</logstash-logback-encoder.version>
         <awaitility.version>4.0.3</awaitility.version>
         <awaitility-proxy.version>3.1.6</awaitility-proxy.version>
 
@@ -96,6 +96,10 @@
         <validation-api.version>2.0.1.Final</validation-api.version>
         <guava.version>29.0-jre</guava.version>
         <commons-lang3.version>3.10</commons-lang3.version>
+        <cxf-jaxws.version>3.3.6</cxf-jaxws.version>
+        <cxf-jaxrs.version>3.2.6</cxf-jaxrs.version>
+        <cxf-frontend-jaxws.version>3.3.4</cxf-frontend-jaxws.version>
+        <cxf-transports-http.version>3.3.4</cxf-transports-http.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-surefire-report-plugin.version>3.0.0-M4</maven-surefire-report-plugin.version>
@@ -150,7 +154,7 @@
                                 <exclude>src/test/resources/mockito-extensions/**</exclude>
                             </excludes>
                             <encoding>${project.build.sourceEncoding}</encoding>
-                            <inceptionYear>${project.inceptionYear}</inceptionYear>
+                            <!--                            <inceptionYear>${project.inceptionYear}</inceptionYear>-->
                             <organizationName>${project.organization.name}</organizationName>
                             <licenseName>${license.licenseName}</licenseName>
                             <licenseResolver>${license.licenseResolver}</licenseResolver>
@@ -207,19 +211,6 @@
                                     <goal>helpmojo</goal>
                                 </goals>
                                 <phase>process-classes</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>de.codecentric</groupId>
-                        <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
-                        <version>${maven-spring-boot-cxf-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
                             </execution>
                         </executions>
                     </plugin>
@@ -292,6 +283,63 @@
             </build>
         </profile>
 
+        <!-- Liquibase profile -->
+        <!--        <profile>-->
+        <!--            <id>liquibase</id>-->
+        <!--            <build>-->
+        <!--                <plugins>-->
+        <!--                    <plugin>-->
+        <!--                        <groupId>org.liquibase</groupId>-->
+        <!--                        <artifactId>liquibase-maven-plugin</artifactId>-->
+        <!--                        <version>${maven-liquibase-plugin.version}</version>-->
+        <!--                        <dependencies>-->
+        <!--                            <dependency>-->
+        <!--                                <groupId>org.javassist</groupId>-->
+        <!--                                <artifactId>javassist</artifactId>-->
+        <!--                                <version>3.18.2-GA</version>-->
+        <!--                            </dependency>-->
+        <!--                            <dependency>-->
+        <!--                                <groupId>org.liquibase.ext</groupId>-->
+        <!--                                <artifactId>liquibase-hibernate4</artifactId>-->
+        <!--                                <version>${liquibase-hibernate4.version}</version>-->
+        <!--                            </dependency>-->
+        <!--                            <dependency>-->
+        <!--                                <groupId>org.springframework.boot</groupId>-->
+        <!--                                <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+        <!--                                <version>${project.parent.version}</version>-->
+        <!--                            </dependency>-->
+        <!--                        </dependencies>-->
+        <!--                        <configuration>-->
+        <!--                            <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>-->
+        <!--                            <diffChangeLogFile>-->
+        <!--                                src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml-->
+        <!--                            </diffChangeLogFile>-->
+        <!--                            <driver/>-->
+        <!--                            <url/>-->
+        <!--                            <defaultSchemaName/>-->
+        <!--                            <username/>-->
+        <!--                            <password/>-->
+        <!--                            <referenceUrl>hibernate:spring:com.aquevix.demo.domain?dialect=</referenceUrl>-->
+        <!--                            <verbose>true</verbose>-->
+        <!--                            <logging>debug</logging>-->
+        <!--                        </configuration>-->
+        <!--                    </plugin>-->
+        <!--                </plugins>-->
+        <!--            </build>-->
+        <!--        </profile>-->
+
+        <!-- Development profile -->
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- log configuration -->
+                <logback.loglevel>DEBUG</logback.loglevel>
+            </properties>
+        </profile>
+
         <!-- Test profile -->
         <profile>
             <id>test</id>
@@ -304,16 +352,6 @@
                 <surefire.stackVersion>-Djava.net.preferIPv4Stack=true</surefire.stackVersion>
                 <unit-tests.skip>false</unit-tests.skip>
                 <integration-tests.skip>false</integration-tests.skip>
-            </properties>
-        </profile>
-
-        <!-- License profile -->
-        <profile>
-            <id>license</id>
-            <properties>
-                <check-license.skip>false</check-license.skip>
-                <update-license.skip>false</update-license.skip>
-                <add-third-party.skip>false</add-third-party.skip>
             </properties>
         </profile>
 
@@ -504,18 +542,6 @@
 
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
@@ -533,12 +559,16 @@
                     <debuglevel>lines,vars,source</debuglevel>
                     <optimize>false</optimize>
                     <verbose>false</verbose>
+
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <release>${java.version}</release>
+<!--                    <release>${java.version}</release>-->
                     <encoding>${project.build.outputEncoding}</encoding>
                     <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                    <compilerArgs>-Xlint:-processing</compilerArgs>
+                    <compilerArgs>
+                        -XDignore.symbol.file
+                        -Xlint:all
+                    </compilerArgs>
                 </configuration>
                 <executions>
                     <execution>
@@ -556,7 +586,7 @@
                     <dependency>
                         <groupId>org.ow2.asm</groupId>
                         <artifactId>asm</artifactId>
-                        <version>7.0</version>
+                        <version>7.3.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -798,6 +828,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
@@ -806,46 +840,48 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-logging</artifactId>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- CodeCentric library dependencies -->
+        <!-- Apache CXF library dependencies -->
         <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>cxf-spring-boot-starter</artifactId>
-            <version>${cxf-spring-boot-starter.version}</version>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+            <version>${cxf-jaxws.version}</version>
         </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.apache.cxf</groupId>-->
         <!--            <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>-->
-        <!--            <version>3.3.6</version>-->
+        <!--            <version>${cxf-jaxrs.version}</version>-->
         <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.cxf</groupId>-->
-        <!--            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>-->
-        <!--            <version>3.3.6</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf-frontend-jaxws.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf-transports-http.version}</version>
+        </dependency>
 
         <!-- HSQL DB library dependencies -->
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Validation library dependencies -->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation-api.version}</version>
-            <scope>compile</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>javax.validation</groupId>-->
+        <!--            <artifactId>validation-api</artifactId>-->
+        <!--            <version>${validation-api.version}</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
 
         <!-- Guava library dependencies -->
         <dependency>
@@ -891,6 +927,17 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>logback-core</artifactId>
+                    <groupId>ch.qos.logback</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Slf4j library dependencies -->
