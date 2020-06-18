@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sensiblemetrics.api.ws</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+
+    <name>com.sensiblemetrics.api.ws</name>
+    <description>Parent POM</description>
+    <inceptionYear>2020</inceptionYear>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>11</java.version>
+        <maven.version>3.6.0</maven.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
+        <maven.compiler.testSource>${java.version}</maven.compiler.testSource>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <maven.url>localhost</maven.url>
+        <version.suffix>alpha</version.suffix>
+        <maven.multiModuleProjectDirectory>./</maven.multiModuleProjectDirectory>
+
+        <skipTests>false</skipTests>
+        <failIfNoTests>true</failIfNoTests>
+        <compile-tests.skip>false</compile-tests.skip>
+        <package-tests.skip>true</package-tests.skip>
+        <unit-tests.skip>${skipTests}</unit-tests.skip>
+        <integration-tests.skip>${skipTests}</integration-tests.skip>
+        <remove-resources.skip>true</remove-resources.skip>
+        <parallel.tests>2</parallel.tests>
+        <test-groups.include/>
+
+        <allure-report.version>2.13.1</allure-report.version>
+
+        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+        <lombok.version>edge-SNAPSHOT</lombok.version>
+        <slf4j-api.version>1.7.30</slf4j-api.version>
+        <logback.version>1.2.3</logback.version>
+        <awaitility.version>4.0.3</awaitility.version>
+        <awaitility-proxy.version>3.1.6</awaitility-proxy.version>
+
+        <javadoc.skip>true</javadoc.skip>
+        <javadoc.properties>
+            -Xdoclint:none
+            -J-Xmx1024m
+            -notimestamp
+            -link http://docs.oracle.com/javase/8/docs/api/
+        </javadoc.properties>
+
+        <allure.version>2.13.2</allure.version>
+        <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <hamcrest-matchers.version>2.0.0</hamcrest-matchers.version>
+        <mockito.version>3.2.4</mockito.version>
+        <mockito-helpers.version>2.0.0</mockito-helpers.version>
+        <assertj.version>3.15.0</assertj.version>
+
+        <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
+        <junit-jupiter.version>5.6.0</junit-jupiter.version>
+        <junit-platform.version>1.6.0</junit-platform.version>
+        <mockito-junit-jupiter.version>3.3.3</mockito-junit-jupiter.version>
+
+        <test.commands>
+            -Duser.language=en
+            -Duser.country=GB
+            --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
+            --illegal-access=permit
+            --enable-preview
+        </test.commands>
+        <testsuite>test</testsuite>
+        <surefire.memory>
+            -Xmx1024m
+            -Dsun.zip.disableMemoryMapping=true
+        </surefire.memory>
+        <failsafe.memory>-Xmx512m</failsafe.memory>
+        <failsafe.timezone>-Duser.timezone=US/Eastern</failsafe.timezone>
+        <surefire.fileEncoding>-Dfile.encoding=${project.build.sourceEncoding}</surefire.fileEncoding>
+        <surefire.jmxEnabled>-Dcom.sun.management.jmxremote=false</surefire.jmxEnabled>
+        <surefire.stackVersion>-Djava.net.preferIPv4Stack=true</surefire.stackVersion>
+        <surefire.timezone>-Duser.timezone=US/Eastern</surefire.timezone>
+
+        <validation-api.version>2.0.1.Final</validation-api.version>
+        <guava.version>29.0-jre</guava.version>
+        <commons-lang3.version>3.10</commons-lang3.version>
+
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-surefire-report-plugin.version>3.0.0-M4</maven-surefire-report-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M2</maven-failsafe-plugin.version>
+        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <maven-spring-boot-cxf-plugin.version>2.1.7.RELEASE</maven-spring-boot-cxf-plugin.version>
+        <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
+        <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
+        <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
+        <maven-dependency-check-plugin.version>5.3.2</maven-dependency-check-plugin.version>
+        <maven-site-plugin.version>3.8.2</maven-site-plugin.version>
+    </properties>
+
+    <issueManagement>
+        <url>https://github.com/AlexRogalskiy/ws-documents/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <distributionManagement>
+        <site>
+            <id>GitHub</id>
+            <name>GitHub Repository</name>
+            <url>scm:git:git@github.com/AlexRogalskiy/ws-documents.git</url>
+        </site>
+    </distributionManagement>
+
+    <ciManagement>
+        <system>GitHub</system>
+        <url>http://gihub.com/AlexRogalskiy/ws-documents/runs</url>
+    </ciManagement>
+
+    <profiles>
+        <!-- Wsdl profile -->
+        <profile>
+            <id>wsdl</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-plugin-plugin</artifactId>
+                        <version>${maven-plugin-plugin.version}</version>
+                        <configuration>
+                            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-descriptor</id>
+                                <goals>
+                                    <goal>descriptor</goal>
+                                </goals>
+                                <phase>process-classes</phase>
+                            </execution>
+                            <execution>
+                                <id>help-goal</id>
+                                <goals>
+                                    <goal>helpmojo</goal>
+                                </goals>
+                                <phase>process-classes</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>de.codecentric</groupId>
+                        <artifactId>cxf-spring-boot-starter-maven-plugin</artifactId>
+                        <version>${maven-spring-boot-cxf-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Allure reports profile -->
+        <profile>
+            <id>allure-reports</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.qameta.allure</groupId>
+                        <artifactId>allure-maven</artifactId>
+                        <version>${maven-qameta-allure-plugin.version}</version>
+                        <configuration>
+                            <reportVersion>${allure-report.version}</reportVersion>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <reportingOutputDirectory>${project.build.directory}</reportingOutputDirectory>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Test-jar profile -->
+        <profile>
+            <id>test-jar</id>
+            <properties>
+                <package-tests.skip>false</package-tests.skip>
+            </properties>
+        </profile>
+
+        <!-- Java-doc profile -->
+        <profile>
+            <id>java-doc</id>
+            <properties>
+                <javadoc.skip>false</javadoc.skip>
+            </properties>
+            <!-- Transform xml javadoc to stripped down version containing only class/interface comments and tags-->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>xml-maven-plugin</artifactId>
+                        <version>${maven-xml-plugin.version}</version>
+                        <configuration>
+                            <transformationSets>
+                                <transformationSet>
+                                    <dir>${project.build.directory}/generated-resources/xml-javadoc</dir>
+                                    <includes>
+                                        <include>${project.artifactId}-${project.version}-javadoc.xml</include>
+                                    </includes>
+                                    <outputDir>${project.build.directory}/generated-resources/xml-javadoc</outputDir>
+                                </transformationSet>
+                            </transformationSets>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>transform-xmljavadoc</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>transform</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Test profile -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <surefire.memory>
+                    -Xmx4096m
+                </surefire.memory>
+                <failsafe.memory>-Xms1g -Xmx1500m -Xss256k</failsafe.memory>
+                <surefire.jmxEnabled>-Dcom.sun.management.jmxremote=true</surefire.jmxEnabled>
+                <surefire.stackVersion>-Djava.net.preferIPv4Stack=true</surefire.stackVersion>
+                <unit-tests.skip>false</unit-tests.skip>
+                <integration-tests.skip>false</integration-tests.skip>
+            </properties>
+        </profile>
+
+        <!-- License profile -->
+        <profile>
+            <id>license</id>
+            <properties>
+                <check-license.skip>false</check-license.skip>
+                <update-license.skip>false</update-license.skip>
+                <add-third-party.skip>false</add-third-party.skip>
+            </properties>
+        </profile>
+
+        <!-- Reporting profile -->
+        <profile>
+            <id>reporting</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-site-plugin</artifactId>
+                        <version>${maven-site-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>stage-for-scm-publish</id>
+                                <phase>post-site</phase>
+                                <goals>
+                                    <goal>stage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <skipDeploy>true</skipDeploy>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <reporting>
+        <outputDirectory>${project.build.directory}/release</outputDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>changes-report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <configuration>
+                    <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependencies</report>
+                            <report>dependency-info</report>
+                            <report>dependency-management</report>
+                            <report>plugin-management</report>
+                            <report>issue-management</report>
+                            <report>ci-management</report>
+                            <report>licenses</report>
+                            <report>plugins</report>
+                            <report>summary</report>
+                            <report>team</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <repositories>
+        <repository>
+            <id>central-1</id>
+            <name>Central Repository</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>projectlombok.org</id>
+            <name>ProjectLombok repo</name>
+            <url>https://projectlombok.org/edge-releases</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo1.maven.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit-jupiter.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
+        <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
+        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
+        <defaultGoal>clean package</defaultGoal>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <directory>${maven.multiModuleProjectDirectory}/.build/bin/${project.name}</directory>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <executable>true</executable>
+                    <showDeprecation>true</showDeprecation>
+                    <debug>true</debug>
+                    <debuglevel>lines,vars,source</debuglevel>
+                    <optimize>false</optimize>
+                    <verbose>false</verbose>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <release>${java.version}</release>
+                    <encoding>${project.build.outputEncoding}</encoding>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <compilerArgs>-Xlint:-processing</compilerArgs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${compile-tests.skip}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                        <version>7.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${maven-surefire-report-plugin.version}</version>
+                <configuration>
+                    <showSuccess>false</showSuccess>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <disableXmlReport>true</disableXmlReport>
+                    <skipTests>${unit-tests.skip}</skipTests>
+                    <groups>${test-groups.include}</groups>
+                    <reportFormat>plain</reportFormat>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <printSummary>true</printSummary>
+                    <useFile>false</useFile>
+                    <forkedProcessTimeoutInSeconds>21600</forkedProcessTimeoutInSeconds>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <argLine>
+                        ${surefire.memory}
+                        ${surefire.fileEncoding}
+                        ${surefire.jmxEnabled}
+                        ${surefire.stackVersion}
+                        ${surefire.timezone}
+                        ${test.commands}
+                    </argLine>
+                    <includes>
+                        <include/>
+                    </includes>
+                    <!--<suiteXmlFiles>-->
+                    <!--<suiteXmlFile>src/test/resources/suites/${testsuite}.xml</suiteXmlFile>-->
+                    <!--</suiteXmlFiles-->
+                    <systemProperties>
+                        <mockserver.logLevel>ERROR</mockserver.logLevel>
+                        <mockserver.disableSystemOut>true</mockserver.disableSystemOut>
+                        <mockserver.nioEventLoopThreadCount>1</mockserver.nioEventLoopThreadCount>
+                    </systemProperties>
+                    <properties>
+                        <systemPropertyVariables>
+                            <reportDirectory>
+                                ${project.build.directory}/allure-report
+                            </reportDirectory>
+                            <allure.results.directory>
+                                ${project.build.directory}/allure-results
+                            </allure.results.directory>
+                            <java.awt.headless>true</java.awt.headless>
+                        </systemPropertyVariables>
+                    </properties>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                    <disableXmlReport>true</disableXmlReport>
+                    <skipTests>${integration-tests.skip}</skipTests>
+                    <groups>${test-groups.include}</groups>
+                    <threadCount>${parallel.tests}</threadCount>
+                    <forkCount>${parallel.tests}</forkCount>
+                    <systemProperties>
+                        <mockserver.logLevel>ERROR</mockserver.logLevel>
+                        <mockserver.disableSystemOut>true</mockserver.disableSystemOut>
+                        <mockserver.nioEventLoopThreadCount>20</mockserver.nioEventLoopThreadCount>
+                        <mockserver.webSocketClientEventLoopThreadCount>5
+                        </mockserver.webSocketClientEventLoopThreadCount>
+                    </systemProperties>
+                    <reuseForks>true</reuseForks>
+                    <argLine>
+                        ${failsafe.memory}
+                        ${failsafe.timezone}
+                        ${test.commands}
+                    </argLine>
+                    <useFile>false</useFile>
+                    <reportFormat>plain</reportFormat>
+                    <parallel>classes</parallel>
+                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                    <trimStackTrace>false</trimStackTrace>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>clean-generated-sources</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                            <filesets>
+                                <fileset>
+                                    <directory>${java.io.tmpdir}</directory>
+                                    <directory>${project.basedir}/src/main/generated-sources</directory>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>true</addMavenDescriptor>
+                        <compress>true</compress>
+                        <manifest>
+                            <packageName>${project.groupId}</packageName>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addClasspath>true</addClasspath>
+                            <classpathLayoutType>custom</classpathLayoutType>
+                            <customClasspathLayout>${project.artifactId}.${project.version}</customClasspathLayout>
+                        </manifest>
+                        <manifestEntries>
+                            <Contains-Sources>java,class</Contains-Sources>
+                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                            <Implementation-Title>${project.description}</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Implementation-Build>${project.build.finalName}</Implementation-Build>
+                            <Specification-Title>${project.description}</Specification-Title>
+                            <Specification-Version>${project.version}</Specification-Version>
+                            <Build-Tag>${project.scm.tag}</Build-Tag>
+                            <Bundle-License>SensibleMetrics Software License Agreement</Bundle-License>
+                            <X-Builder>Maven ${maven.version}</X-Builder>
+                            <X-Build-Time>${maven.build.timestamp}</X-Build-Time>
+                            <X-Build-Os>${os.name}</X-Build-Os>
+                        </manifestEntries>
+                    </archive>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${package-tests.skip}</skip>
+                            <skipIfEmpty>true</skipIfEmpty>
+                            <includes>
+                                <include>**/common/</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <licenses>
+        <license>
+            <name>SensibleMetrics License</name>
+            <url>
+                https://github.com/AlexRogalskiy/ws-documents/blob/master/LICENSE.txt
+            </url>
+            <distribution>repo</distribution>
+            <comments>MIT license</comments>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>SensibleMetrics, Inc., Saint-Petersburg (RU)</name>
+        <url>https://www.sensible-metrics.com/</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>alexander.rogalskiy</id>
+            <name>Alexander Rogalskiy</name>
+            <email>alexander.rogalskiy@yandex.ru</email>
+            <timezone>+3</timezone>
+            <url>http://github.com/AlexRogalskiy</url>
+            <organization>SensibleMetrics, Inc.</organization>
+            <organizationUrl>https://www.sensible-metrics.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <properties>
+                <github>https://github.com/AlexRogalskiy</github>
+            </properties>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>modules/commons</module>
+        <module>modules/document-uploader</module>
+    </modules>
+
+    <dependencies>
+        <!-- Spring library dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Validation library dependencies -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+        </dependency>
+
+        <!-- Guava library dependencies -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <!-- Apache commons library dependencies -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.commons</groupId>-->
+        <!--            <artifactId>commons-collections4</artifactId>-->
+        <!--            <version>${commons-collections4.version}</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.commons</groupId>-->
+        <!--            <artifactId>commons-text</artifactId>-->
+        <!--            <version>${commons-text.version}</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.commons</groupId>-->
+        <!--            <artifactId>commons-configuration2</artifactId>-->
+        <!--            <version>${commons-configuration2.version}</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>commons-validator</groupId>-->
+        <!--            <artifactId>commons-validator</artifactId>-->
+        <!--            <version>${commons-validator.version}</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>commons-codec</groupId>-->
+        <!--            <artifactId>commons-codec</artifactId>-->
+        <!--            <version>${commons-codec.version}</version>-->
+        <!--        </dependency>-->
+
+        <!-- Logback library dependencies -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!-- Slf4j library dependencies -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+
+        <!-- Lombok library dependencies -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Spring testing library dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-library</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test-autoconfigure</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit testing library dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-migrationsupport</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-engine</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-console</artifactId>
+            <version>${junit-platform.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito-junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Awaitility library dependencies -->
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${awaitility.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility-proxy</artifactId>
+            <version>${awaitility-proxy.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito library dependencies -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>it.ozimov</groupId>
+            <artifactId>mockito-helpers</artifactId>
+            <version>${mockito-helpers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--        &lt;!&ndash; PowerMock library dependencies &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.powermock</groupId>-->
+        <!--            <artifactId>powermock-module-testng</artifactId>-->
+        <!--            <version>${powermock-testng.version}</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+
+        <!-- Allure reporting library dependencies -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>${allure.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>${allure.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Hamcrest library dependencies -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>java-hamcrest</artifactId>
+            <version>${java-hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>it.ozimov</groupId>
+            <artifactId>hamcrest-matchers</artifactId>
+            <version>${hamcrest-matchers.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- AssertJ library dependencies -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

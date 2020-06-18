@@ -1,0 +1,1 @@
+org.springframework.boot.diagnostics.FailureAnalyzer=com.sensiblemetrics.api.ws.commons.handler.DefaultFailureAnalyzer
