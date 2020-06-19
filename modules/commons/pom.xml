@@ -19,7 +19,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <hibernate-validator.version>6.0.14.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.1.0.Final</hibernate-validator.version>
     </properties>
 
     <build>
