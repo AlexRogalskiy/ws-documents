@@ -26,6 +26,7 @@
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <repackage.skip>false</repackage.skip>
         <maven.url>localhost</maven.url>
         <version.suffix>alpha</version.suffix>
         <maven.multiModuleProjectDirectory>./</maven.multiModuleProjectDirectory>
@@ -47,9 +48,9 @@
 
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
+        <liquibase.version>3.8.6</liquibase.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
-        <logstash-logback-encoder.version>6.3</logstash-logback-encoder.version>
         <awaitility.version>4.0.3</awaitility.version>
         <awaitility-proxy.version>3.1.6</awaitility-proxy.version>
 
@@ -68,6 +69,7 @@
         <mockito.version>3.2.4</mockito.version>
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <assertj.version>3.15.0</assertj.version>
+        <h2.version>1.4.200</h2.version>
 
         <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
         <junit-jupiter.version>5.6.0</junit-jupiter.version>
@@ -96,10 +98,6 @@
         <validation-api.version>2.0.1.Final</validation-api.version>
         <guava.version>29.0-jre</guava.version>
         <commons-lang3.version>3.10</commons-lang3.version>
-        <cxf-jaxws.version>3.3.6</cxf-jaxws.version>
-        <cxf-jaxrs.version>3.2.6</cxf-jaxrs.version>
-        <cxf-frontend-jaxws.version>3.3.4</cxf-frontend-jaxws.version>
-        <cxf-transports-http.version>3.3.4</cxf-transports-http.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-surefire-report-plugin.version>3.0.0-M4</maven-surefire-report-plugin.version>
@@ -107,13 +105,12 @@
         <maven-failsafe-plugin.version>3.0.0-M2</maven-failsafe-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <maven-spring-boot-cxf-plugin.version>2.1.7.RELEASE</maven-spring-boot-cxf-plugin.version>
-        <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
         <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
         <maven-dependency-check-plugin.version>5.3.2</maven-dependency-check-plugin.version>
         <maven-site-plugin.version>3.8.2</maven-site-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
+        <maven-plugin-os.version>1.6.2</maven-plugin-os.version>
     </properties>
 
     <issueManagement>
@@ -178,39 +175,6 @@
                                 <goals>
                                     <goal>update-file-header</goal>
                                 </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- Wsdl profile -->
-        <profile>
-            <id>wsdl</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-plugin-plugin</artifactId>
-                        <version>${maven-plugin-plugin.version}</version>
-                        <configuration>
-                            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>default-descriptor</id>
-                                <goals>
-                                    <goal>descriptor</goal>
-                                </goals>
-                                <phase>process-classes</phase>
-                            </execution>
-                            <execution>
-                                <id>help-goal</id>
-                                <goals>
-                                    <goal>helpmojo</goal>
-                                </goals>
-                                <phase>process-classes</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -336,6 +300,7 @@
             </activation>
             <properties>
                 <!-- log configuration -->
+                <repackage.skip>true</repackage.skip>
                 <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
         </profile>
@@ -540,6 +505,14 @@
 
         <directory>${maven.multiModuleProjectDirectory}/.build/bin/${project.name}</directory>
 
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>${maven-plugin-os.version}</version>
+            </extension>
+        </extensions>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -562,7 +535,7 @@
 
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-<!--                    <release>${java.version}</release>-->
+                    <!--                    <release>${java.version}</release>-->
                     <encoding>${project.build.outputEncoding}</encoding>
                     <forceJavacCompilerUse>true</forceJavacCompilerUse>
                     <compilerArgs>
@@ -828,6 +801,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web-services</artifactId>
         </dependency>
         <dependency>
@@ -844,28 +821,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
-        </dependency>
-
-        <!-- Apache CXF library dependencies -->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
-            <version>${cxf-jaxws.version}</version>
-        </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.cxf</groupId>-->
-        <!--            <artifactId>cxf-spring-boot-starter-jaxrs</artifactId>-->
-        <!--            <version>${cxf-jaxrs.version}</version>-->
-        <!--        </dependency>-->
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>${cxf-frontend-jaxws.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <version>${cxf-transports-http.version}</version>
         </dependency>
 
         <!-- HSQL DB library dependencies -->
@@ -928,17 +883,6 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-        <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <version>${logstash-logback-encoder.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>logback-core</artifactId>
-                    <groupId>ch.qos.logback</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <!-- Slf4j library dependencies -->
         <dependency>
@@ -956,7 +900,14 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring testing library dependencies -->
+        <!-- Liquibase library dependencies -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <!-- Spring test library dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -991,7 +942,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit testing library dependencies -->
+        <!-- JUnit test library dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -1059,7 +1010,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Awaitility library dependencies -->
+        <!-- Awaitility test library dependencies -->
         <dependency>
             <groupId>org.awaitility</groupId>
             <artifactId>awaitility</artifactId>
@@ -1073,7 +1024,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito library dependencies -->
+        <!-- Mockito test library dependencies -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -1086,14 +1037,6 @@
             <version>${mockito-helpers.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!--        &lt;!&ndash; PowerMock library dependencies &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.powermock</groupId>-->
-        <!--            <artifactId>powermock-module-testng</artifactId>-->
-        <!--            <version>${powermock-testng.version}</version>-->
-        <!--            <scope>test</scope>-->
-        <!--        </dependency>-->
 
         <!-- Allure reporting library dependencies -->
         <dependency>
@@ -1115,7 +1058,7 @@
             </exclusions>
         </dependency>
 
-        <!-- Hamcrest library dependencies -->
+        <!-- Hamcrest test library dependencies -->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>java-hamcrest</artifactId>
@@ -1135,11 +1078,19 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- AssertJ library dependencies -->
+        <!-- AssertJ test library dependencies -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- H2 test library dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

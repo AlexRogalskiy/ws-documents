@@ -1,8 +1,12 @@
 # SensibleMetrics Document Uploader Server configuration
 ---
-soap:
-  service:
-    base.url: /api/documents
+server:
+  port: 8089
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    min-response-size: 1024
 
 spring:
   application:
@@ -14,18 +18,19 @@ spring:
     basename: i18n/messages
     # 1 hour
     cache-duration: 3600
-  mvc:
-    throw-exception-if-no-handler-found: true
-    log-resolved-exception: true
-    async:
-      # 1 hour
-      request-timeout: 3600000
-    locale-resolver: FIXED
-  http:
-    log-request-details: true
   aop:
     proxy-target-class: true
   devtools:
     add-properties: false
   main:
     web-application-type: none
+  task:
+    execution:
+      thread-name-prefix: distributor
+      pool:
+        core-size: 10
+        max-size: 20
+        queue-capacity: 100000
+  liquibase:
+    enabled: false
+    drop-first: false

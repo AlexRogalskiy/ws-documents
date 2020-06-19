@@ -21,7 +21,64 @@
     <properties>
         <commons.version>0.1.0-SNAPSHOT</commons.version>
         <spring-boot-maven-plugin.version>2.2.4.RELEASE</spring-boot-maven-plugin.version>
+
+        <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
+        <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
     </properties>
+
+    <profiles>
+        <!-- Wsdl profile -->
+        <profile>
+            <id>wsdl</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-plugin-plugin</artifactId>
+                        <version>${maven-plugin-plugin.version}</version>
+                        <configuration>
+                            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-descriptor</id>
+                                <goals>
+                                    <goal>descriptor</goal>
+                                </goals>
+                                <phase>process-classes</phase>
+                            </execution>
+                            <execution>
+                                <id>help-goal</id>
+                                <goals>
+                                    <goal>helpmojo</goal>
+                                </goals>
+                                <phase>process-classes</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jaxb2-maven-plugin</artifactId>
+                        <version>${maven-jaxb2-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>xjc</id>
+                                <goals>
+                                    <goal>xjc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/src/main/resources/xsd/document.xsd</source>
+                            </sources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
@@ -49,8 +106,19 @@
                 <version>${spring-boot-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>repackage</id>
                         <goals>
                             <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${repackage.skip}</skip>
+                            <classifier>exec</classifier>
+                            <outputDirectory>${project.build.directory}/repackage</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>build-info</goal>
                         </goals>
                     </execution>
                 </executions>
