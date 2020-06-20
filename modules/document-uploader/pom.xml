@@ -45,7 +45,9 @@
                         <configuration>
                             <propertyFile>${liquibase.property}</propertyFile>
                             <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
-                            <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                            <diffChangeLogFile>
+                                ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                            </diffChangeLogFile>
                             <promptOnNonLocalDatabase>true</promptOnNonLocalDatabase>
                             <verbose>true</verbose>
                             <logging>debug</logging>
@@ -60,31 +62,6 @@
             <id>wsdl</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-plugin-plugin</artifactId>
-                        <version>${maven-plugin-plugin.version}</version>
-                        <configuration>
-                            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>default-descriptor</id>
-                                <goals>
-                                    <goal>descriptor</goal>
-                                </goals>
-                                <phase>process-classes</phase>
-                            </execution>
-                            <execution>
-                                <id>help-goal</id>
-                                <goals>
-                                    <goal>helpmojo</goal>
-                                </goals>
-                                <phase>process-classes</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>jaxb2-maven-plugin</artifactId>

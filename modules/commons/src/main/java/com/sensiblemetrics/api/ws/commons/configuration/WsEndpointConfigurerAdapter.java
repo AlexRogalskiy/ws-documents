@@ -35,12 +35,12 @@ public class WsEndpointConfigurerAdapter {
     }
 
     /**
-     * Returns {@link XsdSchema} by input {@link WsEndpointProperty.WsEndpoint} properties
+     * Returns simple {@link XsdSchema} by input {@link WsEndpointProperty.WsEndpoint} properties
      *
      * @param endpoint initial input {@link WsEndpointProperty.WsEndpoint} properties to operate by
-     * @return new {@link XsdSchema} instance
+     * @return new simple {@link XsdSchema} instance
      */
-    public XsdSchema createXsdSchema(final WsEndpointProperty.WsEndpoint endpoint) {
+    public XsdSchema createSimpleXsdSchema(final WsEndpointProperty.WsEndpoint endpoint) {
         return new SimpleXsdSchema(findInClasspath(endpoint.getResourcePattern()));
     }
 }
