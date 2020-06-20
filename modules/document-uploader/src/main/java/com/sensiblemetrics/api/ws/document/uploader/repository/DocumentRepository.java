@@ -1,13 +1,15 @@
 package com.sensiblemetrics.api.ws.document.uploader.repository;
 
-import com.sensiblemetrics.api.ws.document_uploader_web_service.Currency;
 import com.sensiblemetrics.api.ws.document_uploader_web_service.Document;
+import com.sensiblemetrics.api.ws.document_uploader_web_service.Status;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class DocumentRepository {
@@ -15,33 +17,19 @@ public class DocumentRepository {
 
     @PostConstruct
     public void initData() {
-        final Document spain = new Document();
-        spain.setName("Spain");
-        spain.setCapital("Madrid");
-        spain.setCurrency(Currency.EUR);
-        spain.setPopulation(46704314);
-
-        documents.put(spain.getName(), spain);
-
-        final Document poland = new Document();
-        poland.setName("Poland");
-        poland.setCapital("Warsaw");
-        poland.setCurrency(Currency.PLN);
-        poland.setPopulation(38186860);
-
-        documents.put(poland.getName(), poland);
-
-        final Document uk = new Document();
-        uk.setName("United Kingdom");
-        uk.setCapital("London");
-        uk.setCurrency(Currency.GBP);
-        uk.setPopulation(63705000);
-
-        documents.put(uk.getName(), uk);
+        final Document documentPublic = new Document();
+        documentPublic.setId(UUID.randomUUID().toString());
+        documentPublic.setCompany("Spain");
+        documentPublic.setPartner("Madrid");
+        documentPublic.setProduct("Product");
+        documentPublic.setAmount(BigInteger.valueOf(46704314));
+        documentPublic.setPrice(BigDecimal.valueOf(56.5));
+        documentPublic.setData(new byte[]{1, 2, 3});
+        documentPublic.setStatus(Status.NEW);
+        documents.put(documentPublic.getId(), documentPublic);
     }
 
     public Document findDocument(final String name) {
-        Assert.notNull(name, "The Document's name must not be null");
         return documents.get(name);
     }
 }

@@ -24,6 +24,7 @@
         <hikari.version>3.4.2</hikari.version>
         <liquibase.version>3.8.6</liquibase.version>
         <p6spy.version>3.8.7</p6spy.version>
+        <modelmapper.version>2.3.8</modelmapper.version>
 
         <liquibase.property>${project.basedir}/src/main/resources/liquibase.properties</liquibase.property>
 
@@ -138,6 +139,13 @@
             <artifactId>commons</artifactId>
             <version>${commons.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- Model Mapper library dependencies -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
         </dependency>
 
         <!-- Hikari connection pool library dependencies -->

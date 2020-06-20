@@ -22,7 +22,7 @@ public class DocumentEndpoint {
     @ResponsePayload
     public GetDocumentResponse getDocument(@RequestPayload final GetDocumentRequest request) {
         final GetDocumentResponse response = new GetDocumentResponse();
-        response.setDocument(this.documentService.findDocument(request.getName()));
+        response.setDocument(this.documentService.findDocument(request.getId()));
         return response;
     }
 

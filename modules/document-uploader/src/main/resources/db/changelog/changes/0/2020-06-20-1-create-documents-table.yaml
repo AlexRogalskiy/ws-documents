@@ -46,17 +46,17 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: company
-                  type: VARCHAR(512)
+                  type: VARCHAR(256)
               - column:
                   constraints:
                     nullable: false
                   name: partner
-                  type: VARCHAR(512)
+                  type: VARCHAR(256)
               - column:
                   constraints:
                     nullable: false
                   name: product
-                  type: VARCHAR(512)
+                  type: VARCHAR(256)
               - column:
                   constraints:
                     nullable: false

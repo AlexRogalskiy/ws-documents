@@ -25,19 +25,19 @@ import java.lang.annotation.*;
         ElementType.TYPE_USE
 })
 @Retention(RetentionPolicy.RUNTIME)
-@ReportAsSingleViolation
 @Constraint(validatedBy = {})
+@ReportAsSingleViolation
 @TypeQualifierNickname
-@Repeatable(ResourcePathPattern.List.class)
+@Repeatable(NamePattern.List.class)
 @ConstraintComposition(CompositionType.AND)
 @NotBlank
 @Length
-@Pattern(regexp = ResourcePathPattern.DEFAULT_TEMPLATE_NAME_PATTERN)
-public @interface ResourcePathPattern {
+@Pattern(regexp = NamePattern.DEFAULT_NAME_PATTERN)
+public @interface NamePattern {
     /**
-     * Default template name pattern
+     * Default file name pattern
      */
-    String DEFAULT_TEMPLATE_NAME_PATTERN = "^[\\p{IsAlphabetic}\\p{IsDigit}._-]*$";
+    String DEFAULT_NAME_PATTERN = "^[\\p{IsAlphabetic}\\p{IsDigit}._-]*$";
 
     /**
      * Returns {@code int} field max length value
@@ -47,7 +47,7 @@ public @interface ResourcePathPattern {
     @PositiveOrZero
     @OverridesAttribute(constraint = Length.class, name = "max")
     @AliasFor(annotation = Length.class, attribute = "max")
-    int maxLength() default 1024;
+    int maxLength() default 256;
 
     /**
      * Returns {@code int} field min length value
@@ -66,7 +66,7 @@ public @interface ResourcePathPattern {
      */
     @OverridesAttribute(constraint = Pattern.class, name = "regexp")
     @AliasFor(annotation = Pattern.class, attribute = "regexp")
-    String pattern() default DEFAULT_TEMPLATE_NAME_PATTERN;
+    String pattern() default DEFAULT_NAME_PATTERN;
 
     /**
      * Returns array of {@link Pattern.Flag}s accepted by field pattern value
@@ -84,7 +84,7 @@ public @interface ResourcePathPattern {
      */
     @OverridesAttribute(constraint = NotBlank.class, name = "message")
     @AliasFor(annotation = NotBlank.class, attribute = "message")
-    String notBlankMessage() default "{model.entity.template.name.notBlank}";
+    String notBlankMessage() default "{model.entity.file.name.notBlank}";
 
     /**
      * Returns length {@link String} field validation message
@@ -93,14 +93,14 @@ public @interface ResourcePathPattern {
      */
     @OverridesAttribute(constraint = Length.class, name = "message")
     @AliasFor(annotation = Length.class, attribute = "message")
-    String lengthMessage() default "{model.dto.template.name.length}";
+    String lengthMessage() default "{model.entity.file.name.length}";
 
     /**
      * Returns {@link String} validation message
      *
      * @return {@link String} validation message
      */
-    String message() default "{com.sensiblemetrics.api.ws.commons.constraint.ResourceNamePattern.message}";
+    String message() default "{com.sensiblemetrics.api.ws.commons.constraint.NamePattern.message}";
 
     /**
      * Returns {@link Class} groups array
@@ -117,9 +117,9 @@ public @interface ResourcePathPattern {
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * Defines several {@link ResourcePathPattern} annotations on the same element.
+     * Defines several {@link NamePattern} annotations on the same element.
      *
-     * @see ResourcePathPattern
+     * @see NamePattern
      */
     @Target({
             ElementType.METHOD,
@@ -132,10 +132,10 @@ public @interface ResourcePathPattern {
     @Documented
     @interface List {
         /**
-         * Returns {@link ResourcePathPattern} collection
+         * Returns {@link NamePattern} collection
          *
-         * @return {@link ResourcePathPattern} collection
+         * @return {@link NamePattern} collection
          */
-        ResourcePathPattern[] value();
+        NamePattern[] value();
     }
 }

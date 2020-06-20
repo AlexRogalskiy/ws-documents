@@ -5,7 +5,9 @@ import com.sensiblemetrics.api.ws.commons.annotation.EnableWsExecutor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.scheduling.annotation.EnableAsync;
 
+@EnableAsync
 @EnableWsExecutor
 @EnableWsAddressing
 @EnableConfigurationProperties

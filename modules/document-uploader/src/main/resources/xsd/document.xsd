@@ -4,36 +4,96 @@
            targetNamespace="http://api.sensiblemetrics.com/ws/document-uploader-web-service"
            elementFormDefault="qualified">
 
-    <xs:element name="getDocumentRequest">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="name" type="xs:string"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:element name="getDocumentResponse">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element name="document" type="tns:document"/>
-            </xs:sequence>
-        </xs:complexType>
-    </xs:element>
-
-    <xs:complexType name="document">
-        <xs:sequence>
-            <xs:element name="name" type="xs:string"/>
-            <xs:element name="population" type="xs:int"/>
-            <xs:element name="capital" type="xs:string"/>
-            <xs:element name="currency" type="tns:currency"/>
-        </xs:sequence>
+  <xs:element name="getDocumentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:string"/>
+      </xs:sequence>
     </xs:complexType>
+  </xs:element>
 
-    <xs:simpleType name="currency">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="GBP"/>
-            <xs:enumeration value="EUR"/>
-            <xs:enumeration value="PLN"/>
-        </xs:restriction>
-    </xs:simpleType>
+  <xs:element name="getDocumentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="document" type="tns:document"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createDocumentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="company" type="xs:string"/>
+        <xs:element name="partner" type="xs:int"/>
+        <xs:element name="product" type="xs:string"/>
+        <xs:element name="amount" type="xs:unsignedInt"/>
+        <xs:element name="price" type="xs:decimal"/>
+        <xs:element name="data" type="xs:base64Binary"/>
+        <xs:element name="status" type="tns:status"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="createDocumentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="document" type="tns:document"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateDocumentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="document" type="tns:document"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateDocumentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="document" type="tns:document"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateDocumentStatusRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="status" type="tns:status"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="updateDocumentStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="document" type="tns:document"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="document">
+    <xs:sequence>
+      <xs:element name="id" type="xs:string"/>
+      <xs:element name="company" type="xs:string"/>
+      <xs:element name="partner" type="xs:string"/>
+      <xs:element name="product" type="xs:string"/>
+      <xs:element name="amount" type="xs:positiveInteger"/>
+      <xs:element name="price" type="xs:decimal"/>
+      <xs:element name="data" type="xs:base64Binary"/>
+      <xs:element name="status" type="tns:status"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CANCELLED"/>
+      <xs:enumeration value="COMPLETED"/>
+      <xs:enumeration value="NEW"/>
+      <xs:enumeration value="REGISTERED"/>
+      <xs:enumeration value="SUSPENDED"/>
+    </xs:restriction>
+  </xs:simpleType>
 </xs:schema>
