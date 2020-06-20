@@ -10,7 +10,7 @@ server:
 
 spring:
   application:
-    name: "Document-Uploader-Server"
+    name: "Document-Uploader-Service"
   output:
     ansi:
       enabled: NEVER
@@ -34,3 +34,12 @@ spring:
   liquibase:
     enabled: false
     drop-first: false
+
+ws-addressing:
+  endpoints:
+    document:
+      port-type-name: "DocumentPort"
+      service-name: "DocumentService
+      location-uri: "/ws"
+      target-namespace: "http://spring.io/guides/gs-producing-web-service"
+      resource-pattern: "xsd/document.xsd"

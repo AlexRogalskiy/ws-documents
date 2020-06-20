@@ -1,7 +1,11 @@
 package com.sensiblemetrics.api.ws.document.uploader.service;
 
-import org.springframework.stereotype.Service;
+import io.spring.guides.gs_producing_web_service.Document;
 
-@Service
-public class DocumentService {
+/**
+ * Document service contract declaration
+ */
+public interface DocumentService {
+
+    Document findDocument(final String name);
 }

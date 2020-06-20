@@ -7,20 +7,14 @@
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
-    <logger name="org.springframework" level="WARN"/>
-    <logger name="org.apache.cxf" level="INFO"/>
-    <logger name="com.sensiblemetrics.api.ws.*" level="WARN" additivity="false">
-        <appender-ref ref="FILE"/>
-    </logger>
-
-    <!-- Console configuration -->
+    <!-- Console appender configuration -->
     <appender name="OUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- File configuration -->
+    <!-- File appender configuration -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -35,8 +29,14 @@
         </encoder>
     </appender>
 
+    <!-- Logger configuration -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.apache.cxf" level="INFO"/>
+    <logger name="com.sensiblemetrics.api.ws.*" level="WARN" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
     <root level="info">
         <appender-ref ref="OUT"/>
     </root>
-
 </configuration>
