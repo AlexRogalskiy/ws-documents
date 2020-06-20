@@ -78,24 +78,6 @@ public @interface ResourcePathPattern {
     Pattern.Flag[] patternFlags() default {Pattern.Flag.CASE_INSENSITIVE, Pattern.Flag.UNICODE_CASE};
 
     /**
-     * Returns blank {@link String} field validation message
-     *
-     * @return blank {@link String} field validation message
-     */
-    @OverridesAttribute(constraint = NotBlank.class, name = "message")
-    @AliasFor(annotation = NotBlank.class, attribute = "message")
-    String notBlankMessage() default "{model.entity.template.name.notBlank}";
-
-    /**
-     * Returns length {@link String} field validation message
-     *
-     * @return length {@link String} field validation message
-     */
-    @OverridesAttribute(constraint = Length.class, name = "message")
-    @AliasFor(annotation = Length.class, attribute = "message")
-    String lengthMessage() default "{model.dto.template.name.length}";
-
-    /**
      * Returns {@link String} validation message
      *
      * @return {@link String} validation message

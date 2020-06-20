@@ -50,7 +50,7 @@ public class DocumentEntity extends BaseAuditEntity<UUID> {
     @Column(name = PRICE_FIELD_NAME, nullable = false)
     private BigDecimal price;
 
-    @NotBlank(message = "{model.entity.document.status.notBlank}")
+    @NotBlank(message = "{model.entity.document.data.notBlank}")
     @Lob
     @Column(name = DATA_FIELD_NAME, nullable = false)
     private String data;
