@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.document.uploader.endpoint;
 
 import com.sensiblemetrics.api.ws.document.uploader.service.DocumentService;
-import io.spring.guides.gs_producing_web_service.GetDocumentRequest;
-import io.spring.guides.gs_producing_web_service.GetDocumentResponse;
+import com.sensiblemetrics.api.ws.document_uploader_web_service.GetDocumentRequest;
+import com.sensiblemetrics.api.ws.document_uploader_web_service.GetDocumentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
@@ -31,7 +31,7 @@ public class DocumentEndpoint {
         /**
          * Default namespace uri
          */
-        static final String DOCUMENT_NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
+        static final String DOCUMENT_NAMESPACE_URI = "http://api.sensiblemetrics.com/ws/document-uploader-web-service";
         /**
          * Default fetch document endpoint
          */

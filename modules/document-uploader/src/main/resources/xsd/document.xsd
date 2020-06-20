@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://spring.io/guides/gs-producing-web-service"
-           targetNamespace="http://spring.io/guides/gs-producing-web-service" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://api.sensiblemetrics.com/ws/document-uploader-web-service"
+           targetNamespace="http://api.sensiblemetrics.com/ws/document-uploader-web-service"
+           elementFormDefault="qualified">
 
     <xs:element name="getDocumentRequest">
         <xs:complexType>

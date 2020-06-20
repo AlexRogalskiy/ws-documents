@@ -21,12 +21,40 @@
     <properties>
         <commons.version>0.1.0-SNAPSHOT</commons.version>
         <spring-boot-maven-plugin.version>2.2.4.RELEASE</spring-boot-maven-plugin.version>
+        <hikari.version>3.4.2</hikari.version>
+        <liquibase.version>3.8.6</liquibase.version>
+        <p6spy.version>3.8.7</p6spy.version>
+
+        <liquibase.property>${project.basedir}/src/main/resources/liquibase.properties</liquibase.property>
 
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
+        <maven-liquibase-plugin.version>3.8.6</maven-liquibase-plugin.version>
     </properties>
 
     <profiles>
+        <!-- Liquibase profile -->
+        <profile>
+            <id>liquibase</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${maven-liquibase-plugin.version}</version>
+                        <configuration>
+                            <propertyFile>${liquibase.property}</propertyFile>
+                            <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+                            <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                            <promptOnNonLocalDatabase>true</promptOnNonLocalDatabase>
+                            <verbose>true</verbose>
+                            <logging>debug</logging>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Wsdl profile -->
         <profile>
             <id>wsdl</id>
@@ -133,6 +161,34 @@
             <artifactId>commons</artifactId>
             <version>${commons.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- Hikari connection pool library dependencies -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikari.version}</version>
+        </dependency>
+
+        <!-- Liquibase library dependencies -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <!-- P6spy library dependencies -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>${p6spy.version}</version>
+        </dependency>
+
+        <!-- H2 test library dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Commons testing library dependencies -->

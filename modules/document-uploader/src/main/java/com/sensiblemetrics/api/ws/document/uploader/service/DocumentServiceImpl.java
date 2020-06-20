@@ -1,7 +1,7 @@
 package com.sensiblemetrics.api.ws.document.uploader.service;
 
 import com.sensiblemetrics.api.ws.document.uploader.repository.DocumentRepository;
-import io.spring.guides.gs_producing_web_service.Document;
+import com.sensiblemetrics.api.ws.document_uploader_web_service.Document;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

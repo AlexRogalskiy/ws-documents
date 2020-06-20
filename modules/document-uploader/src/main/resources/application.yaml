@@ -1,4 +1,4 @@
-# SensibleMetrics Document Uploader Server configuration
+# SensibleMetrics Document Uploader WebService configuration
 ---
 server:
   port: 8089
@@ -10,7 +10,7 @@ server:
 
 spring:
   application:
-    name: "Document-Uploader-Service"
+    name: "Document-Uploader-WebService"
   output:
     ansi:
       enabled: NEVER
@@ -26,20 +26,56 @@ spring:
     web-application-type: none
   task:
     execution:
-      thread-name-prefix: distributor
+      thread-name-prefix: document-uploader
       pool:
         core-size: 10
         max-size: 20
         queue-capacity: 100000
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:p6spy:hsqldb:documents
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    username: sa
+    password:
+    sql-script-encoding: UTF-8
+    initialization-mode: NEVER
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 25
+      idle-timeout: 30000
+      pool-name: DocumentUploader-HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      isolate-internal-queries: true
+      connection-test-query: SELECT current_timestamp
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      allow-pool-suspension: true
+      auto-commit: true
+      data-source-properties:
+        cache-prep-stmts: true
+        prep-stmt-cache-size: 250
+        prep-stmt-cache-sql-limit: 2048
+        use-server-prep-stmts: true
+  transaction:
+    rollback-on-commit-failure: true
+    # 1 hour
+    default-timeout: 3600
+  jpa:
+    show-sql: true
+    open-in-view: false
+    generate-ddl: false
+    database: HSQL
+    database-platform: org.hibernate.dialect.HSQLDialect
   liquibase:
-    enabled: false
-    drop-first: false
+    enabled: true
+    drop-first: true
 
 ws-addressing:
   endpoints:
     document:
       port-type-name: "DocumentPort"
-      service-name: "DocumentService
+      service-name: "DocumentService"
       location-uri: "/ws"
-      target-namespace: "http://spring.io/guides/gs-producing-web-service"
+      target-namespace: "http://api.sensiblemetrics.com/ws/document-uploader-web-service"
       resource-pattern: "xsd/document.xsd"

@@ -1,21 +1,96 @@
-# Document Uploader test configuration
+# SensibleMetrics Document Uploader WebService test configuration
 ---
+server:
+  port: 8089
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    min-response-size: 1024
+
 spring:
+  application:
+    name: "Document-Uploader-WebService"
+  output:
+    ansi:
+      enabled: NEVER
   messages:
-    encoding: UTF-8
     basename: i18n/messages
     # 1 hour
     cache-duration: 3600
   main:
     allow-bean-definition-overriding: true
+    web-application-type: none
+  aop:
+    proxy-target-class: true
+  devtools:
+    add-properties: false
+    restart:
+      log-condition-evaluation-delta: false
+      enabled: false
+    livereload:
+      enabled: false
   task:
     execution:
-      thread-name-prefix: test
+      thread-name-prefix: document-uploader
       pool:
         core-size: 10
         max-size: 20
         queue-capacity: 100000
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:p6spy:h2:mem:documents;MODE=hsqldb;DATABASE_TO_LOWER=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    sql-script-encoding: UTF-8
+    initialization-mode: NEVER
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 25
+      idle-timeout: 30000
+      pool-name: DocumentUploader-HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      isolate-internal-queries: true
+      connection-test-query: SELECT current_timestamp
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      allow-pool-suspension: true
+      auto-commit: true
+      data-source-properties:
+        cache-prep-stmts: true
+        prep-stmt-cache-size: 250
+        prep-stmt-cache-sql-limit: 2048
+        use-server-prep-stmts: true
+  transaction:
+    rollback-on-commit-failure: true
+    # 1 hour
+    default-timeout: 3600
+  jpa:
+    show-sql: true
+    open-in-view: false
+    generate-ddl: false
+    database: H2
+    database-platform: org.hibernate.dialect.H2Dialect
+  test:
+    database:
+      replace: NONE
+    mockmvc:
+      print: log_debug
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  liquibase:
+    enabled: false
+    drop-first: false
 
-ws-adressing:
-  document-uploader:
-    enabled: true
+ws-addressing:
+  endpoints:
+    document:
+      port-type-name: "DocumentPort"
+      service-name: "DocumentService"
+      location-uri: "/ws"
+      target-namespace: "http://api.sensiblemetrics.com/ws/document-uploader-web-service"
+      resource-pattern: "xsd/document.xsd"

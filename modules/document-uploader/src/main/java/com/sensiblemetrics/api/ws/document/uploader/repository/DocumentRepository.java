@@ -1,7 +1,7 @@
 package com.sensiblemetrics.api.ws.document.uploader.repository;
 
-import io.spring.guides.gs_producing_web_service.Currency;
-import io.spring.guides.gs_producing_web_service.Document;
+import com.sensiblemetrics.api.ws.document_uploader_web_service.Currency;
+import com.sensiblemetrics.api.ws.document_uploader_web_service.Document;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
