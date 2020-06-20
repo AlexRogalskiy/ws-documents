@@ -19,7 +19,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <hibernate-validator.version>6.0.14.Final</hibernate-validator.version>
+        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
     </properties>
 
     <build>
@@ -43,12 +43,19 @@
     </build>
 
     <dependencies>
-
-        <!-- Hibernate validation library dependencies -->
+        <!-- Hibernate validator library dependencies -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <!-- Hibernate validator test library dependencies -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-test-utils</artifactId>
+            <version>${hibernate-validator.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
