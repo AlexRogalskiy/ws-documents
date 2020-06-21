@@ -73,6 +73,33 @@ spring:
     generate-ddl: false
     database: HSQL
     database-platform: org.hibernate.dialect.HSQLDialect
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        validator:
+          apply_to_ddl: true
+          autoregister_listeners: true
+        order_inserts: true
+        order_updates: true
+        connection:
+          character-encoding: UTF-8
+          char-set: UTF-8
+          use-unicode: true
+          provider-class: com.zaxxer.hikari.hibernate.HikariConnectionProvider
+          provider-disables-autocommit: false
+          pool-size: 50
+          autocommit: true
+          auto-reconnect: true
+          current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+          release_mode: on_close
+        transaction:
+          flush_before_completion: true
+          auto_close_session: false
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
     hibernate:
       ddl-auto: create
   test:
@@ -91,4 +118,28 @@ ws-addressing:
       service-name: "DocumentService"
       location-uri: "/ws"
       target-namespace: "http://api.sensiblemetrics.com/ws/document-uploader-web-service"
-      resource-pattern: "xsd/document.xsd"
+      resource-pattern: "schemas/document.xsd"
+
+ws-document:
+  archive:
+    base-path: "/storage"
+  template:
+    marker-mappings:
+      id:
+        name: "id"
+      company:
+        name: "company"
+      partner:
+        name: "partner"
+      product:
+        name: "product"
+      amount:
+        name: "amount"
+      price:
+        name: "price",
+      data:
+        name: "data"
+      date:
+        name: "date"
+      total:
+        name: "total"

@@ -37,7 +37,7 @@ public @interface NamePattern {
     /**
      * Default file name pattern
      */
-    String DEFAULT_NAME_PATTERN = "^[\\p{IsAlphabetic}\\p{IsDigit}._-]*$";
+    String DEFAULT_NAME_PATTERN = "^[\\p{IsAlphabetic}\\p{IsDigit}\\p{IsSpace}._-]*$";
 
     /**
      * Returns {@code int} field max length value

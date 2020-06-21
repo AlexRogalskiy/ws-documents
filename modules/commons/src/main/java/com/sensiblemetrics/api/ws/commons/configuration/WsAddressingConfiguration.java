@@ -26,7 +26,7 @@ import static org.springframework.util.StringUtils.toStringArray;
 @ConditionalOnProperty(prefix = WsEndpointProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsEndpointProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons WS Addressing configuration")
+@Description("SensibleMetrics Commons Web Service Addressing configuration")
 public abstract class WsAddressingConfiguration {
 
     @Bean

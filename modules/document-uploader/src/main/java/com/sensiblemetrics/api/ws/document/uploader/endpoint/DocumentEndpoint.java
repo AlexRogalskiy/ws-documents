@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.document.uploader.endpoint;
 
-import com.sensiblemetrics.api.ws.document.uploader.model.DocumentEntity;
+import com.sensiblemetrics.api.ws.document.uploader.model.entity.DocumentEntity;
 import com.sensiblemetrics.api.ws.document.uploader.service.interfaces.DocumentService;
 import com.sensiblemetrics.api.ws.document_uploader_web_service.*;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +69,7 @@ public class DocumentEndpoint {
     public GenerateDocumentResponse generateDocument(@RequestPayload final GenerateDocumentRequest request) {
         return Optional.ofNullable(request)
                 .map(data -> this.modelMapper.map(data, UUID.class))
-                .map(this.documentService::deleteById)
+                .map(this.documentService::generateDocument)
                 .map(data -> this.modelMapper.map(data, GenerateDocumentResponse.class))
                 .orElseThrow(() -> throwBadRequest(request));
     }

@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.document.uploader.service.impl;
 
-import com.sensiblemetrics.api.ws.document.uploader.model.BaseAuditEntity;
+import com.sensiblemetrics.api.ws.document.uploader.model.entity.BaseAuditEntity;
 import com.sensiblemetrics.api.ws.document.uploader.repository.BaseRepository;
 import com.sensiblemetrics.api.ws.document.uploader.service.interfaces.BaseService;
 import com.sensiblemetrics.api.ws.document.uploader.service.interfaces.RepositoryAware;
@@ -28,27 +28,27 @@ import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.copyNonNullP
  */
 @Slf4j
 @Getter(AccessLevel.PROTECTED)
-@Transactional(rollbackFor = Exception.class)
+@Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 public abstract class BaseServiceImpl<E, ID extends Serializable> implements BaseService<E, ID>, RepositoryAware<E, ID> {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Transactional(readOnly = true)
     public Iterable<E> findAll(final Iterable<ID> target) {
         log.info("Fetching all target records by IDs: {}", target);
         return Optional.ofNullable(target)
-                .map(id -> this.getRepository().findAllById(id))
+                .map(value -> this.getRepository().findAllById(value))
                 .orElseThrow(() -> throwResourceNotFound(target));
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Transactional(readOnly = true)
     public Optional<E> findById(final ID id) {
         log.info("Fetching target record by ID: {}", id);
         return Optional.ofNullable(id)
-                .map(i -> this.getRepository().findById(i))
+                .map(value -> this.getRepository().findById(value))
                 .orElseThrow(() -> throwResourceNotFound(id));
     }
 
@@ -56,7 +56,7 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public E save(final E target) {
         log.info("Saving target record: {}", target);
         return Optional.ofNullable(target)
-                .map(entity -> this.getRepository().saveAndFlush(entity))
+                .map(value -> this.getRepository().saveAndFlush(value))
                 .orElseThrow(() -> throwBadRequest(target));
     }
 
@@ -64,7 +64,7 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public E update(final ID id, final E target) {
         log.info("Updating target record by ID: {}, entity: {}", id, target);
         return this.findById(id)
-                .map(entity -> copyNonNullProperties(target, entity))
+                .map(value -> copyNonNullProperties(target, value))
                 .map(this::save)
                 .orElseThrow(() -> throwResourceNotFound(id));
     }
@@ -73,7 +73,7 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public <S extends E> Iterable<S> saveAll(final Iterable<S> target) {
         log.info("Saving target records: {}", target);
         return Optional.ofNullable(target)
-                .map(entities -> this.getRepository().saveAll(entities))
+                .map(value -> this.getRepository().saveAll(value))
                 .orElseThrow(() -> throwBadRequest(target));
     }
 
@@ -81,10 +81,10 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public E delete(final E target) {
         log.info("Removing target record: {}", target);
         return Optional.ofNullable(target)
-                .map(entity -> {
-                    this.getRepository().delete(entity);
+                .map(value -> {
+                    this.getRepository().delete(value);
                     this.getRepository().flush();
-                    return entity;
+                    return value;
                 })
                 .orElseThrow(() -> throwBadRequest(target));
     }
@@ -101,20 +101,20 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public <S extends E> Iterable<S> deleteAll(final Iterable<S> target) {
         log.info("Removing target records: {}", target);
         return Optional.ofNullable(target)
-                .map(entities -> {
-                    this.getRepository().deleteAll(entities);
+                .map(value -> {
+                    this.getRepository().deleteAll(value);
                     this.getRepository().flush();
-                    return entities;
+                    return value;
                 })
                 .orElseThrow(() -> throwBadRequest(target));
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRES_NEW, readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
     public boolean existsById(final ID id) {
         log.info("Checking existence of target record by ID: {}", id);
         return Optional.ofNullable(id)
-                .map(entityId -> this.getRepository().existsById(entityId))
+                .map(value -> this.getRepository().existsById(value))
                 .orElseThrow(() -> throwResourceNotFound(id));
     }
 

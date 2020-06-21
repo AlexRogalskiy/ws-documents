@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.document.uploader.model;
+package com.sensiblemetrics.api.ws.document.uploader.model.entity;
 
 import lombok.Data;
 import lombok.experimental.UtilityClass;
@@ -18,7 +18,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Optional;
 
-import static com.sensiblemetrics.api.ws.document.uploader.model.AuditEntity.Info.*;
+import static com.sensiblemetrics.api.ws.document.uploader.model.entity.AuditEntity.Info.*;
 
 /**
  * {@link Auditable} entity model

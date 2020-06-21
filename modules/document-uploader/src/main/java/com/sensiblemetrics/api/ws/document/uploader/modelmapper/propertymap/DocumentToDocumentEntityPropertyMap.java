@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.document.uploader.modelmapper.propertymap;
 
-import com.sensiblemetrics.api.ws.document.uploader.model.DocumentEntity;
+import com.sensiblemetrics.api.ws.document.uploader.model.entity.DocumentEntity;
 import com.sensiblemetrics.api.ws.document.uploader.modelmapper.converter.StatusToStatusTypeConverter;
 import com.sensiblemetrics.api.ws.document_uploader_web_service.Document;
 import lombok.RequiredArgsConstructor;

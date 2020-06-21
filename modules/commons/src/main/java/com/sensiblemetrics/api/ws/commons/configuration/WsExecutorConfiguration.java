@@ -25,7 +25,7 @@ import java.util.concurrent.RejectedExecutionHandler;
 @AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "spring.task.execution", value = "enabled", havingValue = "true")
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons WS Executor configuration")
+@Description("SensibleMetrics Commons Web Service Executor configuration")
 public abstract class WsExecutorConfiguration {
     /**
      * Default thread pool task executor bean naming convention
@@ -35,7 +35,7 @@ public abstract class WsExecutorConfiguration {
     @Configuration
     @RequiredArgsConstructor
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Commons WS Task Executor configuration")
+    @Description("SensibleMetrics Commons Web Service Task Executor configuration")
     public static class WsTaskExecutorConfiguration implements AsyncConfigurer {
         /**
          * Default async task executor bean naming convention

@@ -3,6 +3,8 @@ package com.sensiblemetrics.api.ws.document.uploader.configuration;
 import com.sensiblemetrics.api.ws.commons.annotation.ConditionalOnWsAddressingEnabled;
 import com.sensiblemetrics.api.ws.commons.configuration.WsEndpointConfigurerAdapter;
 import com.sensiblemetrics.api.ws.commons.property.WsEndpointProperty;
+import com.sensiblemetrics.api.ws.document.uploader.property.DocumentArchiveProperty;
+import com.sensiblemetrics.api.ws.document.uploader.property.DocumentTemplateProperty;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -24,6 +26,10 @@ import org.springframework.xml.xsd.XsdSchema;
 import java.util.List;
 
 @Configuration
+@EnableConfigurationProperties({
+        DocumentTemplateProperty.class,
+        DocumentArchiveProperty.class
+})
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service configuration")
 public class WsServiceConfiguration {
@@ -57,8 +63,8 @@ public class WsServiceConfiguration {
     @ConditionalOnWsAddressingEnabled
     @EnableConfigurationProperties(WsEndpointProperty.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Document Uploader Web Service configuration")
-    public static class WsDocumentUploaderConfiguration extends WsConfigurerAdapter {
+    @Description("SensibleMetrics Document Web Service configuration")
+    public static class WsDocumentConfiguration extends WsConfigurerAdapter {
         /**
          * Default document definition bean naming conventions
          */

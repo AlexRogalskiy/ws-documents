@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.document.uploader.model;
+package com.sensiblemetrics.api.ws.document.uploader.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,8 +13,8 @@ import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.Objects;
 
-import static com.sensiblemetrics.api.ws.document.uploader.model.BaseAuditEntity.Info.ID_FIELD_NAME;
-import static com.sensiblemetrics.api.ws.document.uploader.model.BaseAuditEntity.Info.ROW_VERSION_FIELD_NAME;
+import static com.sensiblemetrics.api.ws.document.uploader.model.entity.BaseAuditEntity.Info.ID_FIELD_NAME;
+import static com.sensiblemetrics.api.ws.document.uploader.model.entity.BaseAuditEntity.Info.ROW_VERSION_FIELD_NAME;
 
 /**
  * Base {@link AuditEntity} model

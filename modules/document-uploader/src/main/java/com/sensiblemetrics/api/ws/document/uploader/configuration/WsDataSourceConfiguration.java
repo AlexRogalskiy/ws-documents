@@ -34,8 +34,8 @@ import static org.apache.commons.lang3.StringUtils.join;
                 "com.sensiblemetrics.api.ws.document.uploader.model",
                 "com.sensiblemetrics.api.ws.document.uploader.repository"
         })
-@Description("SensibleMetrics DataSource configuration")
-public class DataSourceConfiguration {
+@Description("SensibleMetrics Web Service DataSource configuration")
+public class WsDataSourceConfiguration {
 
     /**
      * Default packages to scan

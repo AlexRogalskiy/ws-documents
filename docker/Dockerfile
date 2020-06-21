@@ -19,5 +19,8 @@ WORKDIR /opt/app
 # Expose service default port
 EXPOSE 5000
 
+# Java environment options
+ENV JAVA_OPTS="-Xms64m -Xmx1024m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Dcom.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize=true"
+
 # Run microservice process.
 ENTRYPOINT [ "java", "-jar", "com.sensiblemetrics.api.ws.document.uploader.jar" ]

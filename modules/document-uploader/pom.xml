@@ -25,6 +25,7 @@
         <liquibase.version>3.8.6</liquibase.version>
         <p6spy.version>3.8.7</p6spy.version>
         <modelmapper.version>2.3.8</modelmapper.version>
+        <docx4j.version>6.1.2</docx4j.version>
 
         <liquibase.property>${project.basedir}/src/main/resources/liquibase.properties</liquibase.property>
 
@@ -107,7 +108,7 @@
                         </executions>
                         <configuration>
                             <sources>
-                                <source>${project.basedir}/src/main/resources/xsd/document.xsd</source>
+                                <source>${project.basedir}/src/main/resources/schemas/document.xsd</source>
                             </sources>
                         </configuration>
                     </plugin>
@@ -176,6 +177,13 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
+        </dependency>
+
+        <!-- Docx4j library dependencies -->
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j</artifactId>
+            <version>${docx4j.version}</version>
         </dependency>
 
         <!-- Hikari connection pool library dependencies -->

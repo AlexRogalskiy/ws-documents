@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.document.uploader.repository;
 
-import com.sensiblemetrics.api.ws.document.uploader.model.DocumentEntity;
+import com.sensiblemetrics.api.ws.document.uploader.model.entity.DocumentEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;

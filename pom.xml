@@ -149,7 +149,7 @@
                                 <exclude>src/test/resources/mockito-extensions/**</exclude>
                             </excludes>
                             <encoding>${project.build.sourceEncoding}</encoding>
-                            <!--                            <inceptionYear>${project.inceptionYear}</inceptionYear>-->
+                            <inceptionYear>${project.inceptionYear}</inceptionYear>
                             <organizationName>${project.organization.name}</organizationName>
                             <licenseName>${license.licenseName}</licenseName>
                             <licenseResolver>${license.licenseResolver}</licenseResolver>

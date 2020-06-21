@@ -4,6 +4,7 @@ public enum StatusType {
     CANCELLED,
     COMPLETED,
     NEW,
+    PROCESSING,
     REGISTERED,
     SUSPENDED;
 }

@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.document.uploader.model;
+package com.sensiblemetrics.api.ws.document.uploader.model.entity;
 
 import com.sensiblemetrics.api.ws.commons.constraint.NamePattern;
 import com.sensiblemetrics.api.ws.document.uploader.enumeration.StatusType;
@@ -15,7 +15,7 @@ import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static com.sensiblemetrics.api.ws.document.uploader.model.DocumentEntity.Info.*;
+import static com.sensiblemetrics.api.ws.document.uploader.model.entity.DocumentEntity.Info.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
