@@ -55,6 +55,8 @@
                             <arguments>
                                 <argument>--database.0</argument>
                                 <argument>file:${project.build.directory}/db/documentdb</argument>
+                                <argument>--dbname.0</argument>
+                                <argument>documentdb</argument>
                             </arguments>
                         </configuration>
                     </plugin>
