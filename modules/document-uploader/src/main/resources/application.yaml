@@ -33,7 +33,8 @@ spring:
         queue-capacity: 100000
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:p6spy:hsqldb:documents
+    url: jdbc:p6spy:hsqldb:hsql://localhost:9001/documentdb
+    #jdbc:p6spy:hsqldb:file:${project.build.directory}/db/documentdb
     driver-class-name: org.hsqldb.jdbc.JDBCDriver
     username: sa
     password:
@@ -67,6 +68,8 @@ spring:
     generate-ddl: false
     database: HSQL
     database-platform: org.hibernate.dialect.HSQLDialect
+    hibernate:
+      ddl-auto: update
   liquibase:
     enabled: true
     drop-first: true

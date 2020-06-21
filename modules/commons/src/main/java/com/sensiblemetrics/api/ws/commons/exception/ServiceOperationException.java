@@ -6,7 +6,7 @@ import lombok.ToString;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-import static com.sensiblemetrics.api.ws.commons.enumeration.ErrorTemplate.SERVICE_OPERATION_ERROR;
+import static com.sensiblemetrics.api.ws.commons.enumeration.ErrorTemplateType.SERVICE_OPERATION_ERROR;
 
 /**
  * Service operation {@link RuntimeException} implementation

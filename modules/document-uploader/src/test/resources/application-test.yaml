@@ -39,8 +39,8 @@ spring:
         queue-capacity: 100000
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:p6spy:h2:mem:documents;MODE=hsqldb;DATABASE_TO_LOWER=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
-    driver-class-name: org.h2.Driver
+    url: jdbc:p6spy:hsqldb:mem:documentdb;DATABASE_TO_LOWER=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
     username: sa
     password:
     sql-script-encoding: UTF-8
@@ -71,17 +71,15 @@ spring:
     show-sql: true
     open-in-view: false
     generate-ddl: false
-    database: H2
-    database-platform: org.hibernate.dialect.H2Dialect
+    database: HSQL
+    database-platform: org.hibernate.dialect.HSQLDialect
+    hibernate:
+      ddl-auto: create
   test:
     database:
       replace: NONE
     mockmvc:
       print: log_debug
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   liquibase:
     enabled: false
     drop-first: false

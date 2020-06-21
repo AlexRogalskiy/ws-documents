@@ -7,7 +7,7 @@ import lombok.ToString;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-import static com.sensiblemetrics.api.ws.commons.enumeration.ErrorTemplate.SERVICE_UNAVAILABLE;
+import static com.sensiblemetrics.api.ws.commons.enumeration.ErrorTemplateType.SERVICE_UNAVAILABLE;
 
 /**
  * Service unavailable {@link RuntimeException} implementation

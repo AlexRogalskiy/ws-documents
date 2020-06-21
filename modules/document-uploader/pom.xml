@@ -28,12 +28,40 @@
 
         <liquibase.property>${project.basedir}/src/main/resources/liquibase.properties</liquibase.property>
 
-        <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
         <maven-liquibase-plugin.version>3.8.6</maven-liquibase-plugin.version>
+        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
     </properties>
 
     <profiles>
+        <!-- HSQLDB profile -->
+        <profile>
+            <id>hsqldb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${maven-exec-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <mainClass>org.hsqldb.server.Server</mainClass>
+                            <arguments>
+                                <argument>--database.0</argument>
+                                <argument>file:${project.build.directory}/db/documentdb</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Liquibase profile -->
         <profile>
             <id>liquibase</id>
@@ -167,13 +195,6 @@
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>${p6spy.version}</version>
-        </dependency>
-
-        <!-- H2 test library dependencies -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <!-- Commons testing library dependencies -->

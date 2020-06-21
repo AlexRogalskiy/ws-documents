@@ -8,21 +8,22 @@ import java.util.Arrays;
 
 @Getter
 @RequiredArgsConstructor
-public enum ErrorTemplate {
+public enum ErrorTemplateType {
     SERVICE_UNAVAILABLE("error-30", "error.service.unavailable"),
-    SERVICE_OPERATION_ERROR("error-40", "error.operation.invalid");
+    SERVICE_OPERATION_ERROR("error-40", "error.operation.invalid"),
+    BAD_REQUEST("error-50", "error.request.parameters.invalid");
 
     private final String errorCode;
     private final String errorMessage;
 
     /**
-     * Returns {@link ErrorTemplate} by input {@link String} code
+     * Returns {@link ErrorTemplateType} by input {@link String} code
      *
      * @param value - initial input {@link String} code
-     * @return {@link ErrorTemplate}
+     * @return {@link ErrorTemplateType}
      */
     @Nullable
-    public static ErrorTemplate findByCode(final String value) {
+    public static ErrorTemplateType findByCode(final String value) {
         return Arrays.stream(values())
                 .filter(type -> type.getErrorCode().equalsIgnoreCase(value))
                 .findFirst()

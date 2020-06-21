@@ -25,7 +25,7 @@ public class DocumentToDocumentEntityPropertyMap extends PropertyMap<Document, D
         this.map(this.source.getCompany()).setCompany(null);
         this.map(this.source.getPartner()).setPartner(null);
         this.map(this.source.getProduct()).setProduct(null);
-        this.map(this.source.getAmount()).setAmount(0);
+        this.map(this.source.getAmount()).setAmount(null);
         this.map(this.source.getPrice()).setPrice(null);
         this.map(this.source.getData()).setData(null);
 

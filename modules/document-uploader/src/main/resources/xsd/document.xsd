@@ -4,15 +4,15 @@
            targetNamespace="http://api.sensiblemetrics.com/ws/document-uploader-web-service"
            elementFormDefault="qualified">
 
-  <xs:element name="getDocumentRequest">
+  <xs:element name="GetDocumentRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="id" type="xs:string"/>
+        <xs:element name="id" type="tns:guid"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="getDocumentResponse">
+  <xs:element name="GetDocumentResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="document" type="tns:document"/>
@@ -20,7 +20,7 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="createDocumentRequest">
+  <xs:element name="CreateDocumentRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="company" type="xs:string"/>
@@ -29,12 +29,11 @@
         <xs:element name="amount" type="xs:unsignedInt"/>
         <xs:element name="price" type="xs:decimal"/>
         <xs:element name="data" type="xs:base64Binary"/>
-        <xs:element name="status" type="tns:status"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="createDocumentResponse">
+  <xs:element name="CreateDocumentResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="document" type="tns:document"/>
@@ -42,7 +41,7 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="updateDocumentRequest">
+  <xs:element name="UpdateDocumentRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="document" type="tns:document"/>
@@ -50,7 +49,7 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="updateDocumentResponse">
+  <xs:element name="UpdateDocumentResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="document" type="tns:document"/>
@@ -58,15 +57,31 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="updateDocumentStatusRequest">
+  <xs:element name="DeleteDocumentRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="status" type="tns:status"/>
+        <xs:element name="id" type="tns:guid"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="updateDocumentStatusResponse">
+  <xs:element name="DeleteDocumentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="document" type="tns:document"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GenerateDocumentRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="tns:guid"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GenerateDocumentResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="document" type="tns:document"/>
@@ -76,7 +91,7 @@
 
   <xs:complexType name="document">
     <xs:sequence>
-      <xs:element name="id" type="xs:string"/>
+      <xs:element name="id" type="tns:guid"/>
       <xs:element name="company" type="xs:string"/>
       <xs:element name="partner" type="xs:string"/>
       <xs:element name="product" type="xs:string"/>
@@ -86,6 +101,12 @@
       <xs:element name="status" type="tns:status"/>
     </xs:sequence>
   </xs:complexType>
+
+  <xs:simpleType name="guid">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="status">
     <xs:restriction base="xs:string">
