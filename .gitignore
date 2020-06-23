@@ -5,6 +5,7 @@
 
 .build
 .allure
+.storage
 packages/
 .classpath
 .project
@@ -13,6 +14,7 @@ target/
 .idea/
 *.iml
 *.iws
+*.episode
 .DS_Store
 log/
 *.log

@@ -1,18 +1,24 @@
 package com.sensiblemetrics.api.ws.document.generator.model.entity;
 
+import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
 import lombok.Data;
 import lombok.experimental.UtilityClass;
-import org.hibernate.Session;
-import org.hibernate.annotations.*;
-import org.hibernate.tuple.ValueGenerator;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.GeneratorType;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.domain.Auditable;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.PastOrPresent;
 import java.io.Serializable;
 import java.time.Instant;
@@ -23,13 +29,10 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.AuditEn
 /**
  * {@link Auditable} entity model
  *
- * @param <ID> type of {@link Auditable} identifier {@link Serializable}
+ * @param <ID> type of entity {@link Serializable} identifier
  */
 @Data
-@DynamicInsert
-@DynamicUpdate
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 public abstract class AuditEntity<ID extends Serializable> implements Auditable<String, ID, Instant>, Serializable {
     /**
      * Default explicit serialVersionUID for interoperability
@@ -38,26 +41,36 @@ public abstract class AuditEntity<ID extends Serializable> implements Auditable<
 
     @PastOrPresent
     @CreationTimestamp
+    @NotNull(groups = {
+            ConstraintGroup.OnUpdate.class,
+            ConstraintGroup.OnSelect.class
+    }, message = "{model.entity.audit.created-date.notNull}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = DATE_TIME_PATTERN)
     @Column(name = CREATED_FIELD_NAME, nullable = false, updatable = false)
     private Instant createdDate;
 
     @CreatedBy
     @Basic(fetch = FetchType.LAZY)
+    @NotNull(groups = {
+            ConstraintGroup.OnUpdate.class,
+            ConstraintGroup.OnSelect.class
+    }, message = "{model.entity.audit.created-by.notNull}")
     @Column(name = CREATED_BY_FIELD_NAME, nullable = false, updatable = false, length = 512)
-    @GeneratorType(type = AuthenticatedUserGenerator.class, when = GenerationTime.INSERT)
+    @GeneratorType(type = TenantGenerator.class, when = GenerationTime.INSERT)
     private String createdBy;
 
     @PastOrPresent
     @UpdateTimestamp
+    @Null(groups = ConstraintGroup.OnCreate.class, message = "{model.entity.audit.last-modified-date.null}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = DATE_TIME_PATTERN)
     @Column(name = MODIFIED_FIELD_NAME, insertable = false)
     private Instant lastModifiedDate;
 
     @LastModifiedBy
     @Basic(fetch = FetchType.LAZY)
+    @Null(groups = ConstraintGroup.OnCreate.class, message = "{model.entity.audit.last-modified-by.null}")
     @Column(name = MODIFIED_BY_FIELD_NAME, insertable = false, length = 512)
-    @GeneratorType(type = AuthenticatedUserGenerator.class, when = GenerationTime.ALWAYS)
+    @GeneratorType(type = TenantGenerator.class, when = GenerationTime.ALWAYS)
     private String lastModifiedBy;
 
     @NonNull
@@ -82,21 +95,6 @@ public abstract class AuditEntity<ID extends Serializable> implements Auditable<
     @Override
     public Optional<String> getLastModifiedBy() {
         return Optional.ofNullable(this.lastModifiedBy);
-    }
-
-    /**
-     * {@link String} {@link ValueGenerator} implementation
-     */
-    private static class AuthenticatedUserGenerator implements ValueGenerator<String> {
-        /**
-         * {@inheritDoc}
-         *
-         * @see ValueGenerator
-         */
-        @Override
-        public String generateValue(final Session session, final Object owner) {
-            return session.getTenantIdentifier();
-        }
     }
 
     @UtilityClass

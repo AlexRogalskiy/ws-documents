@@ -1,7 +1,7 @@
 package com.sensiblemetrics.api.ws.document.generator.modelmapper.converter;
 
 import com.sensiblemetrics.api.ws.document.generator.enumeration.StatusType;
-import com.sensiblemetrics.api.ws.document_generator_web_service.Status;
+import com.sensiblemetrics.api.ws.document.generator.generated.Status;
 import org.apache.commons.lang3.EnumUtils;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;

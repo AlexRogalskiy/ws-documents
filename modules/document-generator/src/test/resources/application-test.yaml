@@ -17,7 +17,6 @@ spring:
     cache-duration: 3600
   main:
     allow-bean-definition-overriding: true
-    web-application-type: none
   aop:
     proxy-target-class: true
   devtools:
@@ -41,7 +40,7 @@ spring:
     username: sa
     password:
     sql-script-encoding: UTF-8
-    initialization-mode: NEVER
+    initialization-mode: never
     hikari:
       minimum-idle: 5
       maximum-pool-size: 25
@@ -72,7 +71,7 @@ spring:
     database-platform: org.hibernate.dialect.HSQLDialect
     properties:
       hibernate:
-        globally_quoted_identifiers: true
+        dialect: org.hibernate.dialect.HSQLDialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         validator:
@@ -97,8 +96,22 @@ spring:
         cache:
           use_second_level_cache: false
           use_query_cache: false
+        id.new-generator-mappings: true
+        show-sql: true
+        format-sql: true
+        use-sql-comments: true
+        max-fetch-depth: 3
+        default-batch-fetch-size: 30
+        generate_statistics: false
+        enable_lazy_load_no_trans: true
+        globally_quoted_identifiers: true
+        jdbc.lob.non-contextual-creation: true
+        temp.use_jdbc_metadata_defaults: false
+        multi-tenant-connection-provider: true
+        bytecode.use_reflection_optimizer: false
+        current_session_context_class: org.hibernate.context.internal.ThreadLocalSessionContext
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
   test:
     database:
       replace: NONE

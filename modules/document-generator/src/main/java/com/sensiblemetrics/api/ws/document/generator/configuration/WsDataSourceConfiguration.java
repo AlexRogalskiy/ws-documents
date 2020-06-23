@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.document.generator.configuration;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
@@ -89,7 +90,8 @@ public class WsDataSourceConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(type = "PersistenceExceptionTranslationPostProcessor")
-    @Description("DataSource persistence exception translation post processor bean")
+    @Description("DataSource persistence exception translation post" +
+            " processor bean")
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
@@ -103,7 +105,7 @@ public class WsDataSourceConfiguration {
     @Bean
     @ConditionalOnMissingBean(type = "PersistenceUnitManager")
     @Description("DataSource persistence unit manager bean")
-    public PersistenceUnitManager persistenceUnitManager(final DataSource dataSource) {
+    public PersistenceUnitManager persistenceUnitManager(@Qualifier("dataSource") final DataSource dataSource) {
         final DefaultPersistenceUnitManager manager = new DefaultPersistenceUnitManager();
         manager.setDefaultDataSource(dataSource);
         manager.setPackagesToScan(DEFAULT_PACKAGES_TO_SCAN);
@@ -153,7 +155,7 @@ public class WsDataSourceConfiguration {
 
     @Bean("entityManagerFactory")
     @Description("DataSource local session factory bean")
-    public LocalSessionFactoryBean sessionFactory(final DataSource dataSource,
+    public LocalSessionFactoryBean sessionFactory(@Qualifier("dataSource") final DataSource dataSource,
                                                   final JpaProperties jpaProperties) throws IOException {
         final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);

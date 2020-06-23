@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.document.generator.modelmapper.propertymap;
 
-import com.sensiblemetrics.api.ws.document_generator_web_service.GenerateDocumentResponse;
+import com.sensiblemetrics.api.ws.document.generator.generated.GenerateDocumentResponse;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +14,6 @@ public class ByteArrayToGenerateDocumentResponsePropertyMap extends PropertyMap<
      */
     @Override
     protected void configure() {
-        this.map().setValue(this.source);
+        this.map(this.source).setValue(null);
     }
 }

@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.document.generator.model.entity;
 
+import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
 import com.sensiblemetrics.api.ws.commons.constraint.NamePattern;
 import com.sensiblemetrics.api.ws.document.generator.enumeration.StatusType;
 import lombok.Data;
@@ -7,10 +8,13 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.UtilityClass;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -22,8 +26,9 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.Documen
 @ToString(callSuper = true)
 @Entity(name = MODEL_NAME)
 @Table(name = TABLE_NAME)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @BatchSize(size = 10)
+@TypeDef(name = "status_enum", typeClass = StatusEnumType.class)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class DocumentEntity extends BaseAuditEntity<UUID> {
     /**
      * Default explicit serialVersionUID for interoperability
@@ -50,13 +55,20 @@ public class DocumentEntity extends BaseAuditEntity<UUID> {
     @Column(name = PRICE_FIELD_NAME, nullable = false)
     private BigDecimal price;
 
-    @NotBlank(message = "{model.entity.document.data.notBlank}")
     @Lob
-    @Column(name = DATA_FIELD_NAME, nullable = false)
+    @Type(type = "org.hibernate.type.TextType")
+    @NotBlank(message = "{model.entity.document.data.notBlank}")
+    @Column(name = DATA_FIELD_NAME, nullable = false, length = 1024)
     private String data;
 
-    @NotNull(message = "{model.entity.document.status.notNull}")
+    @Null(groups = ConstraintGroup.OnCreate.class, message = "{model.entity.document.status.null}")
+    @NotNull(groups = {
+            ConstraintGroup.OnUpdate.class,
+            ConstraintGroup.OnSelect.class,
+            ConstraintGroup.OnDelete.class
+    }, message = "{model.entity.document.status.notNull}")
     @Enumerated(EnumType.STRING)
+    @Type(type = "status_enum")
     @Column(name = STATUS_FIELD_NAME, nullable = false, length = 64)
     private StatusType status;
 

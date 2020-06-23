@@ -26,13 +26,13 @@ public class DocumentArchiveProperty {
      * Default archive base path
      */
     @NotBlank(message = "{property.ws-document.archive.base-path.notBlank}")
-    private String basePath = "/storage";
+    private String basePath = ".storage";
 
     /**
      * Default archive name prefix
      */
     @NotBlank(message = "{property.ws-document.archive.name-prefix.notBlank}")
-    private String namePrefix = "document-";
+    private String namePrefix = "doc-";
 
     /**
      * Default posix file permissions

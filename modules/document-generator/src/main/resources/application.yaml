@@ -12,7 +12,7 @@ spring:
   application:
     name: "Document-Generator-WebService"
   messages:
-    basename: i18n/messages
+    basename: i18n/common_messages, i18n/messages
     # 1 hour
     cache-duration: 3600
   aop:
@@ -28,13 +28,10 @@ spring:
         queue-capacity: 100000
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/documentdb?serverTimezone=UTC
-    #    url: jdbc:p6spy:hsqldb:hsql://${DB_HOST:localhost}:9001/documentdb;sql.enforce_strict_size=true;hsqldb.tx=mvcc
-    #jdbc:p6spy:hsqldb:file:${project.build.directory}/db/documentdb
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #    driver-class-name: org.hsqldb.jdbc.JDBCDriver
-    username: root
-    password: toor
+    url: jdbc:p6spy:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/documentdb
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS}
     sql-script-encoding: UTF-8
     initialization-mode: never
     hikari:
@@ -46,11 +43,8 @@ spring:
       connection-timeout: 30000
       transaction-isolation: TRANSACTION_READ_COMMITTED
       isolate-internal-queries: true
-      #      connection-test-query: SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS
       connection-test-query: SELECT 1
-      #      driver-class-name: org.hsqldb.jdbc.JDBCDriver
-      #      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
       allow-pool-suspension: true
       auto-commit: true
       data-source-properties:
@@ -66,13 +60,11 @@ spring:
     show-sql: true
     open-in-view: false
     generate-ddl: false
-    database: MYSQL
-    #    database-platform: org.hibernate.dialect.HSQLDialect
-    database-platform: org.hibernate.dialect.MySQLDialect
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
       hibernate:
-        #        dialect: org.hibernate.dialect.HSQLDialect
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         validator:
@@ -97,7 +89,6 @@ spring:
         cache:
           use_second_level_cache: false
           use_query_cache: false
-        id.new-generator-mappings: true
         show-sql: true
         format-sql: true
         use-sql-comments: true
@@ -108,11 +99,12 @@ spring:
         globally_quoted_identifiers: true
         jdbc.lob.non-contextual-creation: true
         temp.use_jdbc_metadata_defaults: false
-        multi-tenant-connection-provider: true
+        multi-tenant-connection-provider: false
         bytecode.use_reflection_optimizer: false
         current_session_context_class: org.hibernate.context.internal.ThreadLocalSessionContext
     hibernate:
       ddl-auto: none
+      use-new-id-generator-mappings: false
   liquibase:
     enabled: true
     drop-first: true
@@ -132,7 +124,7 @@ ws-addressing:
 
 ws-document:
   archive:
-    base-path: "/storage"
+    base-path: .storage
   template:
     marker-mappings:
       id:
@@ -153,6 +145,3 @@ ws-document:
         name: "date"
       total:
         name: "total"
-logging:
-  level:
-    ROOT: DEBUG

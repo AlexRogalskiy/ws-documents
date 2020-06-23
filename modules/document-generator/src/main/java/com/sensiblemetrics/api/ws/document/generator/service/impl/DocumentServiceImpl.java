@@ -8,15 +8,16 @@ import com.sensiblemetrics.api.ws.document.generator.service.interfaces.DocxGene
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
+import java.util.concurrent.Future;
 
 import static com.sensiblemetrics.api.ws.commons.exception.DocumentProcessingException.throwDocumentProcessingErrorWith;
-import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.getResultAsync;
+import static com.sensiblemetrics.api.ws.commons.exception.ResourceNotFoundException.throwResourceNotFound;
 
 @Slf4j
 @Getter
@@ -24,7 +25,6 @@ import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.getResultAsy
 @RequiredArgsConstructor
 public class DocumentServiceImpl extends BaseServiceImpl<DocumentEntity, UUID> implements DocumentService {
     private final DocumentRepository repository;
-    private final AsyncTaskExecutor asyncTaskExecutor;
     private final DocxGeneratorService generatorService;
 
     /**
@@ -32,13 +32,15 @@ public class DocumentServiceImpl extends BaseServiceImpl<DocumentEntity, UUID> i
      *
      * @see DocumentService
      */
+    @Async
     @Override
-    public Optional<byte[]> generateDocument(final DocumentEntity documentEntity) {
+    public Future<byte[]> generateDocument(final DocumentEntity documentEntity) {
         log.info("Generating document report by document info: {}", documentEntity);
-        if (!documentEntity.getStatus().isActive()) {
-            throw throwDocumentProcessingErrorWith("error.document.status.invalid", documentEntity);
-        }
-        return getResultAsync(this.getAsyncTaskExecutor(), this.createDocumentGenerator(documentEntity.getId()));
+        return Optional.of(this.findDocument(documentEntity))
+                .filter(data -> data.getStatus().isActive())
+                .map(this.getGeneratorService()::processDocument)
+                .map(AsyncResult::new)
+                .orElseThrow(() -> throwDocumentProcessingErrorWith("error.document.status.invalid", documentEntity));
     }
 
     /**
@@ -47,8 +49,19 @@ public class DocumentServiceImpl extends BaseServiceImpl<DocumentEntity, UUID> i
      * @see DocumentService
      */
     @Override
-    public Optional<DocumentEntity> findDocument(final DocumentEntity documentEntity) {
-        return this.findById(documentEntity.getId());
+    public DocumentEntity createDocument(final DocumentEntity documentEntity) {
+        return this.save(documentEntity);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see DocumentService
+     */
+    @Override
+    public DocumentEntity findDocument(final DocumentEntity documentEntity) {
+        return this.findById(documentEntity.getId())
+                .orElseThrow(() -> throwResourceNotFound(documentEntity.getId()));
     }
 
     /**
@@ -72,14 +85,14 @@ public class DocumentServiceImpl extends BaseServiceImpl<DocumentEntity, UUID> i
         return this.update(documentEntity.getId(), documentEntity, d -> d.getStatus().isActive());
     }
 
-    /**
-     * Returns source document {@link Supplier} by input {@link UUID} document identifier
-     *
-     * @param documentId initial input {@link UUID} document identifier to fetch by
-     * @return source document {@link Supplier}
-     */
-    private Supplier<Optional<byte[]>> createDocumentGenerator(final UUID documentId) {
-        return () -> this.findById(documentId)
-                .map(this.getGeneratorService()::processDocument);
-    }
+//    /**
+//     * Returns source document {@link Supplier} by input {@link UUID} document identifier
+//     *
+//     * @param documentId initial input {@link UUID} document identifier to fetch by
+//     * @return source document {@link Supplier}
+//     */
+//    private Supplier<Optional<byte[]>> createDocumentGenerator(final UUID documentId) {
+//        return () -> this.findById(documentId)
+//                .map(this.getGeneratorService()::processDocument);
+//    }
 }

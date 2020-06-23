@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.UtilityClass;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,7 +24,6 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.BaseAud
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseAuditEntity<ID extends Serializable> extends AuditEntity<ID> {
     /**
      * Default explicit serialVersionUID for interoperability
@@ -37,7 +35,7 @@ public abstract class BaseAuditEntity<ID extends Serializable> extends AuditEnti
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "uuid2")
     @NotNull(message = "{model.entity.base-audit.id.notNull}")
-    @Column(name = ID_FIELD_NAME, unique = true, nullable = false)
+    @Column(name = ID_FIELD_NAME, unique = true, updatable = false, nullable = false)
     private ID id;
 
     @Version

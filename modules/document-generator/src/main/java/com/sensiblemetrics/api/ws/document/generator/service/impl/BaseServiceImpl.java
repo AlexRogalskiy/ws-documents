@@ -35,7 +35,7 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public Iterable<E> findAll(final Iterable<ID> target) {
         log.info("Fetching all target records by IDs: {}", target);
         return Optional.ofNullable(target)
-                .map(value -> this.getRepository().findAllById(value))
+                .map(this.getRepository()::findAllById)
                 .orElseThrow(() -> throwResourceNotFound(target));
     }
 
@@ -44,15 +44,14 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public Optional<E> findById(final ID id) {
         log.info("Fetching target record by ID: {}", id);
         return Optional.ofNullable(id)
-                .map(value -> this.getRepository().findById(value))
-                .orElseThrow(() -> throwResourceNotFound(id));
+                .flatMap(this.getRepository()::findById);
     }
 
     @Override
     public E save(final E target) {
         log.info("Saving target record: {}", target);
         return Optional.ofNullable(target)
-                .map(value -> this.getRepository().saveAndFlush(value))
+                .map(this.getRepository()::saveAndFlush)
                 .orElseThrow(() -> throwBadRequest(target));
     }
 
@@ -74,7 +73,7 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public <S extends E> Iterable<S> saveAll(final Iterable<S> target) {
         log.info("Saving target records: {}", target);
         return Optional.ofNullable(target)
-                .map(value -> this.getRepository().saveAll(value))
+                .map(this.getRepository()::saveAll)
                 .orElseThrow(() -> throwBadRequest(target));
     }
 
@@ -115,7 +114,7 @@ public abstract class BaseServiceImpl<E, ID extends Serializable> implements Bas
     public boolean existsById(final ID id) {
         log.info("Checking existence of target record by ID: {}", id);
         return Optional.ofNullable(id)
-                .map(value -> this.getRepository().existsById(value))
+                .map(this.getRepository()::existsById)
                 .orElseThrow(() -> throwResourceNotFound(id));
     }
 

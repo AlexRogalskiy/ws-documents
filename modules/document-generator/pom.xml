@@ -20,16 +20,20 @@
     <properties>
         <commons.version>0.1.0-SNAPSHOT</commons.version>
         <hikari.version>3.4.2</hikari.version>
-        <liquibase.version>3.8.6</liquibase.version>
+        <liquibase.version>4.0.0-beta1</liquibase.version>
         <hibernate-core.version>6.0.0.Alpha5</hibernate-core.version>
         <p6spy.version>3.8.7</p6spy.version>
         <modelmapper.version>2.3.8</modelmapper.version>
         <docx4j.version>6.1.2</docx4j.version>
+        <jaxb2-basics.version>1.11.1</jaxb2-basics.version>
+        <postgresql.version>42.2.14</postgresql.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
-        <jaxb.xsd.source>${project.basedir}/src/main/resources/schemas/document.xsd</jaxb.xsd.source>
+        <schema.directory>${project.basedir}/src/main/resources/schemas</schema.directory>
+        <jaxb.xsd.source>${schema.directory}/document.xsd</jaxb.xsd.source>
 
-        <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
+        <maven-codehaus-jaxb2-plugin.version>2.5.0</maven-codehaus-jaxb2-plugin.version>
+        <maven-jvnet-jaxb2-plugin.version>0.14.0</maven-jvnet-jaxb2-plugin.version>
         <maven-liquibase-plugin.version>3.8.6</maven-liquibase-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
     </properties>
@@ -185,9 +189,40 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.jvnet.jaxb2.maven2</groupId>
+                        <artifactId>maven-jaxb2-plugin</artifactId>
+                        <version>0.13.0</version>
+                        <executions>
+                            <execution>
+                                <id>generate</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <generatePackage>com.sensiblemetrics.api.ws.document.generator.generated</generatePackage>
+                            <generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>
+                            <schemaDirectory>${schema.directory}</schemaDirectory>
+                            <args>
+                                <arg>-XtoString</arg>
+                                <arg>-Xequals</arg>
+                                <arg>-XhashCode</arg>
+                            </args>
+                            <plugins>
+                                <plugin>
+                                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                                    <artifactId>jaxb2-basics</artifactId>
+                                    <version>${jaxb2-basics.version}</version>
+                                </plugin>
+                            </plugins>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>jaxb2-maven-plugin</artifactId>
-                        <version>${maven-jaxb2-plugin.version}</version>
+                        <version>${maven-codehaus-jaxb2-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>xjc</id>
@@ -197,6 +232,8 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <skipXjc>true</skipXjc>
+                            <failOnNoSchemas>true</failOnNoSchemas>
                             <sources>
                                 <source>${jaxb.xsd.source}</source>
                             </sources>
@@ -293,16 +330,11 @@
             <version>${modelmapper.version}</version>
         </dependency>
 
-        <!-- HSQL DB library dependencies -->
+        <!-- PostgreSQL DB library dependencies -->
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -317,6 +349,13 @@
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- Jaxb2 library dependencies -->
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics</artifactId>
+            <version>${jaxb2-basics.version}</version>
         </dependency>
 
         <!-- Hikari connection pool library dependencies -->
@@ -356,6 +395,13 @@
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>${p6spy.version}</version>
+        </dependency>
+
+        <!-- HSQL DB test library dependencies -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Commons testing library dependencies -->

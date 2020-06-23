@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.commons.configuration;
 
+import com.sensiblemetrics.api.ws.commons.helper.MessageSourceHelper;
 import com.sensiblemetrics.api.ws.commons.property.EndpointConfigurationProvider;
 import com.sensiblemetrics.api.ws.commons.property.WsRouteProperty;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,10 @@ import static org.springframework.util.StringUtils.toStringArray;
 
 @EnableWs
 @Configuration
-@Import(WsEndpointConfigurerAdapter.class)
+@Import({
+        WsEndpointConfigurerAdapter.class,
+        MessageSourceHelper.class
+})
 @ConditionalOnProperty(prefix = WsRouteProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsRouteProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)

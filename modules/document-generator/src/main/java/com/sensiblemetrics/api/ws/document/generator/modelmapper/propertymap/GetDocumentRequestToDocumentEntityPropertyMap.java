@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.document.generator.modelmapper.propertymap;
 
+import com.sensiblemetrics.api.ws.document.generator.generated.GetDocumentRequest;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
 import com.sensiblemetrics.api.ws.document.generator.modelmapper.converter.StringToUuidConverter;
-import com.sensiblemetrics.api.ws.document_generator_web_service.GetDocumentRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;

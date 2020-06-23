@@ -59,7 +59,7 @@ public class DocxGeneratorServiceImpl implements DocxGeneratorService {
     private Path createFilePath(final DocumentEntity documentEntity) {
         return Paths.get(
                 this.getDocumentArchiveProperty().getBasePath(),
-                format("{%s}-{%s}", this.getDocumentArchiveProperty().getNamePrefix(), documentEntity.getId())
+                format("%s%s", this.getDocumentArchiveProperty().getNamePrefix(), documentEntity.getId())
         );
     }
 

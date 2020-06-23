@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.document.generator.endpoint;
 
+import com.sensiblemetrics.api.ws.document.generator.generated.*;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
 import com.sensiblemetrics.api.ws.document.generator.service.interfaces.DocumentService;
-import com.sensiblemetrics.api.ws.document_generator_web_service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.modelmapper.ModelMapper;
@@ -27,7 +27,7 @@ public class DocumentEndpoint {
     public GetDocumentResponse getDocument(@RequestPayload final GetDocumentRequest request) {
         return Optional.ofNullable(request)
                 .map(data -> this.modelMapper.map(data, DocumentEntity.class))
-                .flatMap(this.documentService::findDocument)
+                .map(this.documentService::findDocument)
                 .map(data -> this.modelMapper.map(data, GetDocumentResponse.class))
                 .orElseThrow(() -> throwBadRequest(request));
     }
@@ -37,7 +37,7 @@ public class DocumentEndpoint {
     public CreateDocumentResponse createDocument(@RequestPayload final CreateDocumentRequest request) {
         return Optional.ofNullable(request)
                 .map(data -> this.modelMapper.map(data, DocumentEntity.class))
-                .map(this.documentService::save)
+                .map(this.documentService::createDocument)
                 .map(data -> this.modelMapper.map(data, CreateDocumentResponse.class))
                 .orElseThrow(() -> throwBadRequest(request));
     }
@@ -51,7 +51,6 @@ public class DocumentEndpoint {
                 .map(data -> this.modelMapper.map(data, UpdateDocumentResponse.class))
                 .orElseThrow(() -> throwBadRequest(request));
     }
-
 
     @PayloadRoot(namespace = DOCUMENT_NAMESPACE_URI, localPart = DELETE_DOCUMENT_ENDPOINT)
     @ResponsePayload

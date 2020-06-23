@@ -1,9 +1,11 @@
 package com.sensiblemetrics.api.ws.document.generator.service.interfaces;
 
+import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 /**
  * Document {@link BaseService} declaration
@@ -12,26 +14,38 @@ public interface DocumentService extends BaseService<DocumentEntity, UUID> {
     /**
      * Returns generated {@link DocumentEntity} by input {@link DocumentEntity}
      *
-     * @param documentInfo initial input {@link DocumentEntity} to operate by
+     * @param documentEntity initial input {@link DocumentEntity} to operate by
      * @return generated document {@code byte} array
      */
-    Optional<byte[]> generateDocument(final DocumentEntity documentInfo);
+    @Validated(ConstraintGroup.OnUpdate.class)
+    Future<byte[]> generateDocument(final DocumentEntity documentEntity);
+
+    /**
+     * Returns created {@link DocumentEntity} by input {@link DocumentEntity}
+     *
+     * @param documentEntity initial input {@link DocumentEntity} to operate by
+     * @return created {@link DocumentEntity}
+     */
+    @Validated(ConstraintGroup.OnCreate.class)
+    DocumentEntity createDocument(final DocumentEntity documentEntity);
 
     /**
      * Returns fetched {@link DocumentEntity} by input {@link DocumentEntity}
      *
-     * @param documentInfo initial input {@link DocumentEntity} to operate by
+     * @param documentEntity initial input {@link DocumentEntity} to operate by
      * @return fetched {@link DocumentEntity}
      */
-    Optional<DocumentEntity> findDocument(final DocumentEntity documentInfo);
+    @Validated(ConstraintGroup.OnSelect.class)
+    DocumentEntity findDocument(final DocumentEntity documentEntity);
 
     /**
      * Returns deleted {@link DocumentEntity} by input {@link DocumentEntity}
      *
-     * @param documentInfo initial input {@link DocumentEntity} to operate by
+     * @param documentEntity initial input {@link DocumentEntity} to operate by
      * @return deleted {@link DocumentEntity}
      */
-    DocumentEntity deleteDocument(final DocumentEntity documentInfo);
+    @Validated(ConstraintGroup.OnDelete.class)
+    DocumentEntity deleteDocument(final DocumentEntity documentEntity);
 
     /**
      * Returns updated {@link DocumentEntity} by input {@link DocumentEntity}
@@ -39,5 +53,6 @@ public interface DocumentService extends BaseService<DocumentEntity, UUID> {
      * @param documentEntity initial input {@link DocumentEntity} to operate by
      * @return updated {@link DocumentEntity}
      */
+    @Validated(ConstraintGroup.OnUpdate.class)
     DocumentEntity updateDocument(final DocumentEntity documentEntity);
 }

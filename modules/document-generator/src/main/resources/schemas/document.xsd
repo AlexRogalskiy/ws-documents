@@ -45,7 +45,7 @@
     <xs:element name="CreateDocumentResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="document" type="tns:document"/>
+                <xs:element name="id" type="tns:guid"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
