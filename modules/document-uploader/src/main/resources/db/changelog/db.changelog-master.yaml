@@ -1,5 +1,0 @@
-databaseChangeLog:
-  - includeAll:
-      path:
-        - classpath:/db/changelog/changes/0
-        - classpath:/db/changelog/changes/1

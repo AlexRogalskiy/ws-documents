@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.commons.configuration;
 
-import com.sensiblemetrics.api.ws.commons.property.WsEndpointProperty;
+import com.sensiblemetrics.api.ws.commons.property.WsRouteProperty;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Role;
@@ -17,14 +17,14 @@ import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.findInClassp
 public class WsEndpointConfigurerAdapter {
 
     /**
-     * Returns {@link DefaultWsdl11Definition} by input {@link XsdSchema} and {@link WsEndpointProperty.WsEndpoint} properties
+     * Returns {@link DefaultWsdl11Definition} by input {@link XsdSchema} and {@link WsRouteProperty.WsEndpoint} properties
      *
      * @param xsdSchema initial input {@link XsdSchema} to operate by
-     * @param endpoint  initial input {@link WsEndpointProperty.WsEndpoint} properties to operate by
+     * @param endpoint  initial input {@link WsRouteProperty.WsEndpoint} properties to operate by
      * @return new {@link DefaultWsdl11Definition} instance
      */
     public DefaultWsdl11Definition createWsdl11Definition(final XsdSchema xsdSchema,
-                                                          final WsEndpointProperty.WsEndpoint endpoint) {
+                                                          final WsRouteProperty.WsEndpoint endpoint) {
         final DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
         wsdl11Definition.setPortTypeName(endpoint.getPortTypeName());
         wsdl11Definition.setServiceName(endpoint.getServiceName());
@@ -35,12 +35,12 @@ public class WsEndpointConfigurerAdapter {
     }
 
     /**
-     * Returns simple {@link XsdSchema} by input {@link WsEndpointProperty.WsEndpoint} properties
+     * Returns simple {@link XsdSchema} by input {@link WsRouteProperty.WsEndpoint} properties
      *
-     * @param endpoint initial input {@link WsEndpointProperty.WsEndpoint} properties to operate by
+     * @param endpoint initial input {@link WsRouteProperty.WsEndpoint} properties to operate by
      * @return new simple {@link XsdSchema} instance
      */
-    public XsdSchema createSimpleXsdSchema(final WsEndpointProperty.WsEndpoint endpoint) {
+    public XsdSchema createSimpleXsdSchema(final WsRouteProperty.WsEndpoint endpoint) {
         return new SimpleXsdSchema(findInClasspath(endpoint.getResourcePattern()));
     }
 }

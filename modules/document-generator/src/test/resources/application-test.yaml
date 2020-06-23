@@ -1,0 +1,144 @@
+# SensibleMetrics Document Generator WebService test configuration
+---
+server:
+  port: 8089
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    min-response-size: 1024
+
+spring:
+  application:
+    name: "Document-Generator-WebService"
+  messages:
+    basename: i18n/messages
+    # 1 hour
+    cache-duration: 3600
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: none
+  aop:
+    proxy-target-class: true
+  devtools:
+    add-properties: false
+    restart:
+      log-condition-evaluation-delta: false
+      enabled: false
+    livereload:
+      enabled: false
+  task:
+    execution:
+      thread-name-prefix: document-generator
+      pool:
+        core-size: 10
+        max-size: 20
+        queue-capacity: 100000
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:p6spy:hsqldb:mem:documentdb;DATABASE_TO_LOWER=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    username: sa
+    password:
+    sql-script-encoding: UTF-8
+    initialization-mode: NEVER
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 25
+      idle-timeout: 30000
+      pool-name: DocumentGenerator-HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      isolate-internal-queries: true
+      connection-test-query: SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      allow-pool-suspension: true
+      auto-commit: true
+      data-source-properties:
+        cache-prep-stmts: true
+        prep-stmt-cache-size: 250
+        prep-stmt-cache-sql-limit: 2048
+        use-server-prep-stmts: true
+  transaction:
+    rollback-on-commit-failure: true
+    # 1 hour
+    default-timeout: 3600
+  jpa:
+    show-sql: true
+    open-in-view: false
+    generate-ddl: false
+    database: HSQL
+    database-platform: org.hibernate.dialect.HSQLDialect
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        validator:
+          apply_to_ddl: true
+          autoregister_listeners: true
+        order_inserts: true
+        order_updates: true
+        connection:
+          character-encoding: UTF-8
+          char-set: UTF-8
+          use-unicode: true
+          provider-class: com.zaxxer.hikari.hibernate.HikariConnectionProvider
+          provider-disables-autocommit: false
+          pool-size: 50
+          autocommit: true
+          auto-reconnect: true
+          current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+          release_mode: on_close
+        transaction:
+          flush_before_completion: true
+          auto_close_session: false
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+    hibernate:
+      ddl-auto: create
+  test:
+    database:
+      replace: NONE
+    mockmvc:
+      print: log_debug
+  liquibase:
+    enabled: false
+    drop-first: false
+
+ws-addressing:
+  route:
+    namespace: "http://api.sensiblemetrics.com/ws/"
+    endpoints:
+      document:
+        port-type-name: "DocumentPort"
+        service-name: "DocumentService"
+        location-uri: "/ws"
+        target-namespace: "http://api.sensiblemetrics.com/ws/document-generator-web-service"
+        resource-pattern: "schemas/document.xsd"
+
+ws-document:
+  archive:
+    base-path: "/storage"
+  template:
+    marker-mappings:
+      id:
+        name: "id"
+      company:
+        name: "company"
+      partner:
+        name: "partner"
+      product:
+        name: "product"
+      amount:
+        name: "amount"
+      price:
+        name: "price"
+      data:
+        name: "data"
+      date:
+        name: "date"
+      total:
+        name: "total"

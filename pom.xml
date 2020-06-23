@@ -27,6 +27,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <repackage.skip>false</repackage.skip>
+        <excludeDevtools>true</excludeDevtools>
         <maven.url>localhost</maven.url>
         <version.suffix>alpha</version.suffix>
         <maven.multiModuleProjectDirectory>./</maven.multiModuleProjectDirectory>
@@ -52,6 +53,7 @@
         <logback.version>1.2.3</logback.version>
         <awaitility.version>4.0.3</awaitility.version>
         <awaitility-proxy.version>3.1.6</awaitility-proxy.version>
+        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
 
         <javadoc.skip>true</javadoc.skip>
         <javadoc.properties>
@@ -95,6 +97,7 @@
 
         <validation-api.version>2.0.1.Final</validation-api.version>
         <guava.version>29.0-jre</guava.version>
+        <wsdl4j.version>1.6.3.wso2v3</wsdl4j.version>
         <commons-lang3.version>3.10</commons-lang3.version>
 
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
@@ -149,7 +152,6 @@
                                 <exclude>src/test/resources/mockito-extensions/**</exclude>
                             </excludes>
                             <encoding>${project.build.sourceEncoding}</encoding>
-                            <inceptionYear>${project.inceptionYear}</inceptionYear>
                             <organizationName>${project.organization.name}</organizationName>
                             <licenseName>${license.licenseName}</licenseName>
                             <licenseResolver>${license.licenseResolver}</licenseResolver>
@@ -207,9 +209,9 @@
             </properties>
         </profile>
 
-        <!-- Java-doc profile -->
+        <!-- Javadoc profile -->
         <profile>
-            <id>java-doc</id>
+            <id>javadoc</id>
             <properties>
                 <javadoc.skip>false</javadoc.skip>
             </properties>
@@ -252,8 +254,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!-- log configuration -->
                 <repackage.skip>true</repackage.skip>
+                <excludeDevtools>false</excludeDevtools>
                 <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
         </profile>
@@ -396,6 +398,16 @@
             <name>ProjectLombok repo</name>
             <url>https://projectlombok.org/edge-releases</url>
             <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
         </repository>
     </repositories>
 
@@ -431,31 +443,13 @@
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>${junit-jupiter.version}</version>
-                <scope>import</scope>
                 <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
-        <finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
-        <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
-        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
-        <defaultGoal>clean package</defaultGoal>
-        <resources>
-            <resource>
-                <directory>${basedir}/src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <directory>${project.basedir}/src/test/resources</directory>
-                <filtering>true</filtering>
-            </testResource>
-        </testResources>
-
         <directory>${maven.multiModuleProjectDirectory}/.build/bin/${project.name}</directory>
 
         <extensions>
@@ -516,6 +510,23 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-dependency-plugin</artifactId>-->
+            <!--                <version>3.1.2</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <phase>install</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>copy-dependencies</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <outputDirectory>${project.build.directory}/lib</outputDirectory>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -636,54 +647,54 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
-                <configuration>
-                    <archive>
-                        <addMavenDescriptor>true</addMavenDescriptor>
-                        <compress>true</compress>
-                        <manifest>
-                            <packageName>${project.groupId}</packageName>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            <addClasspath>true</addClasspath>
-                            <classpathLayoutType>custom</classpathLayoutType>
-                            <customClasspathLayout>${project.artifactId}.${project.version}</customClasspathLayout>
-                        </manifest>
-                        <manifestEntries>
-                            <Contains-Sources>java,class</Contains-Sources>
-                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
-                            <Implementation-Title>${project.description}</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Build>${project.build.finalName}</Implementation-Build>
-                            <Specification-Title>${project.description}</Specification-Title>
-                            <Specification-Version>${project.version}</Specification-Version>
-                            <Build-Tag>${project.scm.tag}</Build-Tag>
-                            <Bundle-License>SensibleMetrics Software License Agreement</Bundle-License>
-                            <X-Builder>Maven ${maven.version}</X-Builder>
-                            <X-Build-Time>${maven.build.timestamp}</X-Build-Time>
-                            <X-Build-Os>${os.name}</X-Build-Os>
-                        </manifestEntries>
-                    </archive>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${package-tests.skip}</skip>
-                            <skipIfEmpty>true</skipIfEmpty>
-                            <includes>
-                                <include>**/common/</include>
-                            </includes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-jar-plugin</artifactId>-->
+            <!--                <version>${maven-jar-plugin.version}</version>-->
+            <!--                <configuration>-->
+            <!--                    <archive>-->
+            <!--                        <addMavenDescriptor>true</addMavenDescriptor>-->
+            <!--                        <compress>true</compress>-->
+            <!--                        <manifest>-->
+            <!--                            <packageName>${project.groupId}</packageName>-->
+            <!--                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+            <!--                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>-->
+            <!--                            <addClasspath>true</addClasspath>-->
+            <!--                            <classpathLayoutType>custom</classpathLayoutType>-->
+            <!--                            <customClasspathLayout>${project.artifactId}.${project.version}</customClasspathLayout>-->
+            <!--                        </manifest>-->
+            <!--                        <manifestEntries>-->
+            <!--                            <Contains-Sources>java,class</Contains-Sources>-->
+            <!--                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>-->
+            <!--                            <Implementation-Title>${project.description}</Implementation-Title>-->
+            <!--                            <Implementation-Version>${project.version}</Implementation-Version>-->
+            <!--                            <Implementation-Build>${project.build.finalName}</Implementation-Build>-->
+            <!--                            <Specification-Title>${project.description}</Specification-Title>-->
+            <!--                            <Specification-Version>${project.version}</Specification-Version>-->
+            <!--                            <Build-Tag>${project.scm.tag}</Build-Tag>-->
+            <!--                            <Bundle-License>SensibleMetrics Software License Agreement</Bundle-License>-->
+            <!--                            <X-Builder>Maven ${maven.version}</X-Builder>-->
+            <!--                            <X-Build-Time>${maven.build.timestamp}</X-Build-Time>-->
+            <!--                            <X-Build-Os>${os.name}</X-Build-Os>-->
+            <!--                        </manifestEntries>-->
+            <!--                    </archive>-->
+            <!--                    <outputDirectory>${project.build.directory}</outputDirectory>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>test-jar</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <skip>${package-tests.skip}</skip>-->
+            <!--                            <skipIfEmpty>true</skipIfEmpty>-->
+            <!--                            <includes>-->
+            <!--                                <include>**/common/</include>-->
+            <!--                            </includes>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 
@@ -723,35 +734,11 @@
 
     <modules>
         <module>modules/commons</module>
-        <module>modules/document-uploader</module>
+        <module>modules/document-generator</module>
     </modules>
 
     <dependencies>
         <!-- Spring library dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-jdbc</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -762,12 +749,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
@@ -775,21 +756,19 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-
-        <!-- HSQL DB library dependencies -->
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
 
-        <!-- Validation library dependencies -->
-        <!--        <dependency>-->
-        <!--            <groupId>javax.validation</groupId>-->
-        <!--            <artifactId>validation-api</artifactId>-->
-        <!--            <version>${validation-api.version}</version>-->
-        <!--            <scope>compile</scope>-->
-        <!--        </dependency>-->
+        <!-- Wsdl4j library dependencies -->
+        <dependency>
+            <groupId>org.wso2.wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>${wsdl4j.version}</version>
+        </dependency>
 
         <!-- Guava library dependencies -->
         <dependency>
@@ -804,31 +783,24 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.commons</groupId>-->
-        <!--            <artifactId>commons-collections4</artifactId>-->
-        <!--            <version>${commons-collections4.version}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.commons</groupId>-->
-        <!--            <artifactId>commons-text</artifactId>-->
-        <!--            <version>${commons-text.version}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.commons</groupId>-->
-        <!--            <artifactId>commons-configuration2</artifactId>-->
-        <!--            <version>${commons-configuration2.version}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>commons-validator</groupId>-->
-        <!--            <artifactId>commons-validator</artifactId>-->
-        <!--            <version>${commons-validator.version}</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            <groupId>commons-codec</groupId>-->
-        <!--            <artifactId>commons-codec</artifactId>-->
-        <!--            <version>${commons-codec.version}</version>-->
-        <!--        </dependency>-->
+
+        <!-- Hibernate validator library dependencies -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>classmate</artifactId>
+                    <groupId>com.fasterxml</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
 
         <!-- Logback library dependencies -->
         <dependency>
@@ -953,6 +925,14 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito-junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Hibernate validator test library dependencies -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-test-utils</artifactId>
+            <version>${hibernate-validator.version}</version>
             <scope>test</scope>
         </dependency>
 

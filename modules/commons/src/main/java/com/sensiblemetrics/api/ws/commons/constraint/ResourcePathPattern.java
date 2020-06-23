@@ -37,7 +37,7 @@ public @interface ResourcePathPattern {
     /**
      * Default template name pattern
      */
-    String DEFAULT_TEMPLATE_NAME_PATTERN = "^[\\p{IsAlphabetic}\\p{IsDigit}._-]*$";
+    String DEFAULT_TEMPLATE_NAME_PATTERN = "^[\\p{IsAlphabetic}\\p{IsDigit}._/-]*$";
 
     /**
      * Returns {@code int} field max length value

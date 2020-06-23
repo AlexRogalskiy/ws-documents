@@ -45,16 +45,16 @@
     </appender>
 
     <!-- Logger configuration -->
-    <logger name="ROOT" level="ERROR"/>
-    <logger name="org.springframework" level="ERROR"/>
-    <logger name="org.springframework.web" level="ERROR"/>
-    <logger name="org.springframework.transaction" level="ERROR"/>
-    <logger name="org.hibernate" level="ERROR"/>
-    <logger name="com.sensiblemetrics.api.ws.*" level="ERROR" additivity="false">
+    <logger name="ROOT" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.transaction" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="com.sensiblemetrics.api.ws.*" level="WARN" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
 
-    <root level="ERROR">
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>

@@ -6,7 +6,6 @@ import com.sensiblemetrics.api.ws.commons.handler.DefaultTimeoutCallableProcessi
 import lombok.RequiredArgsConstructor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,8 +21,9 @@ import org.springframework.web.context.request.async.CallableProcessingIntercept
 import java.util.concurrent.RejectedExecutionHandler;
 
 @Configuration
-@AutoConfigureAfter(TaskExecutionAutoConfiguration.class)
-@ConditionalOnProperty(prefix = "spring.task.execution", value = "enabled", havingValue = "true")
+@RequiredArgsConstructor
+@Import(TaskExecutionAutoConfiguration.class)
+@ConditionalOnProperty(prefix = "spring.task.execution", value = "enabled", havingValue = "true", matchIfMissing = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Commons Web Service Executor configuration")
 public abstract class WsExecutorConfiguration {
