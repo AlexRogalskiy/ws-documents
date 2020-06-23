@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.commons.configuration;
 
+import com.sensiblemetrics.api.ws.commons.property.EndpointConfigurationProvider;
 import com.sensiblemetrics.api.ws.commons.property.WsRouteProperty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -18,7 +19,6 @@ import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
 import java.util.List;
-import java.util.function.Function;
 
 import static org.springframework.util.StringUtils.toStringArray;
 
@@ -55,7 +55,7 @@ public abstract class WsAddressingConfiguration {
         @Bean
         @ConditionalOnMissingBean
         @Description("Default WS-endpoint factory bean")
-        public Function<String, WsRouteProperty.WsEndpoint> endpointBeanFactory() {
+        public EndpointConfigurationProvider endpointConfigurationProvider() {
             return name -> this.property.getEndpoints().get(name);
         }
     }

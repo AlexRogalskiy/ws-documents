@@ -89,6 +89,8 @@ public abstract class AuditEntity<ID extends Serializable> implements Auditable<
      */
     private static class AuthenticatedUserGenerator implements ValueGenerator<String> {
         /**
+         * {@inheritDoc}
+         *
          * @see ValueGenerator
          */
         @Override

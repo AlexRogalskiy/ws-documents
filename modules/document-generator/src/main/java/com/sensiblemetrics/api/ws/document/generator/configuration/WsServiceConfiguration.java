@@ -1,6 +1,7 @@
 package com.sensiblemetrics.api.ws.document.generator.configuration;
 
 import com.sensiblemetrics.api.ws.commons.configuration.WsEndpointConfigurerAdapter;
+import com.sensiblemetrics.api.ws.commons.property.EndpointConfigurationProvider;
 import com.sensiblemetrics.api.ws.commons.property.WsRouteProperty;
 import com.sensiblemetrics.api.ws.document.generator.property.DocumentArchiveProperty;
 import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateProperty;
@@ -22,7 +23,6 @@ import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.XsdSchema;
 
 import java.util.List;
-import java.util.function.Function;
 
 @Configuration
 @EnableConfigurationProperties({
@@ -74,7 +74,7 @@ public class WsServiceConfiguration {
         public static final String DOCUMENT_WS_ENDPOINT_KEY = "document";
 
         private final WsEndpointConfigurerAdapter endpointConfigurerAdapter;
-        private final Function<String, WsRouteProperty.WsEndpoint> endpointBeanFactory;
+        private final EndpointConfigurationProvider endpointConfigurationProvider;
 
         @Bean(name = DOCUMENT_WSDL_DEFINITION_BEAN_NAME)
         @Description("Default document WSDL definition configuration bean")
@@ -92,7 +92,7 @@ public class WsServiceConfiguration {
         @Bean(name = DOCUMENT_WS_ENDPOINT_BEAN_NAME)
         @Description("Default document WS-endpoint property configuration bean")
         public WsRouteProperty.WsEndpoint documentWsEndpoint(final WsRouteProperty property) {
-            return this.endpointBeanFactory.apply(DOCUMENT_WS_ENDPOINT_KEY);
+            return this.endpointConfigurationProvider.getIfAvailable(DOCUMENT_WS_ENDPOINT_KEY);
         }
     }
 }

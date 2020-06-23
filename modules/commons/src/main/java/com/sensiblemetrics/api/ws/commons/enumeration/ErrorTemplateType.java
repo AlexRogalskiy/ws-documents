@@ -12,7 +12,8 @@ public enum ErrorTemplateType {
     SERVICE_UNAVAILABLE("error-30", "error.service.unavailable"),
     SERVICE_OPERATION_ERROR("error-40", "error.operation.invalid"),
     BAD_REQUEST("error-50", "error.request.invalid"),
-    DOCUMENT_PROCESSING_ERROR("error-50", "error.document.processing.invalid");
+    DOCUMENT_PROCESSING_ERROR("error-50", "error.document.processing.invalid"),
+    INVALID_ENDPOINT_CONFIGURATION("error-60", "error.endpoint.configuration.invalid");
 
     private final String errorCode;
     private final String errorMessage;
