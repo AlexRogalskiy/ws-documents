@@ -36,6 +36,7 @@
         <maven-jvnet-jaxb2-plugin.version>0.14.0</maven-jvnet-jaxb2-plugin.version>
         <maven-liquibase-plugin.version>3.8.6</maven-liquibase-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     </properties>
 
     <profiles>
@@ -268,6 +269,18 @@
         </testResources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>docx</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -1,36 +1,37 @@
 package com.sensiblemetrics.api.ws.document.generator.service.impl;
 
-import com.sensiblemetrics.api.ws.commons.exception.DocumentProcessingException;
 import com.sensiblemetrics.api.ws.document.generator.enumeration.StatusType;
 import com.sensiblemetrics.api.ws.document.generator.handler.DocumentEventHandler;
 import com.sensiblemetrics.api.ws.document.generator.model.domain.DocumentEvent;
 import com.sensiblemetrics.api.ws.document.generator.model.domain.MessageData;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentArchiveProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.DocumentStorageProperty;
 import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateProperty;
 import com.sensiblemetrics.api.ws.document.generator.service.interfaces.DocxGeneratorService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SystemUtils;
 import org.docx4j.model.datastorage.migration.VariablePrepare;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.data.util.CastUtils;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.findInClasspath;
@@ -41,44 +42,62 @@ import static java.lang.String.format;
 @Service
 @RequiredArgsConstructor
 public class DocxGeneratorServiceImpl implements DocxGeneratorService {
-    private final DocumentArchiveProperty documentArchiveProperty;
+    private final DocumentStorageProperty documentStorageProperty;
     private final DocumentTemplateProperty documentTemplateProperty;
+    private final ConversionService conversionService;
     private final ApplicationEventPublisher eventPublisher;
 
+    @Async
     @Override
-    public byte[] processDocument(final DocumentEntity documentEntity) {
-        final Path filePath = this.createFilePath(documentEntity);
-        this.createDocxFileFromTemplate(documentEntity, status -> this.notifyEvent(documentEntity.getId()).accept(status)).accept(filePath);
-        try {
-            return Files.readAllBytes(filePath);
-        } catch (IOException ex) {
-            throw new DocumentProcessingException(ex);
-        }
+    public CompletableFuture<Path> processDocument(final DocumentEntity documentEntity) {
+        final Path filePath = this.createFilePath(documentEntity.getId());
+        final DocumentEventHandler documentEventHandler = status -> this.notifyEvent(documentEntity.getId()).accept(status);
+        this.createDocxFileFromTemplate(documentEntity, documentEventHandler).accept(filePath);
+        return CompletableFuture.completedFuture(filePath);
     }
 
-    private Path createFilePath(final DocumentEntity documentEntity) {
+    /**
+     * Returns full file {@link Path} by input document {@link UUID} identifier
+     *
+     * @param documentId initial input document {@link UUID} identifier
+     * @return full file {@link Path}
+     */
+    private Path createFilePath(final UUID documentId) {
         return Paths.get(
-                this.getDocumentArchiveProperty().getBasePath(),
-                format("%s%s", this.getDocumentArchiveProperty().getNamePrefix(), documentEntity.getId())
+                this.getDocumentStorageProperty().getBasePath(),
+                format(
+                        "%s%s.%s",
+                        this.getDocumentStorageProperty().getFileNamePrefix(),
+                        documentId,
+                        this.getDocumentStorageProperty().getFileExtension()
+                )
         );
     }
 
+    /**
+     * Creates new docx file by input file {@link Path} and parameters
+     *
+     * @param documentEntity initial input {@link DocumentEntity} to operate by
+     * @param eventHandler   initial input {@link DocumentEventHandler} operator
+     * @return consumer operator to create file by accepted {@link Path}
+     */
     private Consumer<Path> createDocxFileFromTemplate(final DocumentEntity documentEntity, final DocumentEventHandler eventHandler) {
         return path -> {
             try (final InputStream templateInputStream = findInClasspath(this.getDocumentTemplateProperty().getNamePattern()).getInputStream()) {
                 eventHandler.sendEvent(StatusType.PROCESSING);
 
-                final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(this.getDocumentArchiveProperty().getPosixFilePermissions());
-                final FileAttribute<Set<PosixFilePermission>> fileAttributes = PosixFilePermissions.asFileAttribute(permissions);
-                final Path targetFilePath = Files.createFile(path, fileAttributes);
-
                 final WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
                 final MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
+                documentPart.variableReplace(this.getMappings(documentEntity));
 
                 VariablePrepare.prepare(wordMLPackage);
-                documentPart.variableReplace(this.buildDocumentMappings(documentEntity));
 
-                wordMLPackage.save(targetFilePath.toFile());
+                final Path targetPath = this.createNewFile(path);
+                try {
+                    wordMLPackage.save(targetPath.toFile());
+                } catch (Exception ex) {
+                    Files.delete(targetPath);
+                }
 
                 eventHandler.sendEvent(StatusType.REGISTERED);
             } catch (Exception ex) {
@@ -88,19 +107,34 @@ public class DocxGeneratorServiceImpl implements DocxGeneratorService {
         };
     }
 
-    private Map<String, String> buildDocumentMappings(final DocumentEntity documentEntity) {
-        final Map<String, String> variables = new HashMap<>();
-        final DocumentTemplateProperty.MarkerMappings mappings = this.getDocumentTemplateProperty().getMarkerMappings();
-        variables.put(mappings.getId().getName(), String.valueOf(documentEntity.getId()));
-        variables.put(mappings.getCompany().getName(), documentEntity.getCompany());
-        variables.put(mappings.getPartner().getName(), documentEntity.getPartner());
-        variables.put(mappings.getProduct().getName(), documentEntity.getProduct());
-        variables.put(mappings.getAmount().getName(), documentEntity.getAmount().toString());
-        variables.put(mappings.getPrice().getName(), documentEntity.getPrice().toPlainString());
-        variables.put(mappings.getData().getName(), documentEntity.getData());
-        variables.put(mappings.getDate().getName(), documentEntity.getCreatedDate().toString());
-        variables.put(mappings.getTotal().getName(), documentEntity.getPrice().multiply(BigDecimal.valueOf(documentEntity.getAmount())).toPlainString());
-        return variables;
+    /**
+     * Returns document property {@link Map} by input {@link DocumentEntity}
+     *
+     * @param documentEntity initial input {@link DocumentEntity} to operate by
+     * @return document property {@link Map}
+     */
+    private Map<String, String> getMappings(final DocumentEntity documentEntity) {
+        final TypeDescriptor sourceType = TypeDescriptor.valueOf(DocumentEntity.class);
+        final TypeDescriptor targetType = TypeDescriptor.map(Map.class, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(String.class));
+        return Optional.ofNullable(this.conversionService.convert(documentEntity, sourceType, targetType))
+                .map(CastUtils::<Map<String, String>>cast)
+                .orElseGet(Collections::emptyMap);
+    }
+
+    /**
+     * Returns new file {@link Path} by input source file {@link Path}
+     *
+     * @param filePath initial input source file {@link Path}
+     * @return new file {@link Path}
+     * @throws IOException if new file path cannot be created
+     */
+    private Path createNewFile(final Path filePath) throws IOException {
+        if (SystemUtils.IS_OS_UNIX) {
+            final Set<PosixFilePermission> permissions = PosixFilePermissions.fromString(this.getDocumentStorageProperty().getPosixFilePermissions());
+            final FileAttribute<Set<PosixFilePermission>> attributes = PosixFilePermissions.asFileAttribute(permissions);
+            return Files.createFile(filePath, attributes);
+        }
+        return Files.createFile(filePath);
     }
 
     /**

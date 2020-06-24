@@ -2,15 +2,18 @@ package com.sensiblemetrics.api.ws.document.generator.service.interfaces;
 
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
 
+import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Document docx generator service declaration
  */
 public interface DocxGeneratorService {
     /**
-     * Returns generated docx {@code byte} array by input {@link DocumentEntity}
+     * Processes input {@link DocumentEntity} by docx format and returns file {@link Path}
      *
-     * @param documentEntity initial input {@link DocumentEntity} to generate by
-     * @return generated docx document in bytes
+     * @param documentEntity initial input {@link DocumentEntity} to operate by
+     * @return generated document {@link Path}
      */
-    byte[] processDocument(final DocumentEntity documentEntity);
+    CompletableFuture<Path> processDocument(final DocumentEntity documentEntity);
 }

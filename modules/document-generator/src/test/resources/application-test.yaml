@@ -119,7 +119,6 @@ spring:
       print: log_debug
   liquibase:
     enabled: false
-    drop-first: false
 
 ws-addressing:
   route:
@@ -134,24 +133,28 @@ ws-addressing:
 
 ws-document:
   archive:
-    base-path: "/storage"
+    base-path: .storage
   template:
-    marker-mappings:
-      id:
-        name: "id"
-      company:
-        name: "company"
-      partner:
-        name: "partner"
-      product:
-        name: "product"
-      amount:
-        name: "amount"
-      price:
-        name: "price"
-      data:
-        name: "data"
-      date:
-        name: "date"
-      total:
-        name: "total"
+    name-pattern: templates/invoice.docx
+    format:
+      marker-mappings:
+        id:
+          name: "id"
+          pattern: "# %s"
+        company:
+          name: "company"
+        partner:
+          name: "partner"
+        product:
+          name: "product"
+        amount:
+          name: "amount"
+        price:
+          name: "price"
+        data:
+          name: "data"
+        date:
+          name: "date"
+          pattern: "yyyy-MM-dd HH:mm:ss"
+        total:
+          name: "total"

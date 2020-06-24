@@ -2,7 +2,7 @@ package com.sensiblemetrics.api.ws.document.generator.modelmapper.propertymap;
 
 import com.sensiblemetrics.api.ws.document.generator.generated.GetDocumentResponse;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
-import com.sensiblemetrics.api.ws.document.generator.modelmapper.converter.StatusTypeToStatusConverter;
+import com.sensiblemetrics.api.ws.document.generator.modelmapper.converter.StatusTypeToDocumentStatusConverter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DocumentEntityToGetDocumentResponsePropertyMap extends PropertyMap<DocumentEntity, GetDocumentResponse> {
-    private final StatusTypeToStatusConverter statusTypeToStatusConverter;
+    private final StatusTypeToDocumentStatusConverter statusTypeToDocumentStatusConverter;
 
     /**
      * {@link GetDocumentResponse} {@link PropertyMap} configuration
@@ -30,6 +30,6 @@ public class DocumentEntityToGetDocumentResponsePropertyMap extends PropertyMap<
         this.map(this.source.getData()).getDocument().setData(null);
 
         // mapping destination properties via converters
-        this.using(this.statusTypeToStatusConverter).map(this.source.getStatus()).getDocument().setStatus(null);
+        this.using(this.statusTypeToDocumentStatusConverter).map(this.source.getStatus()).getDocument().setStatus(null);
     }
 }

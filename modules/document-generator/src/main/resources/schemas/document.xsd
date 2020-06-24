@@ -99,7 +99,9 @@
     <xs:element name="GenerateDocumentResponse">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="value" type="xs:hexBinary"/>
+                <xs:element name="id" type="tns:guid"/>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="status" type="tns:operationStatus"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -113,7 +115,7 @@
             <xs:element name="amount" type="xs:positiveInteger"/>
             <xs:element name="price" type="xs:decimal"/>
             <xs:element name="data" type="xs:string"/>
-            <xs:element name="status" type="tns:status"/>
+            <xs:element name="status" type="tns:documentStatus"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -129,7 +131,14 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <xs:simpleType name="status">
+    <xs:simpleType name="operationStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUCCESS"/>
+            <xs:enumeration value="FAIL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="documentStatus">
         <xs:restriction base="xs:string">
             <xs:enumeration value="CANCELLED"/>
             <xs:enumeration value="COMPLETED"/>

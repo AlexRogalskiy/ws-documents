@@ -19,7 +19,6 @@ public class MessageData implements Serializable {
      * Document identifier
      */
     private UUID documentId;
-
     /**
      * Document status type
      */

@@ -3,7 +3,8 @@ package com.sensiblemetrics.api.ws.document.generator.configuration;
 import com.sensiblemetrics.api.ws.commons.configuration.WsEndpointConfigurerAdapter;
 import com.sensiblemetrics.api.ws.commons.property.EndpointConfigurationProvider;
 import com.sensiblemetrics.api.ws.commons.property.WsRouteProperty;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentArchiveProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.DocumentStorageProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateFormatProperty;
 import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateProperty;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
@@ -27,7 +28,8 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties({
         DocumentTemplateProperty.class,
-        DocumentArchiveProperty.class
+        DocumentTemplateFormatProperty.class,
+        DocumentStorageProperty.class
 })
 @Description("SensibleMetrics Web Service configuration")
 public class WsServiceConfiguration {

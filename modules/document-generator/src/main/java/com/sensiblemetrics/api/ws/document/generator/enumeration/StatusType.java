@@ -13,14 +13,18 @@ public enum StatusType {
     SUSPENDED,
     EDITED;
 
+    /**
+     * Available {@link StatusType}s
+     */
     public static final Set<StatusType> ACTIVE_STATUS_SET = Sets.newHashSet(NEW, SUSPENDED, EDITED);
 
     /**
      * Returns binary value whether current status is active (@code NEW|SUSPENDED|EDITED)
      *
+     * @param statusType initial input {@link StatusType} to operate by
      * @return true - if current status is active, false - otherwise
      */
-    public boolean isActive() {
-        return ACTIVE_STATUS_SET.contains(this);
+    public static boolean isAvailable(final StatusType statusType) {
+        return ACTIVE_STATUS_SET.contains(statusType);
     }
 }

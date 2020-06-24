@@ -14,6 +14,7 @@ target/
 .idea/
 *.iml
 *.iws
+*.bak
 *.episode
 .DS_Store
 log/

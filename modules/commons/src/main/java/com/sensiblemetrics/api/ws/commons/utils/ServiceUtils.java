@@ -15,11 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 import static java.util.Objects.isNull;
 
@@ -97,74 +93,4 @@ public class ServiceUtils {
             log.error("ERROR: cannot process completable future request callback", e);
         }
     };
-
-    /**
-     * Returns {@link CompletableFuture} result by input {@link Executor} and collection of {@link CompletableFuture}'s
-     *
-     * @param <T>      type of processing item
-     * @param executor - initial input {@link Executor}
-     * @param future   - initial input collection of {@link CompletableFuture}'s
-     */
-    @SafeVarargs
-    public static <T> void getResultAsync(final Executor executor, final CompletableFuture<T>... future) {
-        CompletableFuture.allOf(future).whenCompleteAsync(DEFAULT_COMPLETABLE_LOG_ACTION, executor).join();
-    }
-
-    /**
-     * Returns {@link CompletableFuture} result by input {@link Executor}
-     *
-     * @param <T>      type of processing item
-     * @param executor - initial input {@link Executor}
-     * @param future   - initial input {@link CompletableFuture}
-     * @return {@link CompletableFuture} result
-     */
-    public static <T> T getResultAsync(final Executor executor, @NonNull final CompletableFuture<T> future) {
-        return future.whenCompleteAsync(DEFAULT_COMPLETABLE_LOG_ACTION, executor).join();
-    }
-
-    /**
-     * Returns {@link CompletableFuture} result by input {@link Executor} and {@link Supplier}
-     *
-     * @param <T>      type of processing item
-     * @param executor - initial input {@link Executor}
-     * @param supplier - initial input {@link Supplier}
-     * @return {@link CompletableFuture} result
-     */
-    @NonNull
-    public static <T> T getResultAsync(final Executor executor, @NonNull final Supplier<T> supplier) {
-        return getResultAsync(executor, CompletableFuture.supplyAsync(supplier));
-    }
-
-    /**
-     * Returns {@link CompletableFuture} result
-     *
-     * @param <T>    type of processing item
-     * @param future - initial input {@link CompletableFuture}
-     * @return {@link CompletableFuture} result
-     */
-    @NonNull
-    public static <T> T getResultAsync(@NonNull final CompletableFuture<T> future) {
-        return getResultAsync(Executors.newSingleThreadExecutor(), future);
-    }
-
-    /**
-     * Returns wrapped {@link CompletableFuture} result
-     *
-     * @param <T>      type of processing item
-     * @param executor - initial input {@link Executor}
-     * @param future   - initial input {@link CompletableFuture}
-     * @return {@link CompletableFuture} result
-     */
-    @NonNull
-    public <T> CompletableFuture<T> getAsync(final Executor executor, final CompletableFuture<T> future) {
-        final CompletableFuture<T> asyncFuture = new CompletableFuture<>();
-        future.whenCompleteAsync((result, error) -> {
-            if (Objects.nonNull(error)) {
-                asyncFuture.completeExceptionally(error);
-            } else {
-                asyncFuture.complete(result);
-            }
-        }, executor);
-        return asyncFuture;
-    }
 }

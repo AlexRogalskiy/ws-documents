@@ -1,24 +1,24 @@
 package com.sensiblemetrics.api.ws.document.generator.service.interfaces;
 
 import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
+import com.sensiblemetrics.api.ws.document.generator.model.domain.FileInfo;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
-import java.util.concurrent.Future;
 
 /**
  * Document {@link BaseService} declaration
  */
 public interface DocumentService extends BaseService<DocumentEntity, UUID> {
     /**
-     * Returns generated {@link DocumentEntity} by input {@link DocumentEntity}
+     * Generates document by input {@link DocumentEntity} and returns {@link FileInfo}
      *
      * @param documentEntity initial input {@link DocumentEntity} to operate by
-     * @return generated document {@code byte} array
+     * @return generated document {@code FileInfo}
      */
     @Validated(ConstraintGroup.OnUpdate.class)
-    Future<byte[]> generateDocument(final DocumentEntity documentEntity);
+    FileInfo generateDocument(final DocumentEntity documentEntity);
 
     /**
      * Returns created {@link DocumentEntity} by input {@link DocumentEntity}
