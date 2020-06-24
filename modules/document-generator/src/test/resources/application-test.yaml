@@ -132,10 +132,10 @@ ws-addressing:
         resource-pattern: "schemas/document.xsd"
 
 ws-document:
-  archive:
-    base-path: .storage
+  storage:
+    base-path: ${DOC_STORAGE_PATH:${TEMP}}
   template:
-    name-pattern: templates/invoice.docx
+    name-pattern: ${DOC_TEMPLATE_NAME:templates/invoice.docx}
     format:
       marker-mappings:
         id:

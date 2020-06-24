@@ -26,7 +26,7 @@ public class DocumentStorageProperty {
      * Default archive base path
      */
     @NotBlank(message = "{property.ws-document.storage.base-path.notBlank}")
-    private String basePath = ".storage";
+    private String basePath;
 
     /**
      * Default file name prefix

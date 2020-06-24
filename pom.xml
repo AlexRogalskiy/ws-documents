@@ -511,23 +511,6 @@
                 </dependencies>
             </plugin>
 
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-dependency-plugin</artifactId>-->
-            <!--                <version>3.1.2</version>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <phase>install</phase>-->
-            <!--                        <goals>-->
-            <!--                            <goal>copy-dependencies</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            <outputDirectory>${project.build.directory}/lib</outputDirectory>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
@@ -646,55 +629,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-jar-plugin</artifactId>-->
-            <!--                <version>${maven-jar-plugin.version}</version>-->
-            <!--                <configuration>-->
-            <!--                    <archive>-->
-            <!--                        <addMavenDescriptor>true</addMavenDescriptor>-->
-            <!--                        <compress>true</compress>-->
-            <!--                        <manifest>-->
-            <!--                            <packageName>${project.groupId}</packageName>-->
-            <!--                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
-            <!--                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>-->
-            <!--                            <addClasspath>true</addClasspath>-->
-            <!--                            <classpathLayoutType>custom</classpathLayoutType>-->
-            <!--                            <customClasspathLayout>${project.artifactId}.${project.version}</customClasspathLayout>-->
-            <!--                        </manifest>-->
-            <!--                        <manifestEntries>-->
-            <!--                            <Contains-Sources>java,class</Contains-Sources>-->
-            <!--                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>-->
-            <!--                            <Implementation-Title>${project.description}</Implementation-Title>-->
-            <!--                            <Implementation-Version>${project.version}</Implementation-Version>-->
-            <!--                            <Implementation-Build>${project.build.finalName}</Implementation-Build>-->
-            <!--                            <Specification-Title>${project.description}</Specification-Title>-->
-            <!--                            <Specification-Version>${project.version}</Specification-Version>-->
-            <!--                            <Build-Tag>${project.scm.tag}</Build-Tag>-->
-            <!--                            <Bundle-License>SensibleMetrics Software License Agreement</Bundle-License>-->
-            <!--                            <X-Builder>Maven ${maven.version}</X-Builder>-->
-            <!--                            <X-Build-Time>${maven.build.timestamp}</X-Build-Time>-->
-            <!--                            <X-Build-Os>${os.name}</X-Build-Os>-->
-            <!--                        </manifestEntries>-->
-            <!--                    </archive>-->
-            <!--                    <outputDirectory>${project.build.directory}</outputDirectory>-->
-            <!--                </configuration>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <goals>-->
-            <!--                            <goal>test-jar</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            <skip>${package-tests.skip}</skip>-->
-            <!--                            <skipIfEmpty>true</skipIfEmpty>-->
-            <!--                            <includes>-->
-            <!--                                <include>**/common/</include>-->
-            <!--                            </includes>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
 

@@ -26,5 +26,5 @@ public class DocumentTemplateProperty {
      * Default template name pattern
      */
     @NotBlank(message = "{property.ws-document.template.name-pattern.notBlank}")
-    private String namePattern = "templates/invoice.docx";
+    private String namePattern;
 }

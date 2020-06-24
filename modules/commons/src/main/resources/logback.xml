@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <!--<property name="LOG_DIR" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>-->
+    <!--    <property name="LOG_DIR" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>-->
     <property name="LOG_DIR" value="./log/application"/>
     <property name="LOG_ARCHIVE_DIR" value="${LOG_DIR}/archive"/>
     <property name="LOG_FILE" value="LogFile"/>
