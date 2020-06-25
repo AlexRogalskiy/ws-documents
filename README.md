@@ -1,3 +1,5 @@
+![](https://github.com/AlexRogalskiy/ws-documents/workflows/Document-Generator-Web-Service/badge.svg??branch=master&event=push)
+
 # Summary
 
 Web service intended to provide operations on documents (create, edit, fetch document's data and generate file in docx format by template)

@@ -552,6 +552,7 @@
                         </goals>
                         <configuration>
                             <skip>${package-tests.skip}</skip>
+                            <skipIfEmpty>true</skipIfEmpty>
                             <includes>
                                 <include>**/common/</include>
                             </includes>
