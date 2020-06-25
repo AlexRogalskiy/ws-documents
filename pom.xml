@@ -399,7 +399,7 @@
             <url>https://projectlombok.org/edge-releases</url>
             <layout>default</layout>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
                 <checksumPolicy>warn</checksumPolicy>
             </snapshots>
