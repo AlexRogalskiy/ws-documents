@@ -30,8 +30,7 @@
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
 
-        <maven-codehaus-jaxb2-plugin.version>2.5.0</maven-codehaus-jaxb2-plugin.version>
-        <maven-jvnet-jaxb2-plugin.version>0.13.0</maven-jvnet-jaxb2-plugin.version>
+        <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
         <maven-liquibase-plugin.version>3.8.6</maven-liquibase-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
@@ -98,50 +97,18 @@
             <properties>
                 <xjc.skip>false</xjc.skip>
                 <schema.directory>${project.basedir}/src/main/resources/schemas</schema.directory>
-                <jaxb.xsd.source>${schema.directory}/document.xsd</jaxb.xsd.source>
                 <packageName>com.sensiblemetrics.api.ws.document.generator.generated</packageName>
             </properties>
             <build>
                 <plugins>
-                    <!--                    <plugin>-->
-                    <!--                        <groupId>org.jvnet.jaxb2.maven2</groupId>-->
-                    <!--                        <artifactId>maven-jaxb2-plugin</artifactId>-->
-                    <!--                        <version>${maven-jvnet-jaxb2-plugin.version}</version>-->
-                    <!--                        <executions>-->
-                    <!--                            <execution>-->
-                    <!--                                <id>generate</id>-->
-                    <!--                                <goals>-->
-                    <!--                                    <goal>generate</goal>-->
-                    <!--                                </goals>-->
-                    <!--                            </execution>-->
-                    <!--                        </executions>-->
-                    <!--                        <configuration>-->
-                    <!--                            <generatePackage>${packageName}-->
-                    <!--                            </generatePackage>-->
-                    <!--                            <generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>-->
-                    <!--                            <schemaDirectory>${schema.directory}</schemaDirectory>-->
-                    <!--                            <args>-->
-                    <!--                                <arg>-XtoString</arg>-->
-                    <!--                                <arg>-Xequals</arg>-->
-                    <!--                                <arg>-XhashCode</arg>-->
-                    <!--                            </args>-->
-                    <!--                            <plugins>-->
-                    <!--                                <plugin>-->
-                    <!--                                    <groupId>org.jvnet.jaxb2_commons</groupId>-->
-                    <!--                                    <artifactId>jaxb2-basics</artifactId>-->
-                    <!--                                    <version>${jaxb2-basics.version}</version>-->
-                    <!--                                </plugin>-->
-                    <!--                            </plugins>-->
-                    <!--                        </configuration>-->
-                    <!--                    </plugin>-->
-
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>jaxb2-maven-plugin</artifactId>
-                        <version>${maven-codehaus-jaxb2-plugin.version}</version>
+                        <version>${maven-jaxb2-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>xjc</id>
+                                <phase>generate-sources</phase>
                                 <goals>
                                     <goal>xjc</goal>
                                 </goals>
@@ -157,9 +124,21 @@
                             <clearOutputDir>true</clearOutputDir>
                             <packageName>${packageName}</packageName>
                             <sources>
-                                <source>${jaxb.xsd.source}</source>
+                                <source>${schema.directory}</source>
                             </sources>
+                            <arguments>
+                                <argument>-XtoString</argument>
+                                <argument>-Xequals</argument>
+                                <argument>-XhashCode</argument>
+                            </arguments>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.jvnet.jaxb2_commons</groupId>
+                                <artifactId>jaxb2-basics</artifactId>
+                                <version>${jaxb2-basics.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
@@ -195,7 +174,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>${maven-resources-plugin.version}</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <encoding>${project.build.outputEncoding}</encoding>
                     <nonFilteredFileExtensions>
                         <nonFilteredFileExtension>docx</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
