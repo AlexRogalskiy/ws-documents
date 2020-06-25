@@ -29,11 +29,9 @@
         <postgresql.version>42.2.14</postgresql.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
-        <schema.directory>${project.basedir}/src/main/resources/schemas</schema.directory>
-        <jaxb.xsd.source>${schema.directory}/document.xsd</jaxb.xsd.source>
 
         <maven-codehaus-jaxb2-plugin.version>2.5.0</maven-codehaus-jaxb2-plugin.version>
-        <maven-jvnet-jaxb2-plugin.version>0.14.0</maven-jvnet-jaxb2-plugin.version>
+        <maven-jvnet-jaxb2-plugin.version>0.13.0</maven-jvnet-jaxb2-plugin.version>
         <maven-liquibase-plugin.version>3.8.6</maven-liquibase-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
@@ -98,40 +96,44 @@
         <profile>
             <id>xsd</id>
             <properties>
-                <xjc.skip>true</xjc.skip>
+                <xjc.skip>false</xjc.skip>
+                <schema.directory>${project.basedir}/src/main/resources/schemas</schema.directory>
+                <jaxb.xsd.source>${schema.directory}/document.xsd</jaxb.xsd.source>
+                <packageName>com.sensiblemetrics.api.ws.document.generator.generated</packageName>
             </properties>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.jvnet.jaxb2.maven2</groupId>
-                        <artifactId>maven-jaxb2-plugin</artifactId>
-                        <version>0.13.0</version>
-                        <executions>
-                            <execution>
-                                <id>generate</id>
-                                <goals>
-                                    <goal>generate</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <generatePackage>com.sensiblemetrics.api.ws.document.generator.generated</generatePackage>
-                            <generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>
-                            <schemaDirectory>${schema.directory}</schemaDirectory>
-                            <args>
-                                <arg>-XtoString</arg>
-                                <arg>-Xequals</arg>
-                                <arg>-XhashCode</arg>
-                            </args>
-                            <plugins>
-                                <plugin>
-                                    <groupId>org.jvnet.jaxb2_commons</groupId>
-                                    <artifactId>jaxb2-basics</artifactId>
-                                    <version>${jaxb2-basics.version}</version>
-                                </plugin>
-                            </plugins>
-                        </configuration>
-                    </plugin>
+                    <!--                    <plugin>-->
+                    <!--                        <groupId>org.jvnet.jaxb2.maven2</groupId>-->
+                    <!--                        <artifactId>maven-jaxb2-plugin</artifactId>-->
+                    <!--                        <version>${maven-jvnet-jaxb2-plugin.version}</version>-->
+                    <!--                        <executions>-->
+                    <!--                            <execution>-->
+                    <!--                                <id>generate</id>-->
+                    <!--                                <goals>-->
+                    <!--                                    <goal>generate</goal>-->
+                    <!--                                </goals>-->
+                    <!--                            </execution>-->
+                    <!--                        </executions>-->
+                    <!--                        <configuration>-->
+                    <!--                            <generatePackage>${packageName}-->
+                    <!--                            </generatePackage>-->
+                    <!--                            <generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>-->
+                    <!--                            <schemaDirectory>${schema.directory}</schemaDirectory>-->
+                    <!--                            <args>-->
+                    <!--                                <arg>-XtoString</arg>-->
+                    <!--                                <arg>-Xequals</arg>-->
+                    <!--                                <arg>-XhashCode</arg>-->
+                    <!--                            </args>-->
+                    <!--                            <plugins>-->
+                    <!--                                <plugin>-->
+                    <!--                                    <groupId>org.jvnet.jaxb2_commons</groupId>-->
+                    <!--                                    <artifactId>jaxb2-basics</artifactId>-->
+                    <!--                                    <version>${jaxb2-basics.version}</version>-->
+                    <!--                                </plugin>-->
+                    <!--                            </plugins>-->
+                    <!--                        </configuration>-->
+                    <!--                    </plugin>-->
 
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -147,10 +149,13 @@
                         </executions>
                         <configuration>
                             <skipXjc>${xjc.skip}</skipXjc>
+                            <addGeneratedAnnotation>true</addGeneratedAnnotation>
+                            <createJavaDocAnnotations>true</createJavaDocAnnotations>
                             <failOnNoSchemas>true</failOnNoSchemas>
                             <generateEpisode>true</generateEpisode>
                             <noGeneratedHeaderComments>true</noGeneratedHeaderComments>
                             <clearOutputDir>true</clearOutputDir>
+                            <packageName>${packageName}</packageName>
                             <sources>
                                 <source>${jaxb.xsd.source}</source>
                             </sources>

@@ -150,6 +150,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>${maven-compiler-plugin.version}</version>
+                        <extensions>true</extensions>
                         <configuration>
                             <annotationProcessorPaths>
                                 <path>
@@ -213,6 +214,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>${maven-compiler-plugin.version}</version>
+                        <extensions>true</extensions>
                         <configuration>
                             <annotationProcessorPaths>
                                 <path>
@@ -222,13 +224,21 @@
                                 </path>
                             </annotationProcessorPaths>
 
-                            <executable>true</executable>
-                            <showDeprecation>true</showDeprecation>
-                            <debug>true</debug>
-                            <debuglevel>lines,vars,source</debuglevel>
-                            <optimize>false</optimize>
-                            <verbose>false</verbose>
-                            <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                            <!--                            <executable>true</executable>-->
+                            <!--                            <showDeprecation>true</showDeprecation>-->
+                            <!--                            <debug>true</debug>-->
+                            <!--                            <debuglevel>lines,vars,source</debuglevel>-->
+                            <!--                            <optimize>false</optimize>-->
+                            <!--                            <verbose>false</verbose>-->
+                            <!--                            <forceJavacCompilerUse>true</forceJavacCompilerUse>-->
+
+                            <!--                            <executable>true</executable>-->
+                            <!--                            <showDeprecation>true</showDeprecation>-->
+                            <!--                            <debug>true</debug>-->
+                            <!--                            <debuglevel>lines,vars,source</debuglevel>-->
+                            <!--                            <optimize>false</optimize>-->
+                            <!--                            <verbose>false</verbose>-->
+                            <!--                            <forceJavacCompilerUse>true</forceJavacCompilerUse>-->
 
                             <compilerVersion>${java.version}</compilerVersion>
                             <release>${java.version}</release>
@@ -238,25 +248,11 @@
 
                             <meminitial>128m</meminitial>
                             <maxmem>512m</maxmem>
-
-                            <compilerArgs>
-                                <arg>-sourcepath</arg>
-                                <arg>
-                                    ${project.basedir}/src/main/java${path.separator}${project.basedir}/target/generated-sources/annotations${path.separator}/
-                                </arg>
-                            </compilerArgs>
-                            <compilerArgs>
-                                -XDignore.symbol.file
-                                -Xlint:all
-                            </compilerArgs>
                         </configuration>
                         <executions>
                             <execution>
                                 <id>default-compile</id>
                                 <phase>compile</phase>
-                                <configuration>
-                                    <compilerArgument>-proc:none</compilerArgument>
-                                </configuration>
                                 <goals>
                                     <goal>compile</goal>
                                 </goals>
