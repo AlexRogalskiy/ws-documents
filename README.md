@@ -10,8 +10,16 @@ Application can be used for creating and editing document's data with possibilit
 
 # Compile
 
+## For JDK 8
+
 ```
 mvn clean install spring-boot:repackage -Pjava_8,test-jar,xsd -DskipTests
+```
+
+## For JDK 11
+
+```
+mvn clean install spring-boot:repackage -Pjava_11,test-jar,xsd -DskipTests
 ```
 
 # Execute
