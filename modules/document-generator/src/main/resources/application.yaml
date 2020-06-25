@@ -28,7 +28,7 @@ spring:
         queue-capacity: 100000
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:p6spy:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/documentdb
+    url: jdbc:p6spy:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:documentdb}
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER}
     password: ${DB_PASS}
