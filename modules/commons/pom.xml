@@ -8,6 +8,7 @@
         <groupId>com.sensiblemetrics.api.ws</groupId>
         <artifactId>parent</artifactId>
         <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../</relativePath>
     </parent>
 
     <name>com.sensiblemetrics.api.ws.commons</name>
