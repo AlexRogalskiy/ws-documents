@@ -18,7 +18,7 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -P test-jar
+        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -Ptest-jar,xsd
   java_11:
     runs-on: ubuntu-latest
     strategy:
@@ -35,4 +35,4 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -P module-java,test-jar
+        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -P java11,test-jar,xsd
