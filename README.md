@@ -6,12 +6,12 @@ Web service intended to provide operations on documents (create, edit, fetch doc
 
 # Description
 
-Application can be used for creating and editing document's data with possibility to generate final docx document by template
+Application can be used for creating and editing document's data with possibility to generate final DocX-document by template
 
 # Compile
 
 ```
-mvn clean install spring-boot:repackage -Ptest-jar,xsd -DskipTests
+mvn clean install spring-boot:repackage -Pjava_8,test-jar,xsd -DskipTests
 ```
 
 # Execute

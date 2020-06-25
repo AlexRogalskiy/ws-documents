@@ -4,12 +4,6 @@ on: [push]
 jobs:
   java_8:
     runs-on: ${{ matrix.os }}
-    on:
-      push:
-        branches:
-          - master
-        tags:
-          - v1
     strategy:
       matrix:
         java: [ '8' ]
@@ -25,15 +19,9 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -Ptest-jar,xsd
+        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -Pjava_8,test-jar,xsd
   java_11:
     runs-on: ${{ matrix.os }}
-    on:
-      push:
-        branches:
-          - master
-        tags:
-          - v1
     strategy:
       matrix:
         java: [ '11' ]
@@ -49,4 +37,4 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -Pjava11,test-jar,xsd
+        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -Pjava_11,test-jar,xsd
