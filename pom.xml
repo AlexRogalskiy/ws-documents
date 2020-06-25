@@ -47,6 +47,7 @@
 
         <allure-report.version>2.13.1</allure-report.version>
 
+        <commons.version>0.1.0-SNAPSHOT</commons.version>
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
@@ -105,6 +106,7 @@
         <maven-surefire-plugin.version>3.0.0-M2</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M2</maven-failsafe-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+        <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
         <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
@@ -509,6 +511,53 @@
                         <version>7.3.1</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>true</addMavenDescriptor>
+                        <compress>true</compress>
+                        <manifest>
+                            <packageName>${project.groupId}</packageName>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addClasspath>true</addClasspath>
+                            <classpathLayoutType>custom</classpathLayoutType>
+                            <customClasspathLayout>${project.artifactId}.${project.version}</customClasspathLayout>
+                        </manifest>
+                        <manifestEntries>
+                            <Contains-Sources>java,class</Contains-Sources>
+                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                            <Implementation-Title>${project.description}</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Implementation-Build>${project.build.finalName}</Implementation-Build>
+                            <Specification-Title>${project.description}</Specification-Title>
+                            <Specification-Version>${project.version}</Specification-Version>
+                            <Bundle-License>${project.organization.name}</Bundle-License>
+                            <X-Builder>Maven ${maven.version}</X-Builder>
+                            <X-Build-Time>${maven.build.timestamp}</X-Build-Time>
+                            <X-Build-Os>${os.name}</X-Build-Os>
+                        </manifestEntries>
+                    </archive>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${package-tests.skip}</skip>
+                            <includes>
+                                <include>**/common/</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
