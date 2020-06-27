@@ -41,7 +41,6 @@
         <package-tests.skip>true</package-tests.skip>
         <unit-tests.skip>${skipTests}</unit-tests.skip>
         <integration-tests.skip>${skipTests}</integration-tests.skip>
-        <remove-resources.skip>true</remove-resources.skip>
         <parallel.tests>2</parallel.tests>
         <test-groups.include/>
 

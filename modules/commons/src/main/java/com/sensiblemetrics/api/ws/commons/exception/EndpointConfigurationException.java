@@ -69,15 +69,15 @@ public class EndpointConfigurationException extends RuntimeException {
     }
 
     /**
-     * Returns {@link ResourceNotFoundException} by input argument
+     * Returns {@link EndpointConfigurationException} by input argument
      *
      * @param messageId - initial input message {@link String} identifier
      * @param arg       - initial input description {@link Object} arguments
-     * @return {@link ResourceNotFoundException}
+     * @return {@link EndpointConfigurationException}
      */
     @NonNull
-    public static ResourceNotFoundException throwInvalidConfigurationWith(final String messageId,
-                                                                          final Object arg) {
+    public static EndpointConfigurationException throwInvalidConfigurationWith(final String messageId,
+                                                                               final Object arg) {
         throw throwError(MessageSourceHelper.getMessage(messageId, arg));
     }
 }
