@@ -110,7 +110,7 @@
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
         <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
         <maven-dependency-check-plugin.version>5.3.2</maven-dependency-check-plugin.version>
-        <maven-site-plugin.version>3.8.2</maven-site-plugin.version>
+        <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
         <maven-plugin-os.version>1.6.2</maven-plugin-os.version>
     </properties>
