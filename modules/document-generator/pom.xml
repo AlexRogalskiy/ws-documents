@@ -19,7 +19,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <hikari.version>3.4.2</hikari.version>
+        <hikari.version>3.4.5</hikari.version>
         <liquibase.version>4.0.0-beta1</liquibase.version>
         <hibernate-core.version>6.0.0.Alpha5</hibernate-core.version>
         <p6spy.version>3.8.7</p6spy.version>
