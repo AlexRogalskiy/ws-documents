@@ -63,7 +63,7 @@
             -link http://docs.oracle.com/javase/8/docs/api/
         </javadoc.properties>
 
-        <allure.version>2.13.2</allure.version>
+        <allure.version>2.13.5</allure.version>
         <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
         <hamcrest.version>2.2</hamcrest.version>
         <hamcrest-matchers.version>2.0.0</hamcrest-matchers.version>
