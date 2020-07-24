@@ -25,7 +25,7 @@
         <p6spy.version>3.8.7</p6spy.version>
         <modelmapper.version>2.3.8</modelmapper.version>
         <docx4j.version>6.1.2</docx4j.version>
-        <jaxb2-basics.version>1.11.1</jaxb2-basics.version>
+        <jaxb2-basics.version>1.11.1-PUBLISHED-BY-MISTAKE</jaxb2-basics.version>
         <postgresql.version>42.2.14</postgresql.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
