@@ -1,24 +1,96 @@
+name: Document-Generator-Web-Service-release
+
 on:
   push:
     tags:
       - '*'
 
-name: Create Release
-
 jobs:
-  build:
-    name: Create Release
-    runs-on: ubuntu-latest
+  non_module_java:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        java: [ '8' ]
+        architecture: [ 'x64', 'arm' ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@master
-      - name: Create Release
+      - name: Setup JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: jdk
+          architecture: ${{ matrix.architecture }}
+      - name: Build project
+        run: |
+          zip --junk-paths document-generator-ws README.md
+      - name: Create release
         id: create_release
-        uses: actions/create-release@v1.0.0
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - Updates on Document-Generator MicroService API
           draft: true
           prerelease: false
+      - name: Upload release asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./document-generator-ws.zip
+          asset_name: document-generator-ws.zip
+          asset_content_type: application/zip
+  module_java:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        java: [ '11', '12', '13' ]
+        architecture: [ 'x64', 'arm' ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Setup JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+          java-package: jdk
+          architecture: ${{ matrix.architecture }}
+      - name: Build project
+        run: |
+          zip --junk-paths document-generator-ws README.md
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - Updates on Document-Generator MicroService API
+          draft: true
+          prerelease: false
+      - name: Upload release asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./document-generator-ws.zip
+          asset_name: document-generator-ws.zip
+          asset_content_type: application/zip
