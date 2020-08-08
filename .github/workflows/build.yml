@@ -1,9 +1,11 @@
 name: Document-Generator-Web-Service
+
 on: [push]
 
 jobs:
   non_module_java:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
       matrix:
         java: [ '8' ]
@@ -11,7 +13,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Setup repository
+        uses: actions/checkout@v2
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
@@ -19,9 +22,11 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true -DprofileIdEnabled=true clean package -P"non_module_java","test-jar","xsd"
+        timeout-minutes: 20
+        run: mvn clean package --lax-checksums -Dfile.encoding=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"non_module_java","test-jar","xsd"
   module_java:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     strategy:
       matrix:
         java: [ '11', '12', '13' ]
@@ -29,7 +34,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - name: Setup repository
+        uses: actions/checkout@v2
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
@@ -37,4 +43,5 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true -DprofileIdEnabled=true clean package -P"module_java","test-jar","xsd"
+        timeout-minutes: 20
+        run: mvn clean package --lax-checksums -Dfile.encoding=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"module_java","test-jar","xsd"
