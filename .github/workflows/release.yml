@@ -24,11 +24,12 @@ jobs:
           java-version: ${{ matrix.java }}
           java-package: jdk
           architecture: ${{ matrix.architecture }}
-      - name: Build project
-        run: |
-          zip --junk-paths document-generator-ws README.md
       - name: Create checksum
         run: echo ${{ github.sha }} > checksum.txt
+      - name: Build project
+        run: |
+          npm install -g 7zip
+          7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -74,11 +75,12 @@ jobs:
           java-version: ${{ matrix.java }}
           java-package: jdk
           architecture: ${{ matrix.architecture }}
-      - name: Build project
-        run: |
-          zip --junk-paths document-generator-ws README.md
       - name: Create checksum
         run: echo ${{ github.sha }} > checksum.txt
+      - name: Build project
+        run: |
+          npm install -g 7zip
+          7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
