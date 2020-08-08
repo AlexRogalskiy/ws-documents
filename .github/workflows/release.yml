@@ -29,9 +29,7 @@ jobs:
       - name: Build project
         timeout-minutes: 20
         run: |
-          sudo npm install --force -g 7zip
-          sudo chmod +x /usr/local/bin/7z
-          sudo 7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
+          zip --junk-paths document-generator-ws README.md LICENSE checksum.txt
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -83,9 +81,7 @@ jobs:
       - name: Build project
         timeout-minutes: 20
         run: |
-          sudo npm install --force -g 7zip
-          sudo chmod +x /usr/local/bin/7z
-          sudo 7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
+          zip --junk-paths document-generator-ws README.md LICENSE checksum.txt
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
