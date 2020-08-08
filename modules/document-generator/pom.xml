@@ -31,7 +31,7 @@
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
 
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
-        <maven-liquibase-plugin.version>3.10.1</maven-liquibase-plugin.version>
+        <maven-liquibase-plugin.version>3.10.2</maven-liquibase-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     </properties>
