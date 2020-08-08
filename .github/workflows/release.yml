@@ -39,10 +39,6 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          files: |
-            checksum.txt
-            LICENSE
-            README.md
           body: |
             Changes in this Release
             - Updates on Document-Generator MicroService API
@@ -91,10 +87,6 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          files: |
-            checksum.txt
-            LICENSE
-            README.md
           body: |
             Changes in this Release
             - Updates on Document-Generator MicroService API
