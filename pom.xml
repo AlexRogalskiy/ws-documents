@@ -74,7 +74,7 @@
         <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
         <junit-jupiter.version>5.6.0</junit-jupiter.version>
         <junit-platform.version>1.6.0</junit-platform.version>
-        <mockito-junit-jupiter.version>3.4.4</mockito-junit-jupiter.version>
+        <mockito-junit-jupiter.version>3.4.6</mockito-junit-jupiter.version>
 
         <test.commands>
             -Duser.language=en
