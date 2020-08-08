@@ -13,7 +13,7 @@ jobs:
       matrix:
         java: [ '8' ]
         architecture: [ 'x64', 'arm' ]
-        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+        os: [ ubuntu-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -27,12 +27,14 @@ jobs:
       - name: Create checksum
         run: echo ${{ github.sha }} > checksum.txt
       - name: Build project
+        timeout-minutes: 20
         run: |
-          npm install -g 7zip
-          7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
+          sudo npm install -g 7zip
+          sudo 7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
+        timeout-minutes: 20
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -64,7 +66,7 @@ jobs:
       matrix:
         java: [ '11', '12', '13' ]
         architecture: [ 'x64', 'arm' ]
-        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+        os: [ ubuntu-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -78,12 +80,14 @@ jobs:
       - name: Create checksum
         run: echo ${{ github.sha }} > checksum.txt
       - name: Build project
+        timeout-minutes: 20
         run: |
-          npm install -g 7zip
-          7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
+          sudo npm install -g 7zip
+          sudo 7z a -tzip document-generator-ws.zip README.md LICENSE checksum.txt
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
+        timeout-minutes: 20
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
