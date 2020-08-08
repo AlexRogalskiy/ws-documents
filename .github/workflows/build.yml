@@ -2,14 +2,14 @@ name: Document-Generator-Web-Service
 on: [push]
 
 jobs:
-  java_8:
+  non_module_java:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         java: [ '8' ]
         architecture: [ 'x64', 'arm' ]
         os: [ubuntu-latest, windows-latest, macOS-latest]
-    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }}
+    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup JDK ${{ matrix.java }}
@@ -19,15 +19,15 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -Pjava_8,test-jar,xsd
-  java_11:
+        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true -DprofileIdEnabled=true clean package -P"non_module_java","test-jar","xsd"
+  module_java:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         java: [ '11', '12', '13' ]
         architecture: [ 'x64', 'arm' ]
         os: [ubuntu-latest, windows-latest, macOS-latest]
-    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }}
+    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Setup JDK ${{ matrix.java }}
@@ -37,4 +37,4 @@ jobs:
           java-package: jdk
           architecture: ${{ matrix.architecture }}
       - name: Build with Maven
-        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true clean package -Pjava_11,test-jar,xsd
+        run: mvn -Dfile.encoding=UTF-8 --lax-checksums -DskipTests=true -DprofileIdEnabled=true clean package -P"module_java","test-jar","xsd"

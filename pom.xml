@@ -47,7 +47,7 @@
         <allure-report.version>2.13.1</allure-report.version>
 
         <commons.version>0.1.0-SNAPSHOT</commons.version>
-        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
@@ -67,14 +67,14 @@
         <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
         <hamcrest.version>2.2</hamcrest.version>
         <hamcrest-matchers.version>2.0.0</hamcrest-matchers.version>
-        <mockito.version>3.4.4</mockito.version>
+        <mockito.version>3.4.6</mockito.version>
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <assertj.version>3.16.1</assertj.version>
 
         <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
-        <junit-jupiter.version>5.6.0</junit-jupiter.version>
-        <junit-platform.version>1.6.0</junit-platform.version>
-        <mockito-junit-jupiter.version>3.4.4</mockito-junit-jupiter.version>
+        <junit-jupiter.version>5.6.2</junit-jupiter.version>
+        <junit-platform.version>1.6.2</junit-platform.version>
+        <mockito-junit-jupiter.version>3.4.6</mockito-junit-jupiter.version>
 
         <test.commands>
             -Duser.language=en
@@ -136,7 +136,7 @@
     <profiles>
         <!-- JDK 8 and minor versions -->
         <profile>
-            <id>java_8</id>
+            <id>non_module_java</id>
             <activation>
                 <jdk>(,8]</jdk>
             </activation>
@@ -200,7 +200,7 @@
 
         <!-- JDK 11 and major versions -->
         <profile>
-            <id>java_11</id>
+            <id>module_java</id>
             <activation>
                 <jdk>[11,)</jdk>
             </activation>
