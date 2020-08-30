@@ -6,7 +6,15 @@ on:
     - '.github/workflows/jdk.yml'
 
 jobs:
-
+  jdk-16-ea:
+    runs-on: ubuntu-latest
+    steps:
+    - run: wget https://download.java.net/java/early_access/jdk16/13/GPL/openjdk-16-ea+13_linux-x64_bin.tar.gz --output-document jdk.tar.gz
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '16-ea'
+        jdkFile: jdk.tar.gz
+    - run: java -version
   jdk-15-ea:
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +24,15 @@ jobs:
         java-version: '15-ea'
         jdkFile: jdk.tar.gz
     - run: java -version
-
+  jdk-14:
+    runs-on: ubuntu-latest
+    steps:
+    - run: wget https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz --output-document jdk.tar.gz
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '14.0.2'
+        jdkFile: jdk.tar.gz
+    - run: java -version    
   jdk-14-ea:
     runs-on: ubuntu-latest
     steps:
