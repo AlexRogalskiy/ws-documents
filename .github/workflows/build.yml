@@ -1,20 +1,23 @@
 name: Document-Generator-Web-Service
 
-on: [push]
+on: [ push, pull_request ]
 
 jobs:
   non_module_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
+      fail-fast: true
       matrix:
         java: [ '8' ]
         architecture: [ 'x64', 'arm' ]
-        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
@@ -28,14 +31,17 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
+      fail-fast: true
       matrix:
-        java: [ '11', '12', '13' ]
+        java: [ '11', '12', '13', '14' ]
         architecture: [ 'x64', 'arm' ]
-        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
