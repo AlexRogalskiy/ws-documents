@@ -1,0 +1,25 @@
+name: Document-Generator-Web-Service-sonar
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-16.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Analyze with SonarCloud
+#       set environment variables:
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#       run sonar maven plugin:
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=ws-documents -Dsonar.organization=alexrogalskiy-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./build/site/jacoco/jacoco.xml
