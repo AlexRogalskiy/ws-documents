@@ -3,7 +3,7 @@ name: Document-Generator-Web-Service-jdk
 on:
   push:
     paths:
-    - '.github/workflows/jdks.yml'
+    - '.github/workflows/jdk.yml'
 
 jobs:
 
