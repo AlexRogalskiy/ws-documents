@@ -713,6 +713,7 @@
                     <useFile>false</useFile>
                     <forkedProcessTimeoutInSeconds>21600</forkedProcessTimeoutInSeconds>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<failIfNoTests>false</failIfNoTests>
                     <argLine>
                         ${surefire.memory}
                         ${surefire.fileEncoding}
@@ -771,6 +772,7 @@
                     <parallel>classes</parallel>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <trimStackTrace>false</trimStackTrace>
+					<failIfNoTests>false</failIfNoTests>
                 </configuration>
                 <executions>
                     <execution>

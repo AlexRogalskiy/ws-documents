@@ -14,7 +14,7 @@ jobs:
           echo "::set-output name=status::$(curl ${{secrets.SERVER_HOST}}/api/actuator/health)"
       - name: health check
         run: |
-          if [[ ${{ steps.ping.outputs.status }} != *"UP"* ]]; then
+          if [[ "${{ steps.ping.outputs.status }}" != *"UP"* ]]; then
             echo "health check is failed"
             exit 1
           fi
