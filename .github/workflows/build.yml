@@ -53,7 +53,6 @@ jobs:
       - name: Build with Maven
         timeout-minutes: 20
         run: mvn clean package --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"module_java","test-jar","xsd"
-        run: mvn clean package --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"non_module_java","test-jar","xsd"
   module_zing_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
