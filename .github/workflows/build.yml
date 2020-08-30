@@ -10,7 +10,7 @@ jobs:
       fail-fast: true
       matrix:
         java: [ '8' ]
-        architecture: [ 'x64', 'arm' ]
+        architecture: [ 'x64', 'x86' ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
@@ -34,7 +34,7 @@ jobs:
       fail-fast: true
       matrix:
         java: [ '11', '12', '13', '14' ]
-        architecture: [ 'x64', 'arm' ]
+        architecture: [ 'x64', 'x86' ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:

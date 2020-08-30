@@ -1,4 +1,4 @@
-name: [Daily build] Document-Generator-Web-Service-release
+name: Document-Generator-Web-Service-daily
 
 on:
   schedule:
