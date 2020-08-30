@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         java: [ '8' ]
         architecture: [ 'x64', 'x86' ]
@@ -31,7 +31,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         java: [ '11', '12', '13', '14' ]
         architecture: [ 'x64', 'x86' ]
