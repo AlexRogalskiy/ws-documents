@@ -19,7 +19,7 @@ jobs:
       matrix:
         java: [ '8' ]
         architecture: [ 'x64', 'x86' ]
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -75,7 +75,7 @@ jobs:
       matrix:
         java: [ '11', '12', '13', '14', '15-ea', '16-ea' ]
         architecture: [ 'x64', 'x86' ]
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository

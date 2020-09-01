@@ -12,7 +12,7 @@ jobs:
       matrix:
         java: [ '8' ]
         architecture: [ 'x64', 'x86' ]
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -32,9 +32,12 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-${{ matrix.java }}-maven-${{ hashFiles('**/*pom*.xml') }}
           restore-keys: ${{ runner.os }}-${{ matrix.java }}-maven-
+      - name: Make Maven Wrapper executable
+        if: contains(matrix.os, 'win') == false
+        run: chmod +x ./mvnw
       - name: Build with Maven
         timeout-minutes: 20
-        run: mvn clean package --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"non_module_java","test-jar","xsd"
+        run: ./mvnw clean package --file pom.xml --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"non_module_java","test-jar","xsd"
   module_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -44,7 +47,7 @@ jobs:
       matrix:
         java: [ '11', '12', '13', '14', '15-ea', '16-ea' ]
         architecture: [ 'x64', 'x86' ]
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -64,9 +67,12 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-${{ matrix.java }}-maven-${{ hashFiles('**/*pom*.xml') }}
           restore-keys: ${{ runner.os }}-${{ matrix.java }}-maven-
+      - name: Make Maven Wrapper executable
+        if: contains(matrix.os, 'win') == false
+        run: chmod +x ./mvnw
       - name: Build with Maven
         timeout-minutes: 20
-        run: mvn clean package --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"module_java","test-jar","xsd"
+        run: ./mvnw clean package --file pom.xml --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"module_java","test-jar","xsd"
   module_zing_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -90,6 +96,9 @@ jobs:
           java-package: jdk
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
+      - name: Make Maven Wrapper executable
+        if: contains(matrix.os, 'win') == false
+        run: chmod +x ./mvnw
       - name: Build with Maven
         timeout-minutes: 20
-        run: mvn clean package --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"module_java","test-jar","xsd"
+        run: ./mvnw clean package --file pom.xml --lax-checksums -D"file.encoding"=UTF-8 -DskipTests=true -DprofileIdEnabled=true -P"module_java","test-jar","xsd"
