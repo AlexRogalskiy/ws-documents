@@ -67,14 +67,14 @@
         <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
         <hamcrest.version>2.2</hamcrest.version>
         <hamcrest-matchers.version>2.0.0</hamcrest-matchers.version>
-        <mockito.version>3.5.7</mockito.version>
+        <mockito.version>3.5.10</mockito.version>
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <assertj.version>3.17.1</assertj.version>
 
         <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
         <junit-jupiter.version>5.6.2</junit-jupiter.version>
         <junit-platform.version>1.6.2</junit-platform.version>
-        <mockito-junit-jupiter.version>3.5.7</mockito-junit-jupiter.version>
+        <mockito-junit-jupiter.version>3.5.10</mockito-junit-jupiter.version>
 
         <test.commands>
             -Duser.language=en
