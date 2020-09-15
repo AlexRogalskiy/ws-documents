@@ -43,7 +43,7 @@ jobs:
         run: chmod +x ./mvnw
       - name: Build with Maven
         timeout-minutes: 20
-        run: ./mvnw -s settings.xml clean package --file pom.xml --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd","jib" -Denv.DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} -Denv.DOCKERHUB_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}
+        run: ./mvnw -s settings.xml clean package --file pom.xml --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd","jib" -D"env.DOCKERHUB_USERNAME"=${{ secrets.DOCKERHUB_USERNAME }} -D"env.DOCKERHUB_PASSWORD"=${{ secrets.DOCKERHUB_PASSWORD }}
   module_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -78,4 +78,4 @@ jobs:
         run: chmod +x ./mvnw
       - name: Build with Maven
         timeout-minutes: 20
-        run: ./mvnw -s settings.xml clean package --file pom.xml --lax-checksums -DskipTests=true -P"module_java","test-jar","xsd","jib" -Denv.DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} -Denv.DOCKERHUB_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}
+        run: ./mvnw -s settings.xml clean package --file pom.xml --lax-checksums -DskipTests=true -P"module_java","test-jar","xsd","jib" -D"env.DOCKERHUB_USERNAME"=${{ secrets.DOCKERHUB_USERNAME }} -D"env.DOCKERHUB_PASSWORD"=${{ secrets.DOCKERHUB_PASSWORD }}

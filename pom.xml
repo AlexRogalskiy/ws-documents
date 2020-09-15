@@ -156,7 +156,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>${maven-compiler-plugin.version}</version>
-                        <extensions>true</extensions>
                         <configuration>
                             <annotationProcessorPaths>
                                 <path>
@@ -220,7 +219,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>${maven-compiler-plugin.version}</version>
-                        <extensions>true</extensions>
                         <configuration>
                             <annotationProcessorPaths>
                                 <path>
@@ -229,14 +227,6 @@
                                     <version>${lombok.version}</version>
                                 </path>
                             </annotationProcessorPaths>
-
-                            <executable>true</executable>
-                            <showDeprecation>true</showDeprecation>
-                            <debug>true</debug>
-                            <debuglevel>lines,vars,source</debuglevel>
-                            <optimize>false</optimize>
-                            <verbose>false</verbose>
-                            <forceJavacCompilerUse>true</forceJavacCompilerUse>
 
                             <executable>true</executable>
                             <showDeprecation>true</showDeprecation>
