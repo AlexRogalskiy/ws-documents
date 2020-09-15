@@ -52,12 +52,12 @@ skaffold dev --trigger notify
 
 In order to run the `ws-documents` service using *skaffold*, you need to have the *DocumentDB* up and running:
 
-#####1. Start the document DB (postgres):
+##### 1. Start the document DB (postgres):
 ```
 skaffold run -p documents-db-local
 ```
 
-#####2. Start the ws-documents service:
+##### 2. Start the ws-documents service:
 ```
 skaffold run -p local
 ```
@@ -89,14 +89,20 @@ run.bat
 
 # Deploy with Kubectl:
 
-#####1. Start the document service:
+##### 1. Start the document service:
 ```
 kubectl run spring-boot-jib --image=$IMAGE --port=8080 --restart=Never
 ```
 
-#####2. Wait until pod is up and running:
+##### 2. Wait until pod is up and running:
 ```
 kubectl port-forward spring-boot-jib 8080
+```
+
+# Download Docker image (RegistryHub)
+
+```
+docker pull alexanderr/ws-documents:0.1.0-SNAPSHOT
 ```
 
 # Authors
