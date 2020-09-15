@@ -119,7 +119,7 @@
         <maven-plugin-os.version>1.6.2</maven-plugin-os.version>
         <maven-jacoco-plugin.version>0.8.5</maven-jacoco-plugin.version>
         <maven-sonar-plugin.version>3.7.0.1746</maven-sonar-plugin.version>
-        <maven-jib-plugin.version>1.4.0</maven-jib-plugin.version>
+        <maven-jib-plugin.version>2.5.2</maven-jib-plugin.version>
     </properties>
 
     <issueManagement>
