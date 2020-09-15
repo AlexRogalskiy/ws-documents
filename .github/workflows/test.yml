@@ -18,7 +18,7 @@ jobs:
         with:
           java-version: 1.11
       - name: Maven Verify
-        run: mvn clean verify --lax-checksums -D"file.encoding"=UTF-8 -DprofileIdEnabled=true -P"module_java","test-jar","xsd"
+        run: ./mvnw clean verify --lax-checksums -P"module_java","test-jar","xsd"
       - name: Test Coverage
         uses: codecov/codecov-action@v1
         with:

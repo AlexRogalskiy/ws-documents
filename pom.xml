@@ -141,6 +141,69 @@
     </ciManagement>
 
     <profiles>
+        <!-- Jib profile -->
+        <profile>
+            <id>jib</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>${maven-jib-plugin.version}</version>
+                        <configuration>
+                            <allowInsecureRegistries>true</allowInsecureRegistries>
+                            <from>
+                                <image>${image.from.path}</image>
+                            </from>
+                            <container>
+                                <jvmFlags>
+                                    <jvmFlag>-Xdebug</jvmFlag>
+                                    <jvmFlag>-Xms128m</jvmFlag>
+                                    <jvmFlag>-Xmx128m</jvmFlag>
+                                    <jvmFlag>-Duser.timezone=GMT+08</jvmFlag>
+                                    <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                                    <jvmFlag>-Djava.awt.headless=true</jvmFlag>
+                                    <jvmFlag>-XX:InitialRAMFraction=2</jvmFlag>
+                                    <jvmFlag>-XX:MinRAMFraction=2</jvmFlag>
+                                    <jvmFlag>-XX:MaxRAMFraction=2</jvmFlag>
+                                    <jvmFlag>-XX:+UseG1GC</jvmFlag>
+                                    <jvmFlag>-XX:MaxGCPauseMillis=100</jvmFlag>
+                                    <jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
+                                </jvmFlags>
+                                <ports>
+                                    <port>8089</port>
+                                </ports>
+                                <format>Docker</format>
+                            </container>
+                            <to>
+                                <image>${image.to.path}:${project.version}</image>
+                                <tags>
+                                    <tag>alpine</tag>
+                                    <tag>latest</tag>
+                                </tags>
+                            </to>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>dockerBuild</id>
+                                <goals>
+                                    <goal>dockerBuild</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>build</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- JDK 8 and minor versions -->
         <profile>
             <id>non_module_java</id>
@@ -608,6 +671,16 @@
                 <version>${maven-plugin-os.version}</version>
             </extension>
         </extensions>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.google.cloud.tools</groupId>
+                    <artifactId>jib-maven-plugin</artifactId>
+                    <version>${maven-jib-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
         <plugins>
             <plugin>

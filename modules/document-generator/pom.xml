@@ -28,6 +28,8 @@
         <jaxb2-basics.version>1.11.1-PUBLISHED-BY-MISTAKE</jaxb2-basics.version>
         <postgresql.version>42.2.16</postgresql.version>
 
+        <image.to.path>registry.hub.docker.com/alexanderr/ws-documents</image.to.path>
+
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
 
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
@@ -86,57 +88,6 @@
                             <verbose>true</verbose>
                             <logging>debug</logging>
                         </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- Jib profile -->
-        <profile>
-            <id>jib</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.google.cloud.tools</groupId>
-                        <artifactId>jib-maven-plugin</artifactId>
-                        <version>${maven-jib-plugin.version}</version>
-                        <configuration>
-                            <allowInsecureRegistries>true</allowInsecureRegistries>
-                            <from>
-                                <image>${image.from.path}</image>
-                            </from>
-                            <container>
-                                <jvmFlags>
-                                    <jvmFlag>-Xms128m</jvmFlag>
-                                    <jvmFlag>-Xmx128m</jvmFlag>
-                                    <jvmFlag>-Duser.timezone=GMT+08</jvmFlag>
-                                    <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
-                                </jvmFlags>
-                                <ports>
-                                    <port>8089</port>
-                                </ports>
-                                <format>Docker</format>
-                            </container>
-                            <to>
-                                <image>${image.to.path}:${project.version}</image>
-                            </to>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>dockerBuild</id>
-                                <goals>
-                                    <goal>dockerBuild</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                            <execution>
-                                <id>build</id>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                                <phase>deploy</phase>
-                            </execution>
-                        </executions>
                     </plugin>
                 </plugins>
             </build>
