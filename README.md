@@ -20,25 +20,25 @@ mvn clean install spring-boot:repackage -Pnon_module_java,test-jar,xsd -DskipTes
 to build image to Docker daemon:
 
 ```
-mvn clean install jib:dockerBuild -Pnon_module_java,test-jar,xsd -DskipTests
+mvn clean install -Pnon_module_java,test-jar,xsd,jib -DskipTests
 ```
 
 ## For JDK 11
 
 ```
-mvn clean install spring-boot:repackage -Pmodule_java,test-jar,xsd -DskipTests
+mvn clean install spring-boot:repackage -Pmodule_java,test-jar,xsd,jib -DskipTests
 ```
 
 building image to Docker daemon:
 
 ```
-mvn clean install jib:dockerBuild -Pmodule_java,test-jar,xsd -DskipTests
+mvn clean package -Pmodule_java,test-jar,xsd,jib -DskipTests
 ```
 
 buidling & deploying docker image to DockerHub:
 
 ```
-mvn -s settings.xml clean install jib:build -Pmodule_java,test-jar,xsd -DskipTests -Denv.DOCKERHUB_USERNAME=<username> -Denv.DOCKERHUB_PASSWORD=<password>
+mvn -s settings.xml clean package -Pmodule_java,test-jar,xsd,jib -DskipTests -Denv.DOCKERHUB_USERNAME=<username> -Denv.DOCKERHUB_PASSWORD=<password>
 ```
 
 run local build/deployment process:

@@ -91,6 +91,58 @@
             </build>
         </profile>
 
+        <!-- Jib profile -->
+        <profile>
+            <id>jib</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>${maven-jib-plugin.version}</version>
+                        <configuration>
+                            <allowInsecureRegistries>true</allowInsecureRegistries>
+                            <from>
+                                <image>${image.from.path}</image>
+                            </from>
+                            <container>
+                                <jvmFlags>
+                                    <jvmFlag>-Xms128m</jvmFlag>
+                                    <jvmFlag>-Xmx128m</jvmFlag>
+                                    <jvmFlag>-Duser.timezone=GMT+08</jvmFlag>
+                                    <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                                </jvmFlags>
+                                <ports>
+                                    <port>8089</port>
+                                </ports>
+                                <format>Docker</format>
+                            </container>
+                            <to>
+                                <image>${image.to.path}:${project.version}</image>
+                            </to>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>dockerBuild</id>
+                                <goals>
+                                    <goal>dockerBuild</goal>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>build</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Xsd profile -->
         <profile>
             <id>xsd</id>
@@ -169,34 +221,6 @@
         </testResources>
 
         <plugins>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>${maven-jib-plugin.version}</version>
-                <configuration>
-                    <allowInsecureRegistries>true</allowInsecureRegistries>
-                    <from>
-                        <image>${image.from.path}</image>
-                    </from>
-                    <container>
-                        <useCurrentTimestamp>true</useCurrentTimestamp>
-                        <jvmFlags>
-                            <jvmFlag>-Xms128m</jvmFlag>
-                            <jvmFlag>-Xmx128m</jvmFlag>
-                            <jvmFlag>-Duser.timezone=GMT+08</jvmFlag>
-                            <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
-                        </jvmFlags>
-                        <ports>
-                            <port>8089</port>
-                        </ports>
-                        <format>Docker</format>
-                    </container>
-                    <to>
-                        <image>${image.to.path}:${project.version}</image>
-                    </to>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
