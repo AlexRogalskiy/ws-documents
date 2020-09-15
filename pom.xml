@@ -9,7 +9,7 @@
     <version>0.1.0-SNAPSHOT</version>
 
     <name>com.sensiblemetrics.api.ws</name>
-    <description>Parent POM</description>
+    <description>WS Documents parent POM</description>
     <url>https://github.com/AlexRogalskiy/ws-documents/</url>
     <inceptionYear>2020</inceptionYear>
     <packaging>pom</packaging>
@@ -17,6 +17,10 @@
     <properties>
         <java.version>1.8</java.version>
         <maven.version>3.6.0</maven.version>
+
+        <image.from.path>openjdk:latest</image.from.path>
+        <image.to.path>registry.hub.docker.com/alexanderr/ws-documents</image.to.path>
+
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
@@ -113,8 +117,9 @@
         <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
         <maven-plugin-os.version>1.6.2</maven-plugin-os.version>
-		<maven-jacoco-plugin.version>0.8.5</maven-jacoco-plugin.version>
-		<maven-sonar-plugin.version>3.7.0.1746</maven-sonar-plugin.version>
+        <maven-jacoco-plugin.version>0.8.5</maven-jacoco-plugin.version>
+        <maven-sonar-plugin.version>3.7.0.1746</maven-sonar-plugin.version>
+        <maven-jib-plugin.version>1.4.0</maven-jib-plugin.version>
     </properties>
 
     <issueManagement>
@@ -672,32 +677,32 @@
                 </configuration>
             </plugin>
 
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>${maven-sonar-plugin.version}</version>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${maven-jacoco-plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${maven-sonar-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${maven-jacoco-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -713,7 +718,7 @@
                     <useFile>false</useFile>
                     <forkedProcessTimeoutInSeconds>21600</forkedProcessTimeoutInSeconds>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
-					<failIfNoTests>false</failIfNoTests>
+                    <failIfNoTests>false</failIfNoTests>
                     <argLine>
                         ${surefire.memory}
                         ${surefire.fileEncoding}
@@ -772,7 +777,7 @@
                     <parallel>classes</parallel>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <trimStackTrace>false</trimStackTrace>
-					<failIfNoTests>false</failIfNoTests>
+                    <failIfNoTests>false</failIfNoTests>
                 </configuration>
                 <executions>
                     <execution>

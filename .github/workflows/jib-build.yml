@@ -1,0 +1,85 @@
+name: Document-Generator-Web-Service-jib
+
+on:
+  repository_dispatch:
+    types: update-event
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  non_module_java:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        java: [ '8' ]
+        architecture: [ 'x64', 'x86' ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 2
+      - name: Setup JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-package: jdk
+          java-version: ${{ matrix.java }}
+          architecture: ${{ matrix.architecture }}
+      - name: Cache Maven repository
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-${{ matrix.java }}-maven-${{ hashFiles('**/*pom*.xml') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.java }}-maven-
+      - name: Make Maven Wrapper executable
+        if: contains(matrix.os, 'win') == false
+        run: chmod +x ./mvnw
+      - name: Build with Maven
+        timeout-minutes: 20
+        run: |
+          cd modules/document-generator
+          ./mvnw -s settings.xml clean install jib:build --file pom.xml --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd" -Denv.DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} -Denv.DOCKERHUB_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}
+  module_java:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        java: [ '11', '12', '13', '14', '15-ea', '16-ea' ]
+        architecture: [ 'x64', 'x86' ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+    name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 2
+      - name: Setup JDK ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-package: jdk
+          java-version: ${{ matrix.java }}
+          architecture: ${{ matrix.architecture }}
+      - name: Cache Maven repository
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-${{ matrix.java }}-maven-${{ hashFiles('**/*pom*.xml') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.java }}-maven-
+      - name: Make Maven Wrapper executable
+        if: contains(matrix.os, 'win') == false
+        run: chmod +x ./mvnw
+      - name: Build with Maven
+        timeout-minutes: 20
+        run: |
+          cd modules/document-generator
+          ./mvnw -s settings.xml clean install jib:build --file pom.xml --lax-checksums -DskipTests=true -P"module_java","test-jar","xsd" -Denv.DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} -Denv.DOCKERHUB_PASSWORD=${{ secrets.DOCKERHUB_PASSWORD }}

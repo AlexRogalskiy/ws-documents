@@ -14,13 +14,51 @@ Application can be used for creating and editing document's data with possibilit
 ## For JDK 8
 
 ```
-mvn clean install spring-boot:repackage -Pjava_8,test-jar,xsd -DskipTests
+mvn clean install spring-boot:repackage -Pnon_module_java,test-jar,xsd -DskipTests
+```
+
+to build image to Docker daemon:
+
+```
+mvn clean install jib:dockerBuild -Pnon_module_java,test-jar,xsd -DskipTests
 ```
 
 ## For JDK 11
 
 ```
-mvn clean install spring-boot:repackage -Pjava_11,test-jar,xsd -DskipTests
+mvn clean install spring-boot:repackage -Pmodule_java,test-jar,xsd -DskipTests
+```
+
+building image to Docker daemon:
+
+```
+mvn clean install jib:dockerBuild -Pmodule_java,test-jar,xsd -DskipTests
+```
+
+buidling & deploying docker image to DockerHub:
+
+```
+mvn -s settings.xml clean install jib:build -Pmodule_java,test-jar,xsd -DskipTests -Denv.DOCKERHUB_USERNAME=<username> -Denv.DOCKERHUB_PASSWORD=<password>
+```
+
+run local build/deployment process:
+
+```
+skaffold config set --global local-cluster true
+```
+
+# Run with Skaffold
+
+In order to run the `ws-documents` service using *skaffold*, you need to have the *DocumentDB* up and running:
+
+#####1 . Start the document DB (postgres)
+```
+skaffold run -p documents-db-local
+```
+
+#####2. Start the ws-documents service
+```
+skaffold run -p local
 ```
 
 # Execute
