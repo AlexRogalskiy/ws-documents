@@ -17,9 +17,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
+      - name: Make Maven Wrapper executable
+        if: contains(matrix.os, 'win') == false
+        run: |
+          chmod +x ./mvnw
       - name: Maven Verify
         run: |
-          chmod +x mvnw
           ./mvnw clean verify --lax-checksums -P"module_java","test-jar","xsd","jib"
       - name: Test Coverage
         uses: codecov/codecov-action@v1
