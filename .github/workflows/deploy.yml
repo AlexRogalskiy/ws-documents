@@ -48,7 +48,7 @@ jobs:
 
       - name: Build and tag image
         run: |
-          docker build --file docker/java/Dockerfile -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:latest" -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:${GITHUB_SHA::8}" .
+          docker build --file docker/java/Dockerfile -t "${{ steps.global_env.outputs.IMAGE_NAME }}:latest" -t "${{ steps.global_env.outputs.IMAGE_NAME }}:${GITHUB_SHA::8}" .
 
       - name: Docker login
         run: |
