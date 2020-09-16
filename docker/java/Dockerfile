@@ -1,5 +1,5 @@
 # Base OS layer
-FROM openjdk:8-jdk-alpine
+FROM openjdk:latest
 
 LABEL org.opencontainers.image.title="SensibleMetrics.WS.Document.Generator"
 LABEL org.opencontainers.image.vendor="SensibleMetrics, Inc."
