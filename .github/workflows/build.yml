@@ -26,22 +26,26 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 2
+
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
           java-package: jdk
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
+
       - name: Cache Maven repository
         uses: actions/cache@v2.1.1
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-${{ matrix.java }}-maven-${{ hashFiles('**/*pom*.xml') }}
           restore-keys: ${{ runner.os }}-${{ matrix.java }}-maven-
+
       - name: Make Maven Wrapper executable
         if: contains(matrix.os, 'win') == false
         run: |
           chmod +x ./mvnw
+
       - name: Build with Maven
         timeout-minutes: 20
         run: |
@@ -63,22 +67,26 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 2
+
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
           java-package: jdk
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
+
       - name: Cache Maven repository
         uses: actions/cache@v2.1.1
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-${{ matrix.java }}-maven-${{ hashFiles('**/*pom*.xml') }}
           restore-keys: ${{ runner.os }}-${{ matrix.java }}-maven-
+
       - name: Make Maven Wrapper executable
         if: contains(matrix.os, 'win') == false
         run: |
           chmod +x ./mvnw
+
       - name: Build with Maven
         timeout-minutes: 20
         run: |
@@ -100,16 +108,19 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 2
+
       - name: Setup JDK ${{ matrix.java }}
         uses: zing-actions/setup-java@v1
         with:
           java-package: jdk
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
+
       - name: Make Maven Wrapper executable
         if: contains(matrix.os, 'win') == false
         run: |
           chmod +x ./mvnw
+
       - name: Build with Maven
         timeout-minutes: 20
         run: |
