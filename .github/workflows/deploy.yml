@@ -42,11 +42,11 @@ jobs:
           GITHUB=$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')
           echo "::set-output name=IMAGE_NAME::${GITHUB#*/}"
           echo "::set-output name=DOCKERHUB_IMAGE::docker.pkg.github.com/${GITHUB}"
-          echo "::set-output name=DOCKERHUB_IMAGE_TAG::${DOCKERHUB_IMAGE}/${IMAGE_NAME}"
+          echo "::set-output name=DOCKERHUB_IMAGE_TAG::${{ steps.global_env.outputs.DOCKERHUB_IMAGE }}/${{ steps.global_env.outputs.IMAGE_NAME }}"
 
       - name: Build and tag image
         run: |
-          docker build --file docker/java/Dockerfile -t "$DOCKERHUB_IMAGE_TAG:latest" -t "$DOCKERHUB_IMAGE_TAG:${GITHUB_SHA::8}" .
+          docker build --file docker/java/Dockerfile -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_TAG }}:latest" -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_TAG }}:${GITHUB_SHA::8}" .
 
       - name: Docker login
         run: |
@@ -56,4 +56,4 @@ jobs:
 
       - name: Publish image
         run: |
-          docker push "$DOCKERHUB_IMAGE_TAG:latest"
+          docker push "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_TAG }}:latest"
