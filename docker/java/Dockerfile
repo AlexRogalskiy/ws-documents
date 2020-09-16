@@ -4,9 +4,6 @@ FROM openjdk:latest
 LABEL org.opencontainers.image.title="SensibleMetrics.WS.Document.Generator"
 LABEL org.opencontainers.image.vendor="SensibleMetrics, Inc."
 
-# Install curl package
-RUN apk --no-cache add curl
-
 # The application's jar file
 ARG JAR_FILE
 
