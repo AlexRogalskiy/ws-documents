@@ -42,7 +42,7 @@ jobs:
       - name: Set global env
         id: global_env
         run: |
-          GITHUB=$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')"
+          GITHUB=$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')
           echo "::set-output name=IMAGE_NAME::${GITHUB#*/}"
           echo "::set-output name=DOCKERHUB_IMAGE_NAME::docker.pkg.github.com/${GITHUB#*/}"
 
@@ -56,5 +56,5 @@ jobs:
 
       - name: Publish image
         run: |
-          GITHUB=$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')"
+          GITHUB=$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')
           docker push "docker.pkg.github.com/$GITHUB/${{ steps.global_env.outputs.IMAGE_NAME }}:latest"
