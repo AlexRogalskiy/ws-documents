@@ -57,4 +57,4 @@ jobs:
 
       - name: Publish image
         run: |
-          docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/${{ steps.global_env.outputs.IMAGE_NAME }}"
+          docker push "docker.pkg.github.com/${GITHUB_REPOSITORY}/${{ steps.global_env.outputs.IMAGE_NAME }}"
