@@ -1,4 +1,4 @@
-# Bug report template
+# Bug Report template
 
 <table>
   <tbody>
@@ -11,8 +11,8 @@
     </tr>
     <tr>
       <td>Name</td>
-      <td>Bug description</td>
-      <td>Short title</td>
+      <td>Short description</td>
+      <td>Name/Title</td>
       <td>Tag</td>
       <td>Developer</td>
     </tr>

@@ -1,4 +1,4 @@
-# Feature request template
+# Feature Request template
 
 <table>
   <tbody>
@@ -11,8 +11,8 @@
     </tr>
     <tr>
       <td>Feature</td>
-      <td>Feature description</td>
-      <td>Short title</td>
+      <td>Short description</td>
+      <td>Name/Title</td>
       <td>Tag</td>
       <td>Developer</td>
     </tr>

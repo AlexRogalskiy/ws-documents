@@ -120,5 +120,5 @@ proprietary
 
 ### Version Store
 
-[./pom.xml](https://github.com/AlexRogalskiy/ws-documents/tree/658cb80a120d0386554a1b212f8a8ceda27b203d/pom.xml)
+[./pom.xml](https://github.com/AlexRogalskiy/ws-documents/blob/master/pom.xml)
 
