@@ -1,0 +1,18 @@
+# CODE\_OWNERS
+
+## Configuration for the GitHub feature to automatically request reviews from the code owners when a pull request changes any owned files.
+
+## \[References\]
+
+## [https://github.com/blog/2392-introducing-code-owners](https://github.com/blog/2392-introducing-code-owners)
+
+## [https://help.github.com/articles/about-codeowners](https://help.github.com/articles/about-codeowners)
+
+## +--------------------+
+
+## + Default Code Owner +
+
+## +--------------------+
+
+* @sensiblemetrics.com
+
