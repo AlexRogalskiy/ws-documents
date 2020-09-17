@@ -1,10 +1,7 @@
-# Configuration for the GitHub feature to automatically request reviews from the code owners when a pull request changes any owned files.
-#
-# [References]
-#   https://github.com/blog/2392-introducing-code-owners
-#   https://help.github.com/articles/about-codeowners
+Configuration for the GitHub feature to automatically request reviews from the code owners when a pull request changes any owned files.
+# [ References ]
+* https://github.com/blog/2392-introducing-code-owners
+* https://help.github.com/articles/about-codeowners
 
-# +--------------------+
-# + Default Code Owner +
-# +--------------------+
+# [ Ownership ]
 * @sensiblemetrics.com

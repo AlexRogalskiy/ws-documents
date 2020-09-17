@@ -1,5 +1,6 @@
-# Contributing to SensibleMetrics Commons
-Thanks for contributing to IceCore Hashids!
+# Contributing to SensibleMetrics WS-Documents
+
+Thanks for contributing to WS-Documents!
 
 This is a set of guidelines for contributing to IceCore Hashids. Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
 
