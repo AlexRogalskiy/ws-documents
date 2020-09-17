@@ -1,4 +1,4 @@
-# PULL\_REQUEST\_TEMPLATE
+<!-- Click on the "Preview" tab to render the instructions in a more readable format -->
 
 > **Please read the [contribution guidelines](https://github.com/arcticicestudio/icecore-hashids/blob/develop/CONTRIBUTING.md) before filling out this pull request template**.
 
