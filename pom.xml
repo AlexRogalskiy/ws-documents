@@ -156,6 +156,7 @@
                                 <image>${image.from.path}</image>
                             </from>
                             <container>
+                                <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                                 <jvmFlags>
                                     <jvmFlag>-Xdebug</jvmFlag>
                                     <jvmFlag>-Xms128m</jvmFlag>
