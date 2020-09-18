@@ -87,7 +87,7 @@ project.build.directory=modules/document-generator/.build/bin/com.sensiblemetric
 or simply run:
 
 ```text
-run.bat
+scripts/run.bat
 ```
 
 ## Deploy with Kubectl:
