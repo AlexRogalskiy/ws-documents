@@ -102,6 +102,7 @@
         <validation-api.version>2.0.1.Final</validation-api.version>
         <guava.version>29.0-jre</guava.version>
         <wsdl4j.version>1.6.3.wso2v3</wsdl4j.version>
+        <plexus-utils.version>3.3.0</plexus-utils.version>
         <commons-lang3.version>3.11</commons-lang3.version>
 
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -951,6 +952,17 @@
             <groupId>org.wso2.wsdl4j</groupId>
             <artifactId>wsdl4j</artifactId>
             <version>${wsdl4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-utils</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>${plexus-utils.version}</version>
         </dependency>
 
         <!-- Guava library dependencies -->
