@@ -15,31 +15,31 @@ Application can be used for creating and editing document's data with possibilit
 ### For JDK 8
 
 ```text
-mvn clean install spring-boot:repackage -Pnon_module_java,test-jar,xsd -DskipTests
+mvnw clean install spring-boot:repackage -Pnon_module_java,test-jar,xsd -DskipTests
 ```
 
 to build image to Docker daemon:
 
 ```text
-mvn clean install -Pnon_module_java,test-jar,xsd,jib -DskipTests
+mvnw clean install -Pnon_module_java,test-jar,xsd,jib -DskipTests
 ```
 
 ### For JDK 11
 
 ```text
-mvn clean install spring-boot:repackage -Pmodule_java,test-jar,xsd,jib -DskipTests
+mvnw clean install spring-boot:repackage -Pmodule_java,test-jar,xsd,jib -DskipTests
 ```
 
 building image to Docker daemon:
 
 ```text
-mvn clean package -Pmodule_java,test-jar,xsd,jib -DskipTests
+mvnw clean package -Pmodule_java,test-jar,xsd,jib -DskipTests
 ```
 
 buidling & deploying docker image to DockerHub:
 
 ```text
-mvn -s settings.xml clean package -Pmodule_java,test-jar,xsd,jib -DskipTests -Denv.DOCKERHUB_USERNAME=<username> -Denv.DOCKERHUB_PASSWORD=<password>
+mvnw -s settings.xml clean package -Pmodule_java,test-jar,xsd,jib -DskipTests -Denv.DOCKERHUB_USERNAME=<username> -Denv.DOCKERHUB_PASSWORD=<password>
 ```
 
 run local build/deployment process:
