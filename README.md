@@ -34,9 +34,10 @@ building image to Docker daemon:
 
 ```text
 mvnw clean package -Pmodule_java,test-jar,xsd,jib -DskipTests
+
 ```
 
-buidling & deploying docker image to DockerHub:
+buidling and deploying docker image to DockerHub:
 
 ```text
 mvnw -s settings.xml clean package -Pmodule_java,test-jar,xsd,jib -DskipTests -Denv.DOCKERHUB_USERNAME=<username> -Denv.DOCKERHUB_PASSWORD=<password>
