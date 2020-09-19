@@ -65,7 +65,7 @@ skaffold run -p documents-db-local
 skaffold run -p local
 ```
 
-## Execute
+## Run with containerized PostgreSQL
 
 Run PostgreSQL in docker-container via command:
 
@@ -90,7 +90,7 @@ or simply run:
 scripts/run.bat
 ```
 
-## Deploy with Kubectl:
+## Deploy with Kubectl
 
 #### 1. Start the document service:
 
