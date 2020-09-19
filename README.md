@@ -113,7 +113,7 @@ docker pull alexanderr/ws-documents:0.1.0-SNAPSHOT
 ## Authors
 
 WS-Documents is maintained by:
-* [Alexander_Rogalskiy](https://github.com/AlexRogalskiy) 
+* [Alexander Rogalskiy](https://github.com/AlexRogalskiy) 
 
 with community support please contact with us if you have some question or proposition.
 
