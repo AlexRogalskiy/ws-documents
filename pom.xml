@@ -114,7 +114,7 @@
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-flatten-plugin.version>1.2.2</maven-flatten-plugin.version>
+        <maven-flatten-plugin.version>1.2.5</maven-flatten-plugin.version>
         <maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
         <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
