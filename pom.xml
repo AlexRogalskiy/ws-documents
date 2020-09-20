@@ -59,6 +59,7 @@
         <logback.version>1.2.3</logback.version>
         <awaitility.version>4.0.3</awaitility.version>
         <awaitility-proxy.version>3.1.6</awaitility-proxy.version>
+        <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
 
         <allure.version>2.13.5</allure.version>
         <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
