@@ -7,8 +7,8 @@ on:
 
 jobs:
   update_draft_release:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v5.11.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
