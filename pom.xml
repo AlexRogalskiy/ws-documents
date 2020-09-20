@@ -421,7 +421,7 @@
                 <parallel.tests>2</parallel.tests>
 
                 <unit-tests.skip>${skipTests}</unit-tests.skip>
-                <failIfNoTests>true</failIfNoTests>
+                <unit-tests.fail>${failIfNoTests}</unit-tests.fail>
 
                 <surefire.memory>
                     -Xmx1024m
@@ -493,6 +493,7 @@
                                 <useFile>false</useFile>
                                 <forkedProcessTimeoutInSeconds>21600</forkedProcessTimeoutInSeconds>
                                 <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                                <failIfNoTests>${unit-tests.fail}</failIfNoTests>
                                 <argLine>
                                     @{testAgent}
                                     ${surefire.memory}
@@ -554,7 +555,7 @@
                 <parallel.tests>2</parallel.tests>
 
                 <integration-tests.skip>${skipTests}</integration-tests.skip>
-                <failIfNoTests>true</failIfNoTests>
+                <integration-tests.fail>${failIfNoTests}</integration-tests.fail>
 
                 <failsafe.memory>-Xmx512m</failsafe.memory>
                 <failsafe.timezone>-Duser.timezone=US/Eastern</failsafe.timezone>
@@ -617,6 +618,7 @@
                                 <threadCount>${parallel.tests}</threadCount>
                                 <forkCount>${parallel.tests}</forkCount>
                                 <reuseForks>true</reuseForks>
+                                <failIfNoTests>${integration-tests.fail}</failIfNoTests>
                                 <argLine>
                                     @{itAgent}
                                     ${failsafe.memory}
