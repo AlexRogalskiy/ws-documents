@@ -102,7 +102,7 @@
         <maven-jib-plugin.version>2.5.2</maven-jib-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-git-commit-id-plugin.version>4.0.2</maven-git-commit-id-plugin.version>
-        <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
+        <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
         <maven-spotbugs-plugin.version>4.0.4</maven-spotbugs-plugin.version>
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
     </properties>
