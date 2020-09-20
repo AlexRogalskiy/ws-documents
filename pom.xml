@@ -25,6 +25,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
         <maven.compiler.testSource>${java.version}</maven.compiler.testSource>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+        <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
@@ -39,15 +41,15 @@
         <license.licenseName>default</license.licenseName>
         <license.licenseResolver>${project.baseUri}src/license</license.licenseResolver>
 
+        <jacoco-rule.line.length>100</jacoco-rule.line.length>
+        <jacoco-check.skip>false</jacoco-check.skip>
+        <jacoco.coverage.exclusions>**/application/config/*</jacoco.coverage.exclusions>
+        <jacoco.percentage.instruction>0.20</jacoco.percentage.instruction>
+
         <skipTests>false</skipTests>
         <failIfNoTests>true</failIfNoTests>
         <compile-tests.skip>false</compile-tests.skip>
         <package-tests.skip>true</package-tests.skip>
-        <unit-tests.skip>${skipTests}</unit-tests.skip>
-        <integration-tests.skip>${skipTests}</integration-tests.skip>
-        <parallel.tests>2</parallel.tests>
-        <test-groups.include/>
-
         <allure-report.version>2.13.1</allure-report.version>
 
         <commons.version>0.1.0-SNAPSHOT</commons.version>
@@ -59,14 +61,6 @@
         <awaitility-proxy.version>3.1.6</awaitility-proxy.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
 
-        <javadoc.skip>true</javadoc.skip>
-        <javadoc.properties>
-            -Xdoclint:none
-            -J-Xmx1024m
-            -notimestamp
-            -link http://docs.oracle.com/javase/8/docs/api/
-        </javadoc.properties>
-
         <allure.version>2.13.5</allure.version>
         <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
         <hamcrest.version>2.2</hamcrest.version>
@@ -74,30 +68,10 @@
         <mockito.version>3.5.11</mockito.version>
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <assertj.version>3.17.2</assertj.version>
-
         <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
         <junit-platform.version>1.7.0</junit-platform.version>
         <mockito-junit-jupiter.version>3.5.11</mockito-junit-jupiter.version>
-
-        <test.commands>
-            -Duser.language=en
-            -Duser.country=GB
-            --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
-            --illegal-access=permit
-            --enable-preview
-        </test.commands>
-        <testsuite>test</testsuite>
-        <surefire.memory>
-            -Xmx1024m
-            -Dsun.zip.disableMemoryMapping=true
-        </surefire.memory>
-        <failsafe.memory>-Xmx512m</failsafe.memory>
-        <failsafe.timezone>-Duser.timezone=US/Eastern</failsafe.timezone>
-        <surefire.fileEncoding>-Dfile.encoding=${project.build.sourceEncoding}</surefire.fileEncoding>
-        <surefire.jmxEnabled>-Dcom.sun.management.jmxremote=false</surefire.jmxEnabled>
-        <surefire.stackVersion>-Djava.net.preferIPv4Stack=true</surefire.stackVersion>
-        <surefire.timezone>-Duser.timezone=US/Eastern</surefire.timezone>
 
         <validation-api.version>2.0.1.Final</validation-api.version>
         <guava.version>29.0-jre</guava.version>
@@ -126,6 +100,11 @@
         <maven-jacoco-plugin.version>0.8.6</maven-jacoco-plugin.version>
         <maven-sonar-plugin.version>3.7.0.1746</maven-sonar-plugin.version>
         <maven-jib-plugin.version>2.5.2</maven-jib-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-git-commit-id-plugin.version>4.0.0</maven-git-commit-id-plugin.version>
+        <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
+        <maven-spotbugs-plugin.version>4.0.4</maven-spotbugs-plugin.version>
+        <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
     </properties>
 
     <issueManagement>
@@ -147,6 +126,563 @@
     </ciManagement>
 
     <profiles>
+        <!-- Checkstyle profile -->
+        <profile>
+            <properties>
+                <checkstyle-check.skip>false</checkstyle-check.skip>
+                <checkstyle.version>8.36.1</checkstyle.version>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <version>${maven-checkstyle-plugin.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.puppycrawl.tools</groupId>
+                                <artifactId>checkstyle</artifactId>
+                                <version>${checkstyle.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <failsOnError>true</failsOnError>
+                            <failOnViolation>true</failOnViolation>
+                            <includeTestResources>false</includeTestResources>
+                            <maxAllowedViolations>0</maxAllowedViolations>
+                            <violationSeverity>warning</violationSeverity>
+                            <logViolationsToConsole>true</logViolationsToConsole>
+                            <consoleOutput>true</consoleOutput>
+                            <skip>${checkstyle-check.skip}</skip>
+                            <propertyExpansion>lineLength=${jacoco-rule.line.length}</propertyExpansion>
+                            <configLocation>sun_checks.xml</configLocation>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Find bugs profile -->
+        <profile>
+            <id>find-bugs</id>
+            <properties>
+                <findbugs-check.skip>false</findbugs-check.skip>
+                <spotbugs.version>4.1.2</spotbugs.version>
+            </properties>
+            <build>
+                <plugins>
+                    <!-- Findbugs -->
+                    <plugin>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs-maven-plugin</artifactId>
+                        <version>${maven-spotbugs-plugin.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.github.spotbugs</groupId>
+                                <artifactId>spotbugs</artifactId>
+                                <version>${spotbugs.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <skip>${findbugs-check.skip}</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Compile with debug profile -->
+        <profile>
+            <id>compile-with-debug</id>
+            <properties>
+                <maven.compiler.debug>true</maven.compiler.debug>
+                <maven.compiler.debuglevel>lines,vars,source</maven.compiler.debuglevel>
+                <maven.compiler.verbose>true</maven.compiler.verbose>
+            </properties>
+        </profile>
+
+        <!-- Generate build properties profile -->
+        <profile>
+            <id>generate-build-properties</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/src</exists>
+                </file>
+            </activation>
+            <properties>
+                <ci.build.number/>
+                <ci.build.tag/>
+                <ci.build.url/>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>pl.project13.maven</groupId>
+                            <artifactId>git-commit-id-plugin</artifactId>
+                            <version>${maven-git-commit-id-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>set-git-properties</id>
+                                    <phase>initialize</phase>
+                                    <goals>
+                                        <goal>revision</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                            <configuration>
+                                <prefix>git</prefix>
+                                <dateFormat>yyyy-MM-dd'T'HH:mm:ss.SSSZ</dateFormat>
+                                <verbose>false</verbose>
+                                <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                                <generateGitPropertiesFile>false</generateGitPropertiesFile>
+                                <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                            </configuration>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-antrun-plugin</artifactId>
+                            <version>${maven-antrun-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>generate-build-properties</id>
+                                    <phase>generate-resources</phase>
+                                    <goals>
+                                        <goal>run</goal>
+                                    </goals>
+                                    <configuration>
+                                        <target>
+                                            <mkdir dir="target/classes/"/>
+                                            <propertyfile file="target/classes/build.properties">
+                                                <entry key="pom.name" value="${project.name}"/>
+                                                <entry key="pom.groupId" value="${project.groupId}"/>
+                                                <entry key="pom.artifactId" value="${project.artifactId}"/>
+                                                <entry key="pom.version" value="${project.version}"/>
+                                                <entry key="pom.packaging" value="${project.packaging}"/>
+                                                <entry key="git.branch" value="${git.branch}"/>
+                                                <entry key="git.commit.tags" value="${git.tags}"/>
+                                                <entry key="git.commit.id" value="${git.commit.id}"/>
+                                                <entry key="git.commit.id.describe" value="${git.commit.id.describe}"/>
+                                                <entry key="git.commit.id.abbrev" value="${git.commit.id.abbrev}"/>
+                                                <entry key="git.commit.user.name" value="${git.commit.user.name}"/>
+                                                <entry key="git.commit.user.email" value="${git.commit.user.email}"/>
+                                                <entry key="git.commit.message.full"
+                                                       value="${git.commit.message.full}"/>
+                                                <entry key="git.commit.message.short"
+                                                       value="${git.commit.message.short}"/>
+                                                <entry key="git.commit.time" value="${git.commit.time}"/>
+                                                <entry key="ci.build.number" value="${ci.build.number}"/>
+                                                <entry key="ci.build.tag" value="${ci.build.tag}"/>
+                                                <entry key="ci.build.url" value="${ci.build.url}"/>
+                                            </propertyfile>
+                                        </target>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>commons-net</groupId>
+                                    <artifactId>commons-net</artifactId>
+                                    <version>3.6</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.ant</groupId>
+                                    <artifactId>ant-commons-net</artifactId>
+                                    <version>1.10.8</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.ant</groupId>
+                                    <artifactId>ant-nodeps</artifactId>
+                                    <version>1.8.1</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <plugins>
+                    <plugin>
+                        <groupId>pl.project13.maven</groupId>
+                        <artifactId>git-commit-id-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Unit tests with code coverage profile -->
+        <profile>
+            <id>unit-test</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/src/test</exists>
+                </file>
+            </activation>
+            <properties>
+                <testAgent/>
+                <test-groups.include/>
+                <parallel.tests>2</parallel.tests>
+
+                <unit-tests.skip>${skipTests}</unit-tests.skip>
+                <unit-tests.fail-if-no-tests>${failIfNoTests}</unit-tests.fail-if-no-tests>
+
+                <surefire.memory>
+                    -Xmx1024m
+                    -Dsun.zip.disableMemoryMapping=true
+                </surefire.memory>
+                <surefire.fileEncoding>-Dfile.encoding=${project.build.sourceEncoding}</surefire.fileEncoding>
+                <surefire.jmxEnabled>-Dcom.sun.management.jmxremote=false</surefire.jmxEnabled>
+                <surefire.stackVersion>-Djava.net.preferIPv4Stack=true</surefire.stackVersion>
+                <surefire.timezone>-Duser.timezone=US/Eastern</surefire.timezone>
+                <surefire.commands>
+                    -Duser.language=en
+                    -Duser.country=GB
+                    --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
+                    --illegal-access=permit
+                    --enable-preview
+                </surefire.commands>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jacoco</groupId>
+                            <artifactId>jacoco-maven-plugin</artifactId>
+                            <version>${maven-jacoco-plugin.version}</version>
+                            <configuration>
+                                <excludes>
+                                    <exclude>${jacoco.coverage.exclusions}</exclude>
+                                </excludes>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>before-tests</id>
+                                    <phase>process-test-classes</phase>
+                                    <goals>
+                                        <goal>prepare-agent</goal>
+                                    </goals>
+                                    <configuration>
+                                        <skip>${unit-tests.skip}</skip>
+                                        <destFile>${project.build.directory}/jacoco.exec</destFile>
+                                        <propertyName>testAgent</propertyName>
+                                    </configuration>
+                                </execution>
+                                <execution>
+                                    <id>after-tests</id>
+                                    <phase>test</phase>
+                                    <goals>
+                                        <goal>report</goal>
+                                    </goals>
+                                    <configuration>
+                                        <skip>${unit-tests.skip}</skip>
+                                        <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>${maven-surefire-plugin.version}</version>
+                            <configuration>
+                                <disableXmlReport>true</disableXmlReport>
+                                <skipTests>${unit-tests.skip}</skipTests>
+                                <groups>${test-groups.include}</groups>
+                                <reportFormat>plain</reportFormat>
+                                <testFailureIgnore>false</testFailureIgnore>
+                                <useSystemClassLoader>false</useSystemClassLoader>
+                                <printSummary>true</printSummary>
+                                <useFile>false</useFile>
+                                <forkedProcessTimeoutInSeconds>21600</forkedProcessTimeoutInSeconds>
+                                <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                                <failIfNoTests>${unit-tests.fail-if-no-tests}</failIfNoTests>
+                                <argLine>
+                                    @{testAgent}
+                                    ${surefire.memory}
+                                    ${surefire.fileEncoding}
+                                    ${surefire.jmxEnabled}
+                                    ${surefire.stackVersion}
+                                    ${surefire.timezone}
+                                    ${surefire.commands}
+                                </argLine>
+                                <includes>
+                                    <include/>
+                                </includes>
+                                <properties>
+                                    <systemPropertyVariables>
+                                        <reportDirectory>
+                                            ${project.build.directory}/allure-report
+                                        </reportDirectory>
+                                        <allure.results.directory>
+                                            ${project.build.directory}/allure-results
+                                        </allure.results.directory>
+                                        <java.awt.headless>true</java.awt.headless>
+                                    </systemPropertyVariables>
+                                </properties>
+                            </configuration>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-report-plugin</artifactId>
+                            <version>${maven-surefire-report-plugin.version}</version>
+                            <configuration>
+                                <showSuccess>false</showSuccess>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <!-- Use in lifecycle -->
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Integration tests with code coverage profile -->
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/src/test</exists>
+                </file>
+            </activation>
+            <properties>
+                <itAgent/>
+                <test-groups.include/>
+                <parallel.tests>2</parallel.tests>
+
+                <integration-tests.skip>${skipTests}</integration-tests.skip>
+                <integration-tests.fail-if-no-tests>${failIfNoTests}</integration-tests.fail-if-no-tests>
+
+                <failsafe.memory>-Xmx512m</failsafe.memory>
+                <failsafe.timezone>-Duser.timezone=US/Eastern</failsafe.timezone>
+
+                <failsafe.commands>
+                    -Duser.language=en
+                    -Duser.country=GB
+                    --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
+                    --illegal-access=permit
+                    --enable-preview
+                </failsafe.commands>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jacoco</groupId>
+                            <artifactId>jacoco-maven-plugin</artifactId>
+                            <version>${maven-jacoco-plugin.version}</version>
+                            <configuration>
+                                <excludes>
+                                    <exclude>${jacoco.coverage.exclusions}</exclude>
+                                </excludes>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>before-tests</id>
+                                    <phase>pre-integration-test</phase>
+                                    <goals>
+                                        <goal>prepare-agent-integration</goal>
+                                    </goals>
+                                    <configuration>
+                                        <skip>${integration-tests.skip}</skip>
+                                        <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+                                        <propertyName>itAgent</propertyName>
+                                    </configuration>
+                                </execution>
+                                <execution>
+                                    <id>after-tests</id>
+                                    <phase>post-integration-test</phase>
+                                    <goals>
+                                        <goal>report-integration</goal>
+                                    </goals>
+                                    <configuration>
+                                        <skip>${integration-tests.skip}</skip>
+                                        <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-failsafe-plugin</artifactId>
+                            <version>${maven-failsafe-plugin.version}</version>
+                            <configuration>
+                                <disableXmlReport>true</disableXmlReport>
+                                <skipTests>${integration-tests.skip}</skipTests>
+                                <groups>${test-groups.include}</groups>
+                                <threadCount>${parallel.tests}</threadCount>
+                                <forkCount>${parallel.tests}</forkCount>
+                                <reuseForks>true</reuseForks>
+                                <argLine>
+                                    @{itAgent}
+                                    ${failsafe.memory}
+                                    ${failsafe.timezone}
+                                    ${failsafe.commands}
+                                </argLine>
+                                <useFile>false</useFile>
+                                <reportFormat>plain</reportFormat>
+                                <parallel>classes</parallel>
+                                <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                                <trimStackTrace>false</trimStackTrace>
+                                <failIfNoTests>${integration-tests.fail-if-no-tests}</failIfNoTests>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>integration-test</id>
+                                    <goals>
+                                        <goal>integration-test</goal>
+                                        <goal>verify</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Source profile -->
+        <profile>
+            <id>source</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-source-plugin</artifactId>
+                            <version>${maven-source-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-source</id>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>jar-no-fork</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Javadoc profile -->
+        <profile>
+            <id>javadoc</id>
+            <properties>
+                <javadoc.properties>
+                    -Xdoclint:none
+                    -J-Xmx1024m
+                    -notimestamp
+                    -link http://docs.oracle.com/javase/8/docs/api/
+                </javadoc.properties>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>${maven-javadoc-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-javadoc</id>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>jar</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>xml-maven-plugin</artifactId>
+                            <version>${maven-xml-plugin.version}</version>
+                            <configuration>
+                                <transformationSets>
+                                    <transformationSet>
+                                        <dir>${project.build.directory}/generated-resources/xml-javadoc</dir>
+                                        <includes>
+                                            <include>${project.artifactId}-${project.version}-javadoc.xml</include>
+                                        </includes>
+                                        <outputDir>${project.build.directory}/generated-resources/xml-javadoc
+                                        </outputDir>
+                                    </transformationSet>
+                                </transformationSets>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <id>transform-xmljavadoc</id>
+                                    <phase>generate-resources</phase>
+                                    <goals>
+                                        <goal>transform</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <!-- Use in lifecycle -->
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Jib profile -->
         <profile>
             <id>jib</id>
@@ -429,44 +965,6 @@
             </properties>
         </profile>
 
-        <!-- Javadoc profile -->
-        <profile>
-            <id>javadoc</id>
-            <properties>
-                <javadoc.skip>false</javadoc.skip>
-            </properties>
-            <!-- Transform xml javadoc to stripped down version containing only class/interface comments and tags-->
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>xml-maven-plugin</artifactId>
-                        <version>${maven-xml-plugin.version}</version>
-                        <configuration>
-                            <transformationSets>
-                                <transformationSet>
-                                    <dir>${project.build.directory}/generated-resources/xml-javadoc</dir>
-                                    <includes>
-                                        <include>${project.artifactId}-${project.version}-javadoc.xml</include>
-                                    </includes>
-                                    <outputDir>${project.build.directory}/generated-resources/xml-javadoc</outputDir>
-                                </transformationSet>
-                            </transformationSets>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>transform-xmljavadoc</id>
-                                <phase>generate-resources</phase>
-                                <goals>
-                                    <goal>transform</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
         <!-- Development profile -->
         <profile>
             <id>dev</id>
@@ -747,20 +1245,6 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>${maven-gpg-plugin.version}</version>
                 <executions>
@@ -823,15 +1307,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${maven-surefire-report-plugin.version}</version>
-                <configuration>
-                    <showSuccess>false</showSuccess>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${maven-sonar-plugin.version}</version>
@@ -843,103 +1318,41 @@
                 <version>${maven-jacoco-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>pre-unit-tests</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
+                        <configuration>
+                            <propertyName>jacocoArgLine</propertyName>
+                        </configuration>
                     </execution>
                     <execution>
-                        <id>report</id>
-                        <phase>test</phase>
+                        <id>post-unit-test</id>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <disableXmlReport>true</disableXmlReport>
-                    <skipTests>${unit-tests.skip}</skipTests>
-                    <groups>${test-groups.include}</groups>
-                    <reportFormat>plain</reportFormat>
-                    <testFailureIgnore>false</testFailureIgnore>
-                    <useSystemClassLoader>false</useSystemClassLoader>
-                    <printSummary>true</printSummary>
-                    <useFile>false</useFile>
-                    <forkedProcessTimeoutInSeconds>21600</forkedProcessTimeoutInSeconds>
-                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                    <failIfNoTests>false</failIfNoTests>
-                    <argLine>
-                        ${surefire.memory}
-                        ${surefire.fileEncoding}
-                        ${surefire.jmxEnabled}
-                        ${surefire.stackVersion}
-                        ${surefire.timezone}
-                        ${test.commands}
-                    </argLine>
-                    <includes>
-                        <include/>
-                    </includes>
-                    <systemProperties>
-                        <mockserver.logLevel>ERROR</mockserver.logLevel>
-                        <mockserver.disableSystemOut>true</mockserver.disableSystemOut>
-                        <mockserver.nioEventLoopThreadCount>1</mockserver.nioEventLoopThreadCount>
-                    </systemProperties>
-                    <properties>
-                        <systemPropertyVariables>
-                            <reportDirectory>
-                                ${project.build.directory}/allure-report
-                            </reportDirectory>
-                            <allure.results.directory>
-                                ${project.build.directory}/allure-results
-                            </allure.results.directory>
-                            <java.awt.headless>true</java.awt.headless>
-                        </systemPropertyVariables>
-                    </properties>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-failsafe-plugin.version}</version>
-                <configuration>
-                    <disableXmlReport>true</disableXmlReport>
-                    <skipTests>${integration-tests.skip}</skipTests>
-                    <groups>${test-groups.include}</groups>
-                    <threadCount>${parallel.tests}</threadCount>
-                    <forkCount>${parallel.tests}</forkCount>
-                    <systemProperties>
-                        <mockserver.logLevel>ERROR</mockserver.logLevel>
-                        <mockserver.disableSystemOut>true</mockserver.disableSystemOut>
-                        <mockserver.nioEventLoopThreadCount>20</mockserver.nioEventLoopThreadCount>
-                        <mockserver.webSocketClientEventLoopThreadCount>5
-                        </mockserver.webSocketClientEventLoopThreadCount>
-                    </systemProperties>
-                    <reuseForks>true</reuseForks>
-                    <argLine>
-                        ${failsafe.memory}
-                        ${failsafe.timezone}
-                        ${test.commands}
-                    </argLine>
-                    <useFile>false</useFile>
-                    <reportFormat>plain</reportFormat>
-                    <parallel>classes</parallel>
-                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                    <trimStackTrace>false</trimStackTrace>
-                    <failIfNoTests>false</failIfNoTests>
-                </configuration>
-                <executions>
                     <execution>
-                        <id>integration-test</id>
+                        <id>default-jacoco-check</id>
                         <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
+                            <goal>check</goal>
                         </goals>
+                        <configuration>
+                            <skip>${jacoco-check.skip}</skip>
+                            <rules>
+                                <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit implementation="org.jacoco.report.check.Limit">
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco.percentage.instruction}</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
