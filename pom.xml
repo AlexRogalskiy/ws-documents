@@ -134,7 +134,7 @@
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>flatten-maven-plugin</artifactId>
                         <version>${maven-flatten-plugin.version}</version>
-                        <inherited>true</inherited>`
+                        <inherited>true</inherited>
                         <executions>
                             <execution>
                                 <id>flatten</id>
