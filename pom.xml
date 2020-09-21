@@ -128,6 +128,7 @@
         <maven-toolchains-plugin.version>3.0.0</maven-toolchains-plugin.version>
         <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
         <maven-spotbugs-plugin.version>4.0.4</maven-spotbugs-plugin.version>
+        <maven-findbugs-plugin.version>3.0.5</maven-findbugs-plugin.version>
         <maven-qulice-plugin.version>0.18.19</maven-qulice-plugin.version>
         <maven-dependency-check-plugin.version>6.0.1</maven-dependency-check-plugin.version>
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
@@ -285,6 +286,16 @@
             <id>checkstyle</id>
             <properties>
                 <checkstyle-check.skip>false</checkstyle-check.skip>
+                <checkstyle.consoleOutput>true</checkstyle.consoleOutput>
+                <checkstyle.failOnError>true</checkstyle.failOnError>
+                <checkstyle.failOnViolation>true</checkstyle.failOnViolation>
+                <checkstyle.enableSummary>false</checkstyle.enableSummary>
+                <checkstyle.includeResources>false</checkstyle.includeResources>
+                <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
+                <checkstyle.logToConsole>true</checkstyle.logToConsole>
+                <checkstyle.linkXRef>false</checkstyle.linkXRef>
+                <checkstyle.violationSeverity>warning</checkstyle.violationSeverity>
+
                 <checkstyle.version>8.36.1</checkstyle.version>
             </properties>
             <build>
@@ -301,25 +312,37 @@
                             </dependency>
                         </dependencies>
                         <configuration>
+                            <configLocation>${project.basedir}/checkstyle/checkstyle.xml</configLocation>
+                            <suppressionsLocation>${project.basedir}/checkstyle/checkstyle-suppression.xml
+                            </suppressionsLocation>
+                            <failsOnError>${checkstyle.failOnError}</failsOnError>
+                            <failOnViolation>${checkstyle.failOnViolation}</failOnViolation>
+                            <enableRulesSummary>${checkstyle.enableSummary}</enableRulesSummary>
+                            <includeResources>${checkstyle.includeResources}</includeResources>
+                            <includeTestSourceDirectory>${checkstyle.includeTestSourceDirectory}
+                            </includeTestSourceDirectory>
+                            <logViolationsToConsole>${checkstyle.logToConsole}</logViolationsToConsole>
                             <encoding>${project.build.sourceEncoding}</encoding>
-                            <failsOnError>true</failsOnError>
-                            <failOnViolation>true</failOnViolation>
-                            <includeTestResources>false</includeTestResources>
+                            <consoleOutput>${checkstyle.consoleOutput}</consoleOutput>
+                            <violationSeverity>${checkstyle.violationSeverity}</violationSeverity>
+                            <linkXRef>${checkstyle.linkXRef}</linkXRef>
                             <maxAllowedViolations>0</maxAllowedViolations>
-                            <violationSeverity>warning</violationSeverity>
-                            <logViolationsToConsole>true</logViolationsToConsole>
-                            <consoleOutput>true</consoleOutput>
+                            <includeTestResources>false</includeTestResources>
                             <skip>${checkstyle-check.skip}</skip>
                             <propertyExpansion>lineLength=${jacoco-rule.line.length}</propertyExpansion>
-                            <configLocation>sun_checks.xml</configLocation>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>validate</id>
+                                <id>checkstyle-validation</id>
                                 <phase>validate</phase>
+                                <inherited>true</inherited>
                                 <goals>
                                     <goal>check</goal>
                                 </goals>
+                                <configuration>
+                                    <consoleOutput>true</consoleOutput>
+                                    <failsOnError>true</failsOnError>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
@@ -432,6 +455,23 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                        <version>${maven-findbugs-plugin.version}</version>
+                        <configuration>
+                            <findbugsXmlOutput>true</findbugsXmlOutput>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
                         <groupId>com.qulice</groupId>
                         <artifactId>qulice-maven-plugin</artifactId>
                         <version>${maven-qulice-plugin.version}</version>
@@ -446,6 +486,7 @@
                             </execution>
                         </executions>
                     </plugin>
+
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs-maven-plugin</artifactId>
