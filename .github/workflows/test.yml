@@ -23,7 +23,7 @@ jobs:
           chmod +x ./mvnw
       - name: Maven Verify
         run: |
-          ./mvnw clean verify --lax-checksums -P"module_java","test-jar","xsd","unit-test","integration-test"
+          ./mvnw clean verify --errors --batch-mode --lax-checksums -P"module_java","test-jar","xsd","unit-test","integration-test"
       - name: Test Coverage
         uses: codecov/codecov-action@v1
         with:

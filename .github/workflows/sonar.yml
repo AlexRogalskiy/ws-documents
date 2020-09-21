@@ -31,4 +31,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         #       run sonar maven plugin:
         run: |
-          ./mvnw -B verify sonar:sonar --file pom.xml --lax-checksums -DskipTests=true -P"module_java","test-jar","xsd" -Dsonar.projectKey=ws-documents -Dsonar.organization=alexrogalskiy-github -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./build/site/jacoco/jacoco.xml
+          ./mvnw verify sonar:sonar --file pom.xml --errors --batch-mode --lax-checksums -DskipTests=true -P"module_java","test-jar","xsd" -Dsonar.projectKey=ws-documents -Dsonar.organization=alexrogalskiy-github -Dsonar.host.url=https://sonarcloud.io/ -Dsonar.login=$SONAR_TOKEN -Dsonar.coverage.jacoco.xmlReportPaths=./build/site/jacoco/jacoco.xml
