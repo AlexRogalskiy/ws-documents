@@ -35,7 +35,7 @@ jobs:
 
       - name: Maven Package
         run: |
-          ./mvnw clean compile package --errors --batch-mode -DskipTests=true -P"module_java","test-jar","xsd"
+          ./mvnw clean compile package --errors --batch-mode -DskipTests=true -P"module_java","test-jar","xsd","dev"
 
       - name: Set global env
         id: global_env

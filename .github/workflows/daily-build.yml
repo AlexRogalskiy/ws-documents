@@ -25,7 +25,7 @@ jobs:
           packageUser: ${{ github.actor }}
           packagePAT: ${{ secrets.GITHUB_TOKEN }}
         timeout-minutes: 20
-        run: mvn clean package --errors --batch-mode --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd"
+        run: mvn clean package --errors --batch-mode --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd","dev"
   windows-build:
     runs-on: windows-latest
     timeout-minutes: 30
@@ -46,4 +46,4 @@ jobs:
           packageUser: ${{ github.actor }}
           packagePAT: ${{ secrets.GITHUB_TOKEN }}
         timeout-minutes: 20
-        run: mvn clean package --errors --batch-mode --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd"
+        run: mvn clean package --errors --batch-mode --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd","dev"
