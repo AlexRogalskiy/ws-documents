@@ -1,0 +1,3 @@
+files:
+  - source: modules/**/src/main/resources/ValidationMessages.properties
+    translation: modules/**/src/main/resources/ValidationMessages_%language%.properties
