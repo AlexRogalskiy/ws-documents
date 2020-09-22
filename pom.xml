@@ -200,6 +200,32 @@
             </build>
         </profile>
 
+        <!-- JVCN profile -->
+        <profile>
+            <id>jvcn</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>us.vchain</groupId>
+                        <artifactId>jvcn-maven-plugin</artifactId>
+                        <version>${maven-jvcn-plugin.version}</version>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>audit</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>audit</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Flatten pom profile -->
         <profile>
             <id>flatten-pom</id>
@@ -2012,24 +2038,6 @@
                         <phase>compile</phase>
                         <goals>
                             <goal>active-profiles</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>us.vchain</groupId>
-                <artifactId>jvcn-maven-plugin</artifactId>
-                <version>${maven-jvcn-plugin.version}</version>
-                <configuration>
-                    <failOnError>false</failOnError>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>audit</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>audit</goal>
                         </goals>
                     </execution>
                 </executions>
