@@ -1,4 +1,4 @@
-name: Document-Generator-Web-Service-jib
+name: Jib
 
 on:
   repository_dispatch:

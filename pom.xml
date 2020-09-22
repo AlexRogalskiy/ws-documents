@@ -131,7 +131,10 @@
         <maven-findbugs-plugin.version>3.0.5</maven-findbugs-plugin.version>
         <maven-qulice-plugin.version>0.18.19</maven-qulice-plugin.version>
         <maven-dependency-check-plugin.version>6.0.1</maven-dependency-check-plugin.version>
+        <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
         <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+        <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
+        <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
     </properties>
 
     <issueManagement>
@@ -1521,6 +1524,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-changes-plugin</artifactId>
+                <version>${maven-changes-plugin.version}</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -1531,7 +1535,20 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>${maven-plugin-plugin.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${maven-project-info-reports-plugin.version}</version>
                 <configuration>
                     <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
                 </configuration>
@@ -1693,8 +1710,8 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven-release-plugin.version}</version>
                 <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
                     <mavenExecutorId>forked-path</mavenExecutorId>
-                    <tagNameFormat>${project.version}</tagNameFormat>
                     <mavenExecutorId>forked-path</mavenExecutorId>
                     <useReleaseProfile>false</useReleaseProfile>
                     <releaseProfiles>release</releaseProfiles>

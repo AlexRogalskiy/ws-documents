@@ -1,4 +1,4 @@
-name: Document-Generator-Web-Service-test
+name: Test
 
 on:
   pull_request:

@@ -1,4 +1,4 @@
-name: Document-Generator-Web-Service-jdk
+name: Jdk
 
 on:
   push:
