@@ -102,6 +102,8 @@
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-flatten-plugin.version>1.2.5</maven-flatten-plugin.version>
         <maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
+        <maven-fizzed-plugin.version>1.0.6</maven-fizzed-plugin.version>
+        <maven-versionizer-plugin.version>1.0.6</maven-versionizer-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
@@ -1721,6 +1723,44 @@
                     <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.fizzed</groupId>
+                <artifactId>fizzed-watcher-maven-plugin</artifactId>
+                <version>${maven-fizzed-plugin.version}</version>
+                <configuration>
+                    <touchFile>${project.build.directory}/classes/watcher.txt</touchFile>
+                    <watches>
+                        <watch>
+                            <directory>${maven.multiModuleProjectDirectory}/modules/</directory>
+                        </watch>
+                    </watches>
+                    <goals>
+                        <goal>compile</goal>
+                        <goal>process-classes</goal>
+                    </goals>
+                    <profiles>
+                        <profile>optional-profile-to-activate</profile>
+                    </profiles>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.fizzed</groupId>
+                <artifactId>fizzed-versionizer-maven-plugin</artifactId>
+                <version>${maven-versionizer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-version-class</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <javaPackage>com.sensiblemetrics.api.ws</javaPackage>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
