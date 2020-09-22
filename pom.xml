@@ -509,7 +509,7 @@
                             <effort>Max</effort>
                             <threshold>Low</threshold>
                             <xmlOutput>false</xmlOutput>
-                            <excludeFilterFile>${project.basedir}/checkstyle/findbugs.xml</excludeFilterFile>
+                            <excludeFilterFile>${project.basedir}/checkstyle/excludeFilter.xml</excludeFilterFile>
                             <skip>${findbugs-check.skip}</skip>
                         </configuration>
                         <executions>
