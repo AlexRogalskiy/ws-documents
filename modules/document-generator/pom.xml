@@ -23,6 +23,7 @@
 
         <hikari.version>3.4.5</hikari.version>
         <liquibase.version>4.0.0</liquibase.version>
+        <liquibase-slf4j.version>3.0.0</liquibase-slf4j.version>
         <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
         <p6spy.version>3.9.1</p6spy.version>
         <modelmapper.version>2.3.8</modelmapper.version>
@@ -129,6 +130,14 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <!-- Xsd profile -->
+        <profile>
+            <id>debug</id>
+            <properties>
+                <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
+            </properties>
         </profile>
 
         <!-- Xsd profile -->
@@ -336,6 +345,13 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+        </dependency>
+
+        <!-- Liquibase library dependencies -->
+        <dependency>
+            <groupId>com.mattbertolini</groupId>
+            <artifactId>liquibase-slf4j</artifactId>
+            <version>${liquibase-slf4j.version}</version>
         </dependency>
 
         <!-- Hibernate ORM library dependencies -->

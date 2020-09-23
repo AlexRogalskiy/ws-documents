@@ -9,6 +9,8 @@ server:
     min-response-size: 1024
 
 spring:
+  profiles:
+    include: document, addressing
   application:
     name: "Document-Generator-WebService"
   messages:
@@ -30,7 +32,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:p6spy:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:documentdb}
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USER}
+    username: ${DB_USER:postgres}
     password: ${DB_PASS}
     sql-script-encoding: UTF-8
     initialization-mode: never
@@ -61,10 +63,10 @@ spring:
     open-in-view: false
     generate-ddl: false
     database: POSTGRESQL
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         validator:
@@ -111,41 +113,13 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
 
-ws-addressing:
-  route:
-    namespace: "http://api.sensiblemetrics.com/ws/"
-    endpoints:
-      document:
-        port-type-name: "DocumentPort"
-        service-name: "DocumentService"
-        location-uri: "/ws"
-        target-namespace: "http://api.sensiblemetrics.com/ws/document-generator-web-service"
-        resource-pattern: "schemas/document.xsd"
-
-ws-document:
-  storage:
-    base-path: ${DOC_STORAGE_PATH:${TEMP}}
-  template:
-    name-pattern: ${DOC_TEMPLATE_NAME:templates/invoice.docx}
-    format:
-      marker-mappings:
-        id:
-          name: "id"
-          pattern: "# %s"
-        company:
-          name: "company"
-        partner:
-          name: "partner"
-        product:
-          name: "product"
-        amount:
-          name: "amount"
-        price:
-          name: "price"
-        data:
-          name: "data"
-        date:
-          name: "date"
-          pattern: "yyyy-MM-dd HH:mm:ss"
-        total:
-          name: "total"
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
+      base-path: /actuator
