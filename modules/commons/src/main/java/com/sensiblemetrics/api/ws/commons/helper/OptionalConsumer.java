@@ -183,7 +183,7 @@ public class OptionalConsumer<T> {
      */
     @NonNull
     public Stream<T> stream() {
-        return this.optional.stream();
+        return this.optional.map(Stream::of).orElseGet(Stream::empty);
     }
 
     /**

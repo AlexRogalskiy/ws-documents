@@ -128,10 +128,14 @@ management:
     git:
       mode: full
   endpoint:
+    beans:
+      cache:
+        time-to-live: 10s
     shutdown:
       enabled: true
     health:
       show-details: ALWAYS
+      show-components: ALWAYS
       probes:
         enabled: true
   endpoints:

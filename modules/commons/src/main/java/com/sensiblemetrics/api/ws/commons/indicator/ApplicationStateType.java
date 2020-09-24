@@ -22,7 +22,10 @@ package com.sensiblemetrics.api.ws.commons.indicator;
 
 import org.springframework.lang.NonNull;
 
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * Application state {@link Enum} type
@@ -44,6 +47,6 @@ public enum ApplicationStateType {
      */
     @NonNull
     public static List<ApplicationStateType> valuesList() {
-        return List.of(ApplicationStateType.values());
+        return Collections.unmodifiableList(asList(ApplicationStateType.values()));
     }
 }

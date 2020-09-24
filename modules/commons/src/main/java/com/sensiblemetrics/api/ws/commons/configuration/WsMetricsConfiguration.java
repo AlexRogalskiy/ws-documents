@@ -75,7 +75,7 @@ public abstract class WsMetricsConfiguration {
     public MeterRegistryCustomizer<MeterRegistry> metricsCommonTagsCustomizer(final WsMetricsProperty metricsProperty) {
         return registry -> OptionalConsumer.of(metricsProperty.getDefaults().getTags())
                 .ifPresent(value -> registry.config().commonTags(value))
-                .ifNotPresent(() -> registry.config().commonTags(metricsProperty.getDefaults().getSimpleTags().toArray(String[]::new)));
+                .ifNotPresent(() -> registry.config().commonTags(metricsProperty.getDefaults().getSimpleTags().toArray(new String[0])));
     }
 
     @Bean(METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
