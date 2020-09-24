@@ -122,6 +122,10 @@ spring:
     exclude: org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
 
 management:
+  server:
+    servlet:
+      context-path: /management
+    port: 8088
   info:
     build:
       enabled: false
