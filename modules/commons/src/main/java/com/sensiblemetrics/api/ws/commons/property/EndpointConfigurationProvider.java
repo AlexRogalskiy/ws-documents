@@ -12,13 +12,21 @@ import static com.sensiblemetrics.api.ws.commons.exception.EndpointConfiguration
 @FunctionalInterface
 public interface EndpointConfigurationProvider {
     /**
+     * Returns {@link WsRouteProperty.WsEndpoint} configuration by input {@link String} endpoint name
+     *
+     * @param endpointName initial input {@link String} endpoint name to fetch by
+     * @return {@link WsRouteProperty.WsEndpoint} configuration
+     */
+    WsRouteProperty.WsEndpoint getEndpoint(final String endpointName);
+
+    /**
      * Returns {@link WsRouteProperty.WsEndpoint} configuration by input {@link String} endpoint name or throw {@link EndpointConfigurationException}
      *
      * @param endpointName initial input {@link String} endpoint name to fetch by
      * @return {@link WsRouteProperty.WsEndpoint} configuration
      * @throws EndpointConfigurationException if endpoint configuration is not available
      */
-    default WsRouteProperty.WsEndpoint getIfAvailable(final String endpointName) {
+    default WsRouteProperty.WsEndpoint getOrThrow(final String endpointName) {
         try {
             return Optional.ofNullable(this.getEndpoint(endpointName))
                     .orElseThrow(() -> throwInvalidConfiguration(endpointName));
@@ -26,12 +34,4 @@ public interface EndpointConfigurationProvider {
             throw new EndpointConfigurationException(ex);
         }
     }
-
-    /**
-     * Returns {@link WsRouteProperty.WsEndpoint} configuration by input {@link String} endpoint name
-     *
-     * @param endpointName initial input {@link String} endpoint name to fetch by
-     * @return {@link WsRouteProperty.WsEndpoint} configuration
-     */
-    WsRouteProperty.WsEndpoint getEndpoint(final String endpointName);
 }

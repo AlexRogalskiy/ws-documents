@@ -118,8 +118,41 @@ management:
     export:
       prometheus:
         enabled: true
+        step: 3m
+        pushgateway:
+          enabled: true
+      jmx:
+        enabled: false
+      simple:
+        enabled: true
+        mode: step
+    enable:
+      jvm: false
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true
+      client:
+        max-uri-tags: 5
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+      slo:
+        http:
+          server:
+            requests: 20ms,50ms
   endpoints:
     web:
       exposure:
         include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
       base-path: /actuator
+
+ws-metrics:
+  defaults:
+    description: WebDocs Generator Service
+    tags:
+      - key: scope
+        value: WebDocs

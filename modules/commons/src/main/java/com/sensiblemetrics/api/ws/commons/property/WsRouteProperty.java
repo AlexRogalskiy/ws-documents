@@ -19,9 +19,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_DELIMITER;
-import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PREFIX;
-
 @Data
 @Validated
 @Accessors(chain = true)
@@ -32,7 +29,7 @@ public class WsRouteProperty {
     /**
      * Default endpoints property prefix
      */
-    public static final String PROPERTY_PREFIX = DEFAULT_PREFIX + DEFAULT_DELIMITER + "route";
+    public static final String PROPERTY_PREFIX = "ws-addressing.route";
 
     /**
      * Default url mappings
