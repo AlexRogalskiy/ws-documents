@@ -14,11 +14,12 @@ import static java.util.Arrays.asList;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorTemplateType {
-    SERVICE_UNAVAILABLE("error-30", "error.service.unavailable"),
-    SERVICE_OPERATION_ERROR("error-40", "error.operation.invalid"),
-    BAD_REQUEST("error-50", "error.request.invalid"),
-    DOCUMENT_PROCESSING_ERROR("error-50", "error.document.processing.invalid"),
-    INVALID_ENDPOINT_CONFIGURATION("error-60", "error.endpoint.configuration.invalid");
+    SERVICE_UNAVAILABLE("error-0030", "error.service.unavailable"),
+    SERVICE_OPERATION_ERROR("error-0040", "error.operation.invalid"),
+    BAD_REQUEST("error-0050", "error.request.invalid"),
+    DOCUMENT_PROCESSING_ERROR("error-0060", "error.document.processing.invalid"),
+    INVALID_ENDPOINT_CONFIGURATION("error-0070", "error.endpoint.configuration.invalid"),
+    INVALID_ENDPOINT_SECURITY_CONFIGURATION("error-0080", "error.endpoint.security.configuration.invalid");
 
     /**
      * Default {@link String} error code

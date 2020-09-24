@@ -16,10 +16,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.isNull;
 
@@ -141,5 +142,35 @@ public class ServiceUtils {
     public static <E extends Throwable> void doThrow(final Throwable throwable) throws E {
         Assert.notNull(throwable, "Throwable should not be null");
         throw (E) throwable;
+    }
+
+    /**
+     * Returns {@link Stream} by input {@link Enumeration}
+     *
+     * @param enumeration - initial input {@link Enumeration} to build stream from
+     * @param <T>         type of enumerable element
+     * @return {@link Stream} instance
+     */
+    @NonNull
+    public static <T> Stream<T> enumerationAsStream(final Enumeration<T> enumeration) {
+        Assert.notNull(enumeration, "Enumeration should not be null");
+
+        return StreamSupport.stream(
+                new Spliterators.AbstractSpliterator<>(Long.MAX_VALUE, Spliterator.ORDERED) {
+                    public boolean tryAdvance(final Consumer<? super T> action) {
+                        if (enumeration.hasMoreElements()) {
+                            action.accept(enumeration.nextElement());
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public void forEachRemaining(final Consumer<? super T> action) {
+                        while (enumeration.hasMoreElements()) {
+                            action.accept(enumeration.nextElement());
+                        }
+                    }
+                }, false);
     }
 }

@@ -209,3 +209,25 @@ info:
       vendor: ${java.specification.vendor}
       vm-name: ${java.vm.name}
       runtime-version: ${java.runtime.version}
+
+logging:
+  headers:
+    names: Accept,Content-Type,Content-Length
+    pattern: ".*"
+  handlers:
+    logging:
+      enabled: true
+    tracking-time:
+      enabled: true
+
+actuator:
+  endpoints:
+    health:
+      names: health
+      roles: ROLE_USER
+    status:
+      names: status
+      roles: ROLE_USER
+    threaddump:
+      names: threaddump
+      roles: ROLE_ADMIN
