@@ -156,7 +156,7 @@ public class ServiceUtils {
         Assert.notNull(enumeration, "Enumeration should not be null");
 
         return StreamSupport.stream(
-                new Spliterators.AbstractSpliterator<>(Long.MAX_VALUE, Spliterator.ORDERED) {
+                new Spliterators.AbstractSpliterator<T>(Long.MAX_VALUE, Spliterator.ORDERED) {
                     public boolean tryAdvance(final Consumer<? super T> action) {
                         if (enumeration.hasMoreElements()) {
                             action.accept(enumeration.nextElement());

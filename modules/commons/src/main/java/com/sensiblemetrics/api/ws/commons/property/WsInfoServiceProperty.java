@@ -1,6 +1,7 @@
 package com.sensiblemetrics.api.ws.commons.property;
 
 import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotEmpty;
+import com.sensiblemetrics.api.ws.commons.helper.MapBuilder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -69,7 +70,11 @@ public class WsInfoServiceProperty {
         /**
          * Default {@link Map} collection of metric entries
          */
-        private static final Map<String, String> DEFAULT_METRIC_ENTRIES = Map.of("process-uptime", PROCESS_UPTIME_METRIC, "logback-events", LOGBACK_EVENTS_METRIC);
+        private static final Map<String, String> DEFAULT_METRIC_ENTRIES = MapBuilder
+                .map(String.class, String.class)
+                .entry("process-uptime", PROCESS_UPTIME_METRIC)
+                .entry("logback-events", LOGBACK_EVENTS_METRIC)
+                .build();
 
         /**
          * Default {@link Map} collection of metrics
