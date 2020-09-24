@@ -18,20 +18,32 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF NOT ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.sensiblemetrics.api.ws.commons.annotation;
+package com.sensiblemetrics.api.ws.commons.indicator;
 
-import com.sensiblemetrics.api.ws.commons.configuration.WsMetricsConfiguration;
-import org.springframework.context.annotation.Import;
+import org.springframework.lang.NonNull;
 
-import java.lang.annotation.*;
+import java.util.List;
 
 /**
- * Metrics configurator annotation
+ * Application state {@link Enum} type
  */
-@Documented
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@Import(WsMetricsConfiguration.class)
-public @interface EnableWsMetrics {
+public enum ApplicationStateType {
+    /**
+     * Application is up and running
+     */
+    OK,
+    /**
+     * Application is not running or suspended
+     */
+    DOWN;
+
+    /**
+     * Returns {@link List} of all {@link ApplicationStateType}s
+     *
+     * @return {@link List} of all {@link ApplicationStateType}s
+     */
+    @NonNull
+    public static List<ApplicationStateType> valuesList() {
+        return List.of(ApplicationStateType.values());
+    }
 }

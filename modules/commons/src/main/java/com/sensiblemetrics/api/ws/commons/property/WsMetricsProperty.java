@@ -26,7 +26,7 @@ import java.util.Map;
 @Accessors(chain = true)
 @ConfigurationProperties(prefix = WsMetricsProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("Paragon MicroServices Commons Metrics configuration properties")
+@Description("SensibleMetrics Commons Web Service Metrics configuration properties")
 public class WsMetricsProperty {
     /**
      * Default metrics property prefix

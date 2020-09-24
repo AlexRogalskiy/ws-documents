@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.commons.configuration;
 
+import com.sensiblemetrics.api.ws.commons.annotation.ConditionalOnMissingBean;
 import com.sensiblemetrics.api.ws.commons.property.WsMetricsProperty;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
@@ -14,7 +15,6 @@ import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCusto
 import org.springframework.boot.actuate.metrics.web.servlet.WebMvcTagsContributor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -34,15 +34,17 @@ import java.util.stream.Collectors;
 @EnableConfigurationProperties(WsMetricsProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Commons Web Service Metrics configuration")
-public abstract class WsMetricConfiguration {
+public abstract class WsMetricsConfiguration {
     /**
      * Default metrics bean naming conventions
      */
+    public static final String MEMORY_METRICS_METER_BINDER_BEAN_NAME = "processMemoryMetrics";
+    public static final String THREAD_METER_BINDER_BEAN_NAME = "processThreadMetrics";
     public static final String METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME = "metricsCommonTagsCustomizer";
     public static final String METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME = "namingConventionCustomizer";
     public static final String METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME = "webMvcTagsContributor";
 
-    @Bean
+    @Bean(MEMORY_METRICS_METER_BINDER_BEAN_NAME)
     @ConditionalOnMissingBean
     @ConditionalOnClass(ProcessMemoryMetrics.class)
     @Description("Process memory metrics configuration bean")
@@ -50,7 +52,7 @@ public abstract class WsMetricConfiguration {
         return new ProcessMemoryMetrics();
     }
 
-    @Bean
+    @Bean(THREAD_METER_BINDER_BEAN_NAME)
     @ConditionalOnMissingBean
     @ConditionalOnClass(ProcessThreadMetrics.class)
     @Description("Process thread metrics configuration bean")
@@ -59,7 +61,7 @@ public abstract class WsMetricConfiguration {
     }
 
     @Bean(METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME)
-    @ConditionalOnMissingBean(name = METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME)
+    @ConditionalOnMissingBean
     @ConditionalOnBean(WsMetricsProperty.class)
     @Description("Metrics naming convention customizer bean")
     public MeterRegistryCustomizer<MeterRegistry> metricsNamingConventionCustomizer(final WsMetricsProperty metricsProperty) {
@@ -67,7 +69,7 @@ public abstract class WsMetricConfiguration {
     }
 
     @Bean(METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME)
-    @ConditionalOnMissingBean(name = METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME)
+    @ConditionalOnMissingBean
     @ConditionalOnBean(WsMetricsProperty.class)
     @Description("Metrics common tags customizer bean")
     public MeterRegistryCustomizer<MeterRegistry> metricsCommonTagsCustomizer(final WsMetricsProperty metricsProperty) {
@@ -79,7 +81,7 @@ public abstract class WsMetricConfiguration {
     }
 
     @Bean(METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
-    @ConditionalOnMissingBean(name = METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
+    @ConditionalOnMissingBean
     @ConditionalOnBean(WsMetricsProperty.class)
     @Description("Metrics Web MVC tags contributor bean")
     public WebMvcTagsContributor webMvcTagsContributor(final WsMetricsProperty metricsProperty) {

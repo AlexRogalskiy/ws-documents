@@ -7,8 +7,12 @@ server:
   compression:
     enabled: true
     min-response-size: 1024
+  forward-headers-strategy: FRAMEWORK
 
 spring:
+  output:
+    ansi:
+      enabled: NEVER
   profiles:
     include: document, addressing
   application:
@@ -21,6 +25,10 @@ spring:
     proxy-target-class: true
   devtools:
     add-properties: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+    log-resolved-exception: true
+    locale-resolver: FIXED
   task:
     execution:
       thread-name-prefix: document-generator
@@ -114,6 +122,25 @@ spring:
     exclude: org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
 
 management:
+  info:
+    build:
+      enabled: false
+    git:
+      mode: full
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: ALWAYS
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
+      base-path: /actuator
+      path-mapping:
+        info: status
   metrics:
     export:
       prometheus:
@@ -125,7 +152,7 @@ management:
         enabled: false
       simple:
         enabled: true
-        mode: step
+        mode: STEP
     enable:
       jvm: false
     web:
@@ -144,11 +171,6 @@ management:
         http:
           server:
             requests: 20ms,50ms
-  endpoints:
-    web:
-      exposure:
-        include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
-      base-path: /actuator
 
 ws-metrics:
   defaults:
@@ -156,3 +178,30 @@ ws-metrics:
     tags:
       - key: scope
         value: WebDocs
+
+api-status:
+  node:
+    name: ${java.rmi.server.hostname:localhost}
+  # build properties from maven
+  build:
+    groupId: '@project.groupId@'
+    artifactId: '@project.artifactId@'
+    version: '@project.version@'
+    name: '@project.name@'
+    timestamp: '@maven.build.timestamp@'
+
+info:
+  # application info
+  app:
+    name: '@project.name@'
+    description: '@project.description@'
+    url: '@project.url@'
+    encoding: '@project.build.sourceEncoding@'
+  # environment variables
+  env:
+    java:
+      source: @java.version@
+      target: @java.version@
+      vendor: ${java.specification.vendor}
+      vm-name: ${java.vm.name}
+      runtime-version: ${java.runtime.version}
