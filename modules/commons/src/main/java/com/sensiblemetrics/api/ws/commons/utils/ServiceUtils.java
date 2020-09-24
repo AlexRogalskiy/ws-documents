@@ -9,6 +9,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 import java.beans.FeatureDescriptor;
 import java.io.FileNotFoundException;
@@ -127,5 +128,18 @@ public class ServiceUtils {
             log.error("Cannot extract IP address from: {}", hostName, e);
             return null;
         }
+    }
+
+    /**
+     * Rethrow input {@link Throwable}
+     *
+     * @param <E>       type of throwable item
+     * @param throwable - initial input {@link Throwable}
+     * @throws E type of throwable
+     */
+    @SuppressWarnings("unchecked")
+    public static <E extends Throwable> void doThrow(final Throwable throwable) throws E {
+        Assert.notNull(throwable, "Throwable should not be null");
+        throw (E) throwable;
     }
 }

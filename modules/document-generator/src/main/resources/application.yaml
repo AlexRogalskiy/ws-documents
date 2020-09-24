@@ -147,7 +147,7 @@ management:
         enabled: true
         step: 3m
         pushgateway:
-          enabled: true
+          enabled: false
       jmx:
         enabled: false
       simple:

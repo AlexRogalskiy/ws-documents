@@ -1,6 +1,7 @@
 package com.sensiblemetrics.api.ws.commons.configuration;
 
 import com.sensiblemetrics.api.ws.commons.annotation.ConditionalOnMissingBean;
+import com.sensiblemetrics.api.ws.commons.helper.OptionalConsumer;
 import com.sensiblemetrics.api.ws.commons.property.WsMetricsProperty;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
@@ -26,7 +27,6 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -73,11 +73,9 @@ public abstract class WsMetricsConfiguration {
     @ConditionalOnBean(WsMetricsProperty.class)
     @Description("Metrics common tags customizer bean")
     public MeterRegistryCustomizer<MeterRegistry> metricsCommonTagsCustomizer(final WsMetricsProperty metricsProperty) {
-        return registry -> Optional.of(metricsProperty.getDefaults().getTags())
-                .ifPresentOrElse(
-                        value -> registry.config().commonTags(value),
-                        () -> registry.config().commonTags(metricsProperty.getDefaults().getSimpleTags().toArray(String[]::new))
-                );
+        return registry -> OptionalConsumer.of(metricsProperty.getDefaults().getTags())
+                .ifPresent(value -> registry.config().commonTags(value))
+                .ifNotPresent(() -> registry.config().commonTags(metricsProperty.getDefaults().getSimpleTags().toArray(String[]::new)));
     }
 
     @Bean(METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)

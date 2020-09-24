@@ -65,6 +65,7 @@
         <commons.version>0.1.0-SNAPSHOT</commons.version>
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <spring-cloud-kubernetes.version>1.1.6.RELEASE</spring-cloud-kubernetes.version>
+        <throwing-function.version>1.5.1</throwing-function.version>
         <lombok.version>1.18.12</lombok.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
@@ -74,7 +75,6 @@
 
         <micrometer.version>1.5.5</micrometer.version>
         <micrometer-prometheus.version>1.5.5</micrometer-prometheus.version>
-        <simpleclient-prometheus.version>0.9.0</simpleclient-prometheus.version>
         <micrometer-jvm.version>0.2.0</micrometer-jvm.version>
 
         <allure.version>2.13.5</allure.version>
@@ -974,6 +974,28 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <!-- Prometheus profile -->
+        <profile>
+            <id>prometheus</id>
+            <properties>
+                <prometheus-simpleclient.version>0.9.0</prometheus-simpleclient.version>
+                <management.metrics.export.prometheus.pushgateway.enabled>true
+                </management.metrics.export.prometheus.pushgateway.enabled>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>simpleclient</artifactId>
+                    <version>${prometheus-simpleclient.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>simpleclient_pushgateway</artifactId>
+                    <version>${prometheus-simpleclient.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
 
         <!-- Source profile -->
@@ -2351,6 +2373,13 @@
             <version>${spring-cloud-kubernetes.version}</version>
         </dependency>
 
+        <!-- Throwing functions library dependencies -->
+        <dependency>
+            <groupId>com.pivovarit</groupId>
+            <artifactId>throwing-function</artifactId>
+            <version>${throwing-function.version}</version>
+        </dependency>
+
         <!-- Wsdl4j library dependencies -->
         <dependency>
             <groupId>org.wso2.wsdl4j</groupId>
@@ -2417,11 +2446,6 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer-prometheus.version}</version>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_pushgateway</artifactId>
-            <version>${simpleclient-prometheus.version}</version>
         </dependency>
 
         <!-- Logback library dependencies -->
