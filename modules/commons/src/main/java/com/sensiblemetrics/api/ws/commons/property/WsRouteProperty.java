@@ -19,20 +19,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_DELIMITER;
-import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PREFIX;
-
 @Data
 @Validated
 @Accessors(chain = true)
 @ConfigurationProperties(prefix = WsRouteProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons WS route configuration properties")
+@Description("SensibleMetrics Commons Web Service route configuration properties")
 public class WsRouteProperty {
     /**
      * Default endpoints property prefix
      */
-    public static final String PROPERTY_PREFIX = DEFAULT_PREFIX + DEFAULT_DELIMITER + "route";
+    public static final String PROPERTY_PREFIX = "ws-addressing";
 
     /**
      * Default url mappings
@@ -57,21 +54,21 @@ public class WsRouteProperty {
     /**
      * Default namespace
      */
-    @NullOrNotBlank(message = "{property.ws-addressing.route.namespace.nullOrNotBlank}")
+    @NullOrNotBlank(message = "{property.ws-addressing.namespace.nullOrNotBlank}")
     private String namespace;
 
     /**
      * Default url mappings
      */
     @Valid
-    @NullOrNotEmpty(message = "{property.ws-addressing.route.url-mappings.nullOrNotEmpty}")
+    @NullOrNotEmpty(message = "{property.ws-addressing.url-mappings.nullOrNotEmpty}")
     private List<@NotBlank String> urlMappings = DEFAULT_URL_MAPPINGS;
 
     /**
      * Default rule entries
      */
     @Valid
-    @NotEmpty(message = "{property.ws-addressing.route.endpoints.notEmpty}")
+    @NotEmpty(message = "{property.ws-addressing.endpoints.notEmpty}")
     private Map<@NotBlank String, @NotNull WsEndpoint> endpoints;
 
     /**
@@ -84,31 +81,31 @@ public class WsRouteProperty {
         /**
          * Default endpoint port type name
          */
-        @NullOrNotBlank(message = "{property.ws-addressing.route.endpoints.port-type-name.nullOrNotBlank}")
+        @NullOrNotBlank(message = "{property.ws-addressing.endpoints.port-type-name.nullOrNotBlank}")
         private String portTypeName;
 
         /**
          * Default endpoint service name
          */
-        @NullOrNotBlank(message = "{property.ws-addressing.route.endpoints.service-name.nullOrNotBlank}")
+        @NullOrNotBlank(message = "{property.ws-addressing.endpoints.service-name.nullOrNotBlank}")
         private String serviceName;
 
         /**
          * Default endpoint location uri
          */
-        @NotNull(message = "{property.ws-addressing.route.endpoints.location-uri.notNull}")
+        @NotNull(message = "{property.ws-addressing.endpoints.location-uri.notNull}")
         private String locationUri;
 
         /**
          * Default endpoint target namespace
          */
-        @NotNull(message = "{property.ws-addressing.route.endpoints.target-namespace.notNull}")
+        @NotNull(message = "{property.ws-addressing.endpoints.target-namespace.notNull}")
         private String targetNamespace;
 
         /**
          * Default endpoint resource pattern
          */
-        @ResourcePathPattern(message = "{property.ws-addressing.route.endpoints.resource-pattern.pattern}")
+        @ResourcePathPattern(message = "{property.ws-addressing.endpoints.resource-pattern.pattern}")
         private String resourcePattern;
 
         /**

@@ -7,8 +7,14 @@ server:
   compression:
     enabled: true
     min-response-size: 1024
+  forward-headers-strategy: FRAMEWORK
 
 spring:
+  output:
+    ansi:
+      enabled: NEVER
+  profiles:
+    include: document, addressing
   application:
     name: "Document-Generator-WebService"
   messages:
@@ -19,6 +25,10 @@ spring:
     proxy-target-class: true
   devtools:
     add-properties: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+    log-resolved-exception: true
+    locale-resolver: FIXED
   task:
     execution:
       thread-name-prefix: document-generator
@@ -30,7 +40,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:p6spy:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:documentdb}
     driver-class-name: org.postgresql.Driver
-    username: ${DB_USER}
+    username: ${DB_USER:postgres}
     password: ${DB_PASS}
     sql-script-encoding: UTF-8
     initialization-mode: never
@@ -61,10 +71,10 @@ spring:
     open-in-view: false
     generate-ddl: false
     database: POSTGRESQL
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         validator:
@@ -111,41 +121,117 @@ spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
 
-ws-addressing:
-  route:
-    namespace: "http://api.sensiblemetrics.com/ws/"
-    endpoints:
-      document:
-        port-type-name: "DocumentPort"
-        service-name: "DocumentService"
-        location-uri: "/ws"
-        target-namespace: "http://api.sensiblemetrics.com/ws/document-generator-web-service"
-        resource-pattern: "schemas/document.xsd"
+management:
+  server:
+    servlet:
+      context-path: /management
+    port: 8088
+  info:
+    build:
+      enabled: false
+    git:
+      mode: full
+  endpoint:
+    beans:
+      cache:
+        time-to-live: 10s
+    shutdown:
+      enabled: true
+    health:
+      show-details: ALWAYS
+      show-components: ALWAYS
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
+      base-path: /actuator
+      path-mapping:
+        info: status
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        step: 3m
+        pushgateway:
+          enabled: false
+      jmx:
+        enabled: false
+      simple:
+        enabled: true
+        mode: STEP
+    enable:
+      jvm: false
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true
+      client:
+        max-uri-tags: 5
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+      slo:
+        http:
+          server:
+            requests: 20ms,50ms
 
-ws-document:
-  storage:
-    base-path: ${DOC_STORAGE_PATH:${TEMP}}
-  template:
-    name-pattern: ${DOC_TEMPLATE_NAME:templates/invoice.docx}
-    format:
-      marker-mappings:
-        id:
-          name: "id"
-          pattern: "# %s"
-        company:
-          name: "company"
-        partner:
-          name: "partner"
-        product:
-          name: "product"
-        amount:
-          name: "amount"
-        price:
-          name: "price"
-        data:
-          name: "data"
-        date:
-          name: "date"
-          pattern: "yyyy-MM-dd HH:mm:ss"
-        total:
-          name: "total"
+ws-metrics:
+  defaults:
+    description: WebDocs Generator Service
+    tags:
+      - key: scope
+        value: WebDocs
+
+api-status:
+  node:
+    name: ${java.rmi.server.hostname:localhost}
+  # build properties from maven
+  build:
+    groupId: '@project.groupId@'
+    artifactId: '@project.artifactId@'
+    version: '@project.version@'
+    name: '@project.name@'
+    timestamp: '@maven.build.timestamp@'
+
+info:
+  # application info
+  app:
+    name: '@project.name@'
+    description: '@project.description@'
+    url: '@project.url@'
+    encoding: '@project.build.sourceEncoding@'
+  # environment variables
+  env:
+    java:
+      source: @java.version@
+      target: @java.version@
+      vendor: ${java.specification.vendor}
+      vm-name: ${java.vm.name}
+      runtime-version: ${java.runtime.version}
+
+logging:
+  headers:
+    names: Accept,Content-Type,Content-Length
+    pattern: ".*"
+  handlers:
+    logging:
+      enabled: true
+    tracking-time:
+      enabled: true
+
+actuator:
+  endpoints:
+    health:
+      names: health
+      roles: ROLE_USER
+    status:
+      names: status
+      roles: ROLE_USER
+    threaddump:
+      names: threaddump
+      roles: ROLE_ADMIN

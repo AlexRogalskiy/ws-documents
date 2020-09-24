@@ -64,6 +64,8 @@
 
         <commons.version>0.1.0-SNAPSHOT</commons.version>
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+        <spring-cloud-kubernetes.version>1.1.6.RELEASE</spring-cloud-kubernetes.version>
+        <throwing-function.version>1.5.1</throwing-function.version>
         <lombok.version>1.18.12</lombok.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
         <logback.version>1.2.3</logback.version>
@@ -71,17 +73,21 @@
         <awaitility-proxy.version>3.1.6</awaitility-proxy.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
 
+        <micrometer.version>1.5.5</micrometer.version>
+        <micrometer-prometheus.version>1.5.5</micrometer-prometheus.version>
+        <micrometer-jvm.version>0.2.0</micrometer-jvm.version>
+
         <allure.version>2.13.5</allure.version>
         <java-hamcrest.version>2.0.0.0</java-hamcrest.version>
         <hamcrest.version>2.2</hamcrest.version>
         <hamcrest-matchers.version>2.0.0</hamcrest-matchers.version>
-        <mockito.version>3.5.11</mockito.version>
+        <mockito.version>3.5.13</mockito.version>
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <assertj.version>3.17.2</assertj.version>
         <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
         <junit-platform.version>1.7.0</junit-platform.version>
-        <mockito-junit-jupiter.version>3.5.11</mockito-junit-jupiter.version>
+        <mockito-junit-jupiter.version>3.5.13</mockito-junit-jupiter.version>
 
         <validation-api.version>2.0.1.Final</validation-api.version>
         <guava.version>29.0-jre</guava.version>
@@ -116,7 +122,7 @@
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
         <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
         <maven-dependency-check-plugin.version>5.3.2</maven-dependency-check-plugin.version>
-        <maven-forbiddenapis-plugin.version>3.0.1</maven-forbiddenapis-plugin.version>
+        <maven-forbiddenapis-plugin.version>3.1</maven-forbiddenapis-plugin.version>
         <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
         <maven-plugin-os.version>1.6.2</maven-plugin-os.version>
@@ -970,6 +976,28 @@
             </build>
         </profile>
 
+        <!-- Prometheus profile -->
+        <profile>
+            <id>prometheus</id>
+            <properties>
+                <prometheus-simpleclient.version>0.9.0</prometheus-simpleclient.version>
+                <management.metrics.export.prometheus.pushgateway.enabled>true
+                </management.metrics.export.prometheus.pushgateway.enabled>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>simpleclient</artifactId>
+                    <version>${prometheus-simpleclient.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>io.prometheus</groupId>
+                    <artifactId>simpleclient_pushgateway</artifactId>
+                    <version>${prometheus-simpleclient.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+
         <!-- Source profile -->
         <profile>
             <id>source</id>
@@ -1704,6 +1732,13 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-kubernetes-dependencies</artifactId>
+                <version>${spring-cloud-kubernetes.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.junit</groupId>
                 <artifactId>junit-bom</artifactId>
                 <version>${junit-jupiter.version}</version>
@@ -2312,6 +2347,14 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
@@ -2320,6 +2363,25 @@
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
+        </dependency>
+
+        <!-- Spring Cloud Kubernetes library dependencies -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-kubernetes</artifactId>
+            <version>${spring-cloud-kubernetes.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-kubernetes-config</artifactId>
+            <version>${spring-cloud-kubernetes.version}</version>
+        </dependency>
+
+        <!-- Throwing functions library dependencies -->
+        <dependency>
+            <groupId>com.pivovarit</groupId>
+            <artifactId>throwing-function</artifactId>
+            <version>${throwing-function.version}</version>
         </dependency>
 
         <!-- Wsdl4j library dependencies -->
@@ -2370,6 +2432,24 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator-annotation-processor</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <!-- Micrometer library dependencies -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+            <version>${micrometer.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.mweirauch</groupId>
+            <artifactId>micrometer-jvm-extras</artifactId>
+            <version>${micrometer-jvm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${micrometer-prometheus.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Logback library dependencies -->

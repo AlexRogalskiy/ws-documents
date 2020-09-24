@@ -15,7 +15,6 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
@@ -23,7 +22,6 @@ import java.util.List;
 
 import static org.springframework.util.StringUtils.toStringArray;
 
-@EnableWs
 @Configuration
 @Import({
         WsEndpointConfigurerAdapter.class,

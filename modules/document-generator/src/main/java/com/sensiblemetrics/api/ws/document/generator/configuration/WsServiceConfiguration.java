@@ -94,7 +94,7 @@ public class WsServiceConfiguration {
         @Bean(name = DOCUMENT_WS_ENDPOINT_BEAN_NAME)
         @Description("Default document WS-endpoint property configuration bean")
         public WsRouteProperty.WsEndpoint documentWsEndpoint(final WsRouteProperty property) {
-            return this.endpointConfigurationProvider.getIfAvailable(DOCUMENT_WS_ENDPOINT_KEY);
+            return this.endpointConfigurationProvider.getOrThrow(DOCUMENT_WS_ENDPOINT_KEY);
         }
     }
 }

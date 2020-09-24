@@ -9,6 +9,8 @@ server:
     min-response-size: 1024
 
 spring:
+  profiles:
+    include: document, addressing
   application:
     name: "Document-Generator-WebService"
   messages:
@@ -119,42 +121,3 @@ spring:
       print: log_debug
   liquibase:
     enabled: false
-
-ws-addressing:
-  route:
-    namespace: "http://api.sensiblemetrics.com/ws/"
-    endpoints:
-      document:
-        port-type-name: "DocumentPort"
-        service-name: "DocumentService"
-        location-uri: "/ws"
-        target-namespace: "http://api.sensiblemetrics.com/ws/document-generator-web-service"
-        resource-pattern: "schemas/document.xsd"
-
-ws-document:
-  storage:
-    base-path: ${DOC_STORAGE_PATH:${TEMP}}
-  template:
-    name-pattern: ${DOC_TEMPLATE_NAME:templates/invoice.docx}
-    format:
-      marker-mappings:
-        id:
-          name: "id"
-          pattern: "# %s"
-        company:
-          name: "company"
-        partner:
-          name: "partner"
-        product:
-          name: "product"
-        amount:
-          name: "amount"
-        price:
-          name: "price"
-        data:
-          name: "data"
-        date:
-          name: "date"
-          pattern: "yyyy-MM-dd HH:mm:ss"
-        total:
-          name: "total"
