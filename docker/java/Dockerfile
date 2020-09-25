@@ -1,7 +1,12 @@
 # Base OS layer
 FROM openjdk:latest
 
-LABEL org.opencontainers.image.title="SensibleMetrics.WS.Document.Generator"
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
+VOLUME /tmp
+
+LABEL org.opencontainers.image.title="SensibleMetrics.WebService.Document.Generator"
 LABEL org.opencontainers.image.vendor="SensibleMetrics, Inc."
 
 # The application's jar file
@@ -17,7 +22,7 @@ WORKDIR /opt/app
 EXPOSE 5000
 
 # Java environment options
-ENV JAVA_OPTS="-Xms64m -Xmx1024m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Dcom.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize=true"
+ENV JAVA_OPTS="-Xms64m -Xmx1024m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Stack=true -Dcom.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize=true"
 ENV TERM xterm
 
 # Run microservice process.

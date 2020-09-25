@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -8,11 +9,13 @@
         <version>0.1.0-SNAPSHOT</version>
         <relativePath>../../</relativePath>
     </parent>
-    <artifactId>document-generator</artifactId>
-    <packaging>jar</packaging>
 
     <name>com.sensiblemetrics.api.ws.document.generator</name>
-    <description>Document Generator WebService API</description>
+    <description>WS Documents Document-Generator API</description>
+    <artifactId>document-generator</artifactId>
+    <packaging>jar</packaging>
+    <url>https://github.com/AlexRogalskiy/ws-documents/document-generator</url>
+    <inceptionYear>2020</inceptionYear>
 
     <properties>
         <docx4j.version>6.1.2</docx4j.version>
@@ -40,7 +43,6 @@
     </properties>
 
     <dependencies>
-
         <!-- Liquibase library dependencies -->
         <dependency>
             <groupId>com.mattbertolini</groupId>
@@ -117,6 +119,14 @@
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-compress</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -271,8 +281,6 @@
             </plugin>
         </plugins>
     </build>
-    <url>https://github.com/AlexRogalskiy/ws-documents/document-generator</url>
-    <inceptionYear>2020</inceptionYear>
 
     <profiles>
         <!-- Uber jar profile -->
@@ -353,7 +361,9 @@
                         <configuration>
                             <propertyFile>${liquibase.propertyFile}</propertyFile>
                             <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
-                            <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                            <diffChangeLogFile>
+                                ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                            </diffChangeLogFile>
                             <promptOnNonLocalDatabase>true</promptOnNonLocalDatabase>
                             <verbose>true</verbose>
                             <logging>debug</logging>

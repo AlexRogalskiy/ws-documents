@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -8,11 +9,13 @@
         <version>0.1.0-SNAPSHOT</version>
         <relativePath>../../</relativePath>
     </parent>
-    <artifactId>executor</artifactId>
-    <packaging>jar</packaging>
 
     <name>com.sensiblemetrics.api.ws.executor</name>
-    <description>Common WebService Executor API</description>
+    <description>WS Documents Executor API</description>
+    <artifactId>executor</artifactId>
+    <packaging>jar</packaging>
+    <url>https://github.com/AlexRogalskiy/ws-documents/executor</url>
+    <inceptionYear>2020</inceptionYear>
 
     <properties>
         <sensiblemetrics-commons.version>0.1.0-SNAPSHOT</sensiblemetrics-commons.version>
@@ -58,6 +61,4 @@
             </plugin>
         </plugins>
     </build>
-    <url>https://github.com/AlexRogalskiy/ws-documents/executor</url>
-    <inceptionYear>2020</inceptionYear>
 </project>
