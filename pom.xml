@@ -2530,7 +2530,7 @@
                                 <configuration>
                                     <includedScopes>runtime,compile</includedScopes>
                                     <includeTransitiveDependencies>true</includeTransitiveDependencies>
-                                    <fileTemplate>${project.basedir}/src/license/third-party.ftl</fileTemplate>
+                                    <fileTemplate>${project.basedir}/license/third-party.ftl</fileTemplate>
                                 </configuration>
                             </execution>
                             <execution>
