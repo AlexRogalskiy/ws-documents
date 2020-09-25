@@ -180,6 +180,7 @@
         <maven-jvcn-plugin.version>0.0.1</maven-jvcn-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
         <maven-lombok-plugin.version>1.18.12.0</maven-lombok-plugin.version>
+        <maven-rpm-plugin.version>2.2.0</maven-rpm-plugin.version>
         <maven-modernizer-plugin.version>2.1.0</maven-modernizer-plugin.version>
         <maven-plugin-os.version>1.6.2</maven-plugin-os.version>
         <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
@@ -1262,6 +1263,59 @@
     </pluginRepositories>
 
     <profiles>
+        <!-- RPM profile -->
+        <profile>
+            <id>rpm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>rpm-maven-plugin</artifactId>
+                        <version>${maven-rpm-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <group>${project.groupId}</group>
+                            <mappings>
+                                <mapping>
+                                    <directory>/var/application</directory>
+                                    <filemode>755</filemode>
+                                    <username>webdocs</username>
+                                    <groupname>webdocs</groupname>
+                                    <dependency>
+                                        <stripVersion>true</stripVersion>
+                                        <includes>
+                                            <include>${project.groupId}:webdocs-app</include>
+                                        </includes>
+                                    </dependency>
+                                </mapping>
+                                <mapping>
+                                    <directory>/etc/systemd/system</directory>
+                                    <filemode>755</filemode>
+                                    <username>root</username>
+                                    <groupname>root</groupname>
+                                    <sources>
+                                        <source>
+                                            <location>{basedir}/rpm/systemd</location>
+                                        </source>
+                                    </sources>
+                                </mapping>
+                            </mappings>
+                            <preinstallScriptlet>
+                                <scriptFile>{basedir}/rpm/preinstall.sh</scriptFile>
+                                <fileEncoding>utf-8</fileEncoding>
+                                <filter>true</filter>
+                            </preinstallScriptlet>
+                            <postinstallScriptlet>
+                                <scriptFile>{basedir}/rpm/postinstall.sh</scriptFile>
+                                <fileEncoding>utf-8</fileEncoding>
+                                <filter>true</filter>
+                            </postinstallScriptlet>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Lombok profile -->
         <profile>
             <id>lombok</id>
