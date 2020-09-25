@@ -1,11 +1,12 @@
 # SensibleMetrics Document Web Service Addressing configuration
 ---
-ws-addressing:
-  namespace: "http://api.sensiblemetrics.com/ws/"
-  endpoints:
-    document:
-      port-type-name: "DocumentPort"
-      service-name: "DocumentService"
-      location-uri: "/ws"
-      target-namespace: "http://api.sensiblemetrics.com/ws/document-generator-web-service"
-      resource-pattern: "schemas/document.xsd"
+ws-documents:
+  addressing:
+    namespace: "http://api.sensiblemetrics.com/ws/"
+    endpoints:
+      document:
+        port-type-name: "DocumentPort"
+        service-name: "DocumentService"
+        location-uri: "/ws"
+        target-namespace: "http://api.sensiblemetrics.com/ws/document-generator-web-service"
+        resource-pattern: "schemas/document.xsd"

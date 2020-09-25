@@ -11,7 +11,10 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
         uses: actions/checkout@v1
 
       - name: Configure Git

@@ -1,0 +1,28 @@
+# SensibleMetrics Web Service Metrics test configuration
+---
+spring:
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+    # 1 hour
+    cache-duration: 3600
+  main:
+    allow-bean-definition-overriding: true
+  task:
+    execution:
+      thread-name-prefix: test
+      pool:
+        core-size: 10
+        max-size: 20
+        queue-capacity: 100000
+
+ws-documents:
+  metrics:
+    defaults:
+      description: WebDocs Generator Service
+      tags:
+        - key: scope
+          value: WebDocs
+    handlers:
+      tracking-time:
+        enabled: true

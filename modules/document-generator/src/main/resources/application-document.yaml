@@ -1,6 +1,6 @@
-# SensibleMetrics Document Template configuration
+# SensibleMetrics Document Web Service Template configuration
 ---
-ws-document:
+ws-documents:
   storage:
     base-path: ${DOC_STORAGE_PATH:${TEMP}}
   template:

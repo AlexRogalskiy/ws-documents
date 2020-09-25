@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,30 +8,28 @@
         <version>0.1.0-SNAPSHOT</version>
         <relativePath>../../</relativePath>
     </parent>
-
-    <name>com.sensiblemetrics.api.ws.commons</name>
-    <description>Common WebService API</description>
-    <url>https://github.com/AlexRogalskiy/ws-documents/commons</url>
-    <inceptionYear>2020</inceptionYear>
     <artifactId>commons</artifactId>
     <packaging>jar</packaging>
 
+    <name>com.sensiblemetrics.api.ws.commons</name>
+    <description>Common WebService API</description>
+
     <build>
+        <defaultGoal>clean package</defaultGoal>
         <finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
-        <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
-        <defaultGoal>clean package</defaultGoal>
+        <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
+                <directory>${project.basedir}/src/main/resources</directory>
             </resource>
         </resources>
         <testResources>
             <testResource>
-                <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>true</filtering>
+                <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
 
@@ -48,4 +44,6 @@
             </plugin>
         </plugins>
     </build>
+    <url>https://github.com/AlexRogalskiy/ws-documents/commons</url>
+    <inceptionYear>2020</inceptionYear>
 </project>

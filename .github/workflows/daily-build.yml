@@ -9,6 +9,9 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@v1
         with:
@@ -30,6 +33,9 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 30
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@v1
         with:

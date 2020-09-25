@@ -1,4 +1,4 @@
-# Commons test configuration
+# SensibleMetrics Web Service Commons test configuration
 ---
 spring:
   messages:
@@ -15,7 +15,3 @@ spring:
         core-size: 10
         max-size: 20
         queue-capacity: 100000
-
-ws-addressing:
-  endpoints:
-    enabled: true

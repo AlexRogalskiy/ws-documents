@@ -10,6 +10,9 @@ jobs:
   CodeQL-Build:
     runs-on: ubuntu-latest
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:

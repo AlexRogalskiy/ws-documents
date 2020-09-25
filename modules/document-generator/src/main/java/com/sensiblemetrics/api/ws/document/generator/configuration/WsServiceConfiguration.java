@@ -1,11 +1,11 @@
 package com.sensiblemetrics.api.ws.document.generator.configuration;
 
-import com.sensiblemetrics.api.ws.commons.configuration.WsEndpointConfigurerAdapter;
-import com.sensiblemetrics.api.ws.commons.property.EndpointConfigurationProvider;
-import com.sensiblemetrics.api.ws.commons.property.WsRouteProperty;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentStorageProperty;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateFormatProperty;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.WsDocumentStorageProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.WsDocumentTemplateFormatProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.WsDocumentTemplateProperty;
+import com.sensiblemetrics.api.ws.router.configuration.EndpointConfigurationProvider;
+import com.sensiblemetrics.api.ws.router.configuration.WsEndpointConfigurerAdapter;
+import com.sensiblemetrics.api.ws.router.property.WsAddressingProperty;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -27,9 +27,9 @@ import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties({
-        DocumentTemplateProperty.class,
-        DocumentTemplateFormatProperty.class,
-        DocumentStorageProperty.class
+        WsDocumentTemplateProperty.class,
+        WsDocumentTemplateFormatProperty.class,
+        WsDocumentStorageProperty.class
 })
 @Description("SensibleMetrics Web Service configuration")
 public class WsServiceConfiguration {
@@ -60,7 +60,7 @@ public class WsServiceConfiguration {
 
     @Configuration
     @RequiredArgsConstructor
-    @EnableConfigurationProperties(WsRouteProperty.class)
+    @EnableConfigurationProperties(WsAddressingProperty.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Description("SensibleMetrics Document Web Service configuration")
     public static class WsDocumentConfiguration {
@@ -81,19 +81,19 @@ public class WsServiceConfiguration {
         @Bean(name = DOCUMENT_WSDL_DEFINITION_BEAN_NAME)
         @Description("Default document WSDL definition configuration bean")
         public DefaultWsdl11Definition defaultWsdl11Definition(@Qualifier(DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME) final XsdSchema xsdSchema,
-                                                               @Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsRouteProperty.WsEndpoint endpoint) {
+                                                               @Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsAddressingProperty.WsEndpoint endpoint) {
             return this.endpointConfigurerAdapter.createWsdl11Definition(xsdSchema, endpoint);
         }
 
         @Bean(name = DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME)
         @Description("Default document XSD-schema configuration bean")
-        public XsdSchema documentSchema(@Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsRouteProperty.WsEndpoint endpoint) {
+        public XsdSchema documentSchema(@Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsAddressingProperty.WsEndpoint endpoint) {
             return this.endpointConfigurerAdapter.createSimpleXsdSchema(endpoint);
         }
 
         @Bean(name = DOCUMENT_WS_ENDPOINT_BEAN_NAME)
         @Description("Default document WS-endpoint property configuration bean")
-        public WsRouteProperty.WsEndpoint documentWsEndpoint(final WsRouteProperty property) {
+        public WsAddressingProperty.WsEndpoint documentWsEndpoint(final WsAddressingProperty property) {
             return this.endpointConfigurationProvider.getOrThrow(DOCUMENT_WS_ENDPOINT_KEY);
         }
     }
