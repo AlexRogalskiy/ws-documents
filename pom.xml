@@ -133,6 +133,12 @@
         <hamcrest.version>2.2</hamcrest.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
 
+        <commons-net.version>3.7</commons-net.version>
+        <ant-commons-net.version>1.10.8</ant-commons-net.version>
+        <ant-nodeps.version>1.8.1</ant-nodeps.version>
+        <ant-contrib.version>20020829</ant-contrib.version>
+        <antelopetasks.version>3.2.10</antelopetasks.version>
+
         <jacoco-check.skip>false</jacoco-check.skip>
         <jacoco-rule.line.length>100</jacoco-rule.line.length>
         <jacoco.branches.coverage.percentage.minimum>0.65</jacoco.branches.coverage.percentage.minimum>
@@ -176,6 +182,7 @@
         <maven-jacoco-plugin.version>0.8.6</maven-jacoco-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <maven-asciidoctor-plugin.version>2.1.0</maven-asciidoctor-plugin.version>
         <maven-jib-plugin.version>2.5.2</maven-jib-plugin.version>
         <maven-jvcn-plugin.version>0.0.1</maven-jvcn-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
@@ -190,6 +197,7 @@
         <maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+        <maven-moditect-plugin.version>1.0.0.RC1</maven-moditect-plugin.version>
         <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
         <maven-sonar-plugin.version>3.7.0.1746</maven-sonar-plugin.version>
         <maven-sortpom-plugin.version>2.12.0</maven-sortpom-plugin.version>
@@ -617,6 +625,44 @@
                     <artifactId>jib-maven-plugin</artifactId>
                     <version>${maven-jib-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>commons-net</groupId>
+                            <artifactId>commons-net</artifactId>
+                            <version>${commons-net.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.ant</groupId>
+                            <artifactId>ant-commons-net</artifactId>
+                            <version>${ant-commons-net.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.ant</groupId>
+                            <artifactId>ant-nodeps</artifactId>
+                            <version>${ant-nodeps.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>ant-contrib</groupId>
+                            <artifactId>ant-contrib</artifactId>
+                            <version>${ant-contrib.version}</version>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>ant</groupId>
+                                    <artifactId>ant</artifactId>
+                                </exclusion>
+                            </exclusions>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.tigris.antelope</groupId>
+                            <artifactId>antelopetasks</artifactId>
+                            <version>${antelopetasks.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -871,33 +917,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven-shade-plugin.version}</version>
-                <configuration>
-                    <outputFile>${project.build.directory}/maven-shade/reduced-pom.zip</outputFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Implementation-Version>${project.version}</Implementation-Version>
-                                    </manifestEntries>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>${maven-build-helper-plugin.version}</version>
@@ -1001,6 +1020,22 @@
                             <sources>
                                 <source>${project.basedir}/src/main/generated-sources/</source>
                             </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>attach-zip</id>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>
+                                        ${project.build.directory}/${project.artifactId}-${project.version}.zip
+                                    </file>
+                                    <type>zip;zip.type=docs;zip.deployed=false</type>
+                                </artifact>
+                            </artifacts>
                         </configuration>
                     </execution>
                 </executions>
@@ -1803,7 +1838,6 @@
             <build>
                 <pluginManagement>
                     <plugins>
-
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-antrun-plugin</artifactId>
@@ -1812,20 +1846,46 @@
                                 <dependency>
                                     <groupId>commons-net</groupId>
                                     <artifactId>commons-net</artifactId>
-                                    <version>3.7</version>
+                                    <version>${commons-net.version}</version>
                                 </dependency>
                                 <dependency>
                                     <groupId>org.apache.ant</groupId>
                                     <artifactId>ant-commons-net</artifactId>
-                                    <version>1.10.8</version>
+                                    <version>${ant-commons-net.version}</version>
                                 </dependency>
                                 <dependency>
                                     <groupId>org.apache.ant</groupId>
                                     <artifactId>ant-nodeps</artifactId>
-                                    <version>1.8.1</version>
+                                    <version>${ant-nodeps.version}</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>ant-contrib</groupId>
+                                    <artifactId>ant-contrib</artifactId>
+                                    <version>${ant-contrib.version}</version>
+                                    <exclusions>
+                                        <exclusion>
+                                            <groupId>ant</groupId>
+                                            <artifactId>ant</artifactId>
+                                        </exclusion>
+                                    </exclusions>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.tigris.antelope</groupId>
+                                    <artifactId>antelopetasks</artifactId>
+                                    <version>${antelopetasks.version}</version>
                                 </dependency>
                             </dependencies>
                             <executions>
+                                <execution>
+                                    <id>setup-maven-properties</id>
+                                    <phase>validate</phase>
+                                    <goals>
+                                        <goal>run</goal>
+                                    </goals>
+                                    <configuration>
+                                        <exportAntProperties>true</exportAntProperties>
+                                    </configuration>
+                                </execution>
                                 <execution>
                                     <id>generate-build-properties</id>
                                     <goals>
@@ -1859,6 +1919,7 @@
                                 </execution>
                             </executions>
                         </plugin>
+
                         <plugin>
                             <groupId>pl.project13.maven</groupId>
                             <artifactId>git-commit-id-plugin</artifactId>
@@ -1924,11 +1985,6 @@
         <!-- Unit tests with code coverage profile -->
         <profile>
             <id>unit-test</id>
-            <activation>
-                <file>
-                    <exists>${basedir}/src/test</exists>
-                </file>
-            </activation>
             <properties>
                 <parallel.tests>2</parallel.tests>
                 <test-groups.include/>
@@ -1955,7 +2011,6 @@
             <build>
                 <pluginManagement>
                     <plugins>
-
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-surefire-plugin</artifactId>
@@ -2042,6 +2097,10 @@
                 <!-- Use in lifecycle -->
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                    </plugin>
+                    <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                     </plugin>
@@ -2052,11 +2111,6 @@
         <!-- Integration tests with code coverage profile -->
         <profile>
             <id>integration-test</id>
-            <activation>
-                <file>
-                    <exists>${basedir}/src/test</exists>
-                </file>
-            </activation>
             <properties>
                 <failsafe.commands>
                     -Duser.language=en
@@ -2273,6 +2327,55 @@
             </build>
         </profile>
 
+        <!-- Ascii-doctor profile -->
+        <profile>
+            <id>ascii-doctor</id>
+            <properties>
+                <asciidoctorj-pdf.version>1.5.3</asciidoctorj-pdf.version>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <version>${maven-asciidoctor-plugin.version}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoctorj-pdf</artifactId>
+                                <version>${asciidoctorj-pdf.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <configuration>
+                            <sourceDocumentName>index.adoc</sourceDocumentName>
+                            <doctype>book</doctype>
+                            <attributes>
+                                <allow-uri-read>true</allow-uri-read>
+                                <attribute-missing>warn</attribute-missing>
+                                <project-version>${project.version}</project-version>
+                                <project-artifactId>${project.artifactId}</project-artifactId>
+                            </attributes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-html5</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>process-asciidoc</goal>
+                                </goals>
+                                <configuration>
+                                    <backend>html5</backend>
+                                    <attributes>
+                                        <toc2/>
+                                    </attributes>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Javadoc profile -->
         <profile>
             <id>javadoc</id>
@@ -2297,7 +2400,22 @@
                                     <goals>
                                         <goal>jar</goal>
                                     </goals>
-                                    <phase>package</phase>
+                                    <phase>prepare-package</phase>
+                                    <configuration>
+                                        <includeDependencySources>true</includeDependencySources>
+                                        <dependencySourceIncludes>
+                                            <dependencySourceInclude>${project.groupId}:*</dependencySourceInclude>
+                                        </dependencySourceIncludes>
+                                        <attach>false</attach>
+                                        <quiet>true</quiet>
+                                        <stylesheetfile>${basedir}/src/main/javadoc/spring-javadoc.css</stylesheetfile>
+                                        <links>
+                                            <link>
+                                                http://docs.spring.io/spring-framework/docs/${spring-boot.version}/javadoc-api/
+                                            </link>
+                                            <link>http://docs.spring.io/spring-shell/docs/current/api/</link>
+                                        </links>
+                                    </configuration>
                                 </execution>
                             </executions>
                         </plugin>
@@ -2325,6 +2443,32 @@
                                         <goal>transform</goal>
                                     </goals>
                                     <phase>generate-resources</phase>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-antrun-plugin</artifactId>
+                            <version>${maven-antrun-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>package-and-attach-docs-zip</id>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>run</goal>
+                                    </goals>
+                                    <configuration>
+                                        <target>
+                                            <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}.zip">
+                                                <zipfileset dir="${project.build.directory}/generated-docs"
+                                                            prefix="reference/htmlsingle">
+                                                    <include name="index.html"/>
+                                                    <include name="images/**"/>
+                                                </zipfileset>
+                                            </zip>
+                                        </target>
+                                    </configuration>
                                 </execution>
                             </executions>
                         </plugin>
@@ -2409,70 +2553,6 @@
                                     <goal>files</goal>
                                 </goals>
                                 <phase>package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <!-- Jib profile -->
-        <profile>
-            <id>jib</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.google.cloud.tools</groupId>
-                        <artifactId>jib-maven-plugin</artifactId>
-                        <version>${maven-jib-plugin.version}</version>
-                        <configuration>
-                            <allowInsecureRegistries>true</allowInsecureRegistries>
-                            <from>
-                                <image>${image.from.path}</image>
-                            </from>
-                            <container>
-                                <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                                <jvmFlags>
-                                    <jvmFlag>-Xdebug</jvmFlag>
-                                    <jvmFlag>-Xms128m</jvmFlag>
-                                    <jvmFlag>-Xmx128m</jvmFlag>
-                                    <jvmFlag>-Duser.timezone=GMT+08</jvmFlag>
-                                    <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
-                                    <jvmFlag>-Djava.awt.headless=true</jvmFlag>
-                                    <jvmFlag>-XX:InitialRAMFraction=2</jvmFlag>
-                                    <jvmFlag>-XX:MinRAMFraction=2</jvmFlag>
-                                    <jvmFlag>-XX:MaxRAMFraction=2</jvmFlag>
-                                    <jvmFlag>-XX:+UseG1GC</jvmFlag>
-                                    <jvmFlag>-XX:MaxGCPauseMillis=100</jvmFlag>
-                                    <jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
-                                </jvmFlags>
-                                <ports>
-                                    <port>8089</port>
-                                </ports>
-                                <format>Docker</format>
-                            </container>
-                            <to>
-                                <image>${image.to.path}:${project.version}</image>
-                                <tags>
-                                    <tag>alpine</tag>
-                                    <tag>latest</tag>
-                                </tags>
-                            </to>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>dockerBuild</id>
-                                <goals>
-                                    <goal>dockerBuild</goal>
-                                </goals>
-                                <phase>package</phase>
-                            </execution>
-                            <execution>
-                                <id>build</id>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                                <phase>deploy</phase>
                             </execution>
                         </executions>
                     </plugin>
@@ -2712,9 +2792,8 @@
                 <enforce.maven.skip>true</enforce.maven.skip>
                 <enforce.plugin.skip>true</enforce.plugin.skip>
                 <excludeDevtools>false</excludeDevtools>
-                <logback.loglevel>DEBUG</logback.loglevel>
-
                 <repackage.skip>true</repackage.skip>
+                <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
         </profile>
 
@@ -2730,7 +2809,7 @@
                 <failsafe.memory>-Xms1g -Xmx1500m -Xss256k</failsafe.memory>
                 <integration-tests.skip>false</integration-tests.skip>
                 <surefire.jmxEnabled>-Dcom.sun.management.jmxremote=true</surefire.jmxEnabled>
-                <surefire.memory>-Xmx4096m</surefire.memory>
+                <surefire.memory>-Xmx1024m</surefire.memory>
                 <surefire.stackVersion>-Djava.net.preferIPv4Stack=true</surefire.stackVersion>
                 <unit-tests.skip>false</unit-tests.skip>
             </properties>

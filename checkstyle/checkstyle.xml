@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC
-    "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
-    "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+        "-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+        "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <!-- Checks that there are no tab characters ('\t') in the source code. -->
 <module name="Checker">
+    <!-- Root Checks -->
+    <module name="RegexpHeader">
+        <property name="headerFile" value="checkstyle-header.txt"/>
+        <property name="fileExtensions" value="java"/>
+    </module>
+
     <module name="TreeWalker">
+        <property name="tabWidth" value="4"/>
+        <!--<module name="LineLength">-->
+        <!--<property name="max" value="120"/>-->
+        <!--</module>-->
+
+        <!-- Annotations -->
+        <module name="AnnotationUseStyle">
+            <property name="elementStyle" value="compact"/>
+            <property name="trailingArrayComma" value="never"/>
+            <property name="closingParens" value="never"/>
+        </module>
+        <module name="MissingOverride"/>
+        <module name="PackageAnnotation"/>
+        <module name="AnnotationLocation">
+            <property name="allowSamelineSingleParameterlessAnnotation"
+                      value="false"/>
+        </module>
         <!-- No EOL should be placed before block start ('{') -->
         <module name="LeftCurly">
             <property name="option" value="eol"/>
@@ -64,6 +87,33 @@
             <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
             <property name="severity" value="warning"/>
         </module>
+        <module name="AvoidStaticImport">
+            <property name="excludes"
+                      value="org.junit.Assert.*,org.mockito.Mockito.*,org.mockito.Matchers.*,org.mockito.ArgumentMatchers.*,
+        org.hamcrest.Matchers.*,
+        org.assertj.core.api.Assertions.*,org.hamcrest.CoreMatchers.*,org.hamcrest.core.Is.*,
+        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*,
+        org.springframework.test.web.servlet.result.MockMvcResultMatchers.*,
+        org.springframework.test.web.servlet.result.MockMvcResultHandlers.*,
+        junit.framework.TestCase.*,
+        org.awaitility.Awaitility.*,
+        org.mockito.BDDMockito.*"/>
+        </module>
+        <!--<module name="FallThrough"/>-->
+        <module name="ImportOrder">
+            <property name="groups" value="java,/^javax?\./,*,org.springframework,io.pivotal"/>
+            <property name="ordered" value="true"/>
+            <property name="separated" value="true"/>
+            <property name="option" value="bottom"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
+        </module>
+        <module name="UnusedImports"/>
+
+        <!-- Miscellaneous -->
+        <module name="CommentsIndentation"/>
+        <module name="UpperEll"/>
+        <module name="ArrayTypeStyle"/>
+        <module name="OuterTypeFilename"/>
         <!-- Checks the policy on the padding of parentheses; i.e. whether a space is required after a left parenthesis and before a
            right parenthesis, or such spaces are forbidden. -->
         <!-- <module name="ParenPad"> -->
