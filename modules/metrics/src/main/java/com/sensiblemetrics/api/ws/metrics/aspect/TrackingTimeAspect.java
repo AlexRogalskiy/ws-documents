@@ -21,7 +21,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @Slf4j
 @Aspect
 @ConditionalOnProperty(prefix = TrackingTimeAspect.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
-@Description("Tracking time aspect configuration")
+@Description("Web Service Tracking time aspect configuration")
 public class TrackingTimeAspect {
     /**
      * Default tracking time property prefix

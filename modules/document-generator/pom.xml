@@ -20,6 +20,7 @@
     <properties>
         <docx4j.version>6.1.2</docx4j.version>
         <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
+        <hibernate-types.version>2.9.12</hibernate-types.version>
 
         <hikari.version>3.4.5</hikari.version>
 
@@ -43,12 +44,33 @@
     </properties>
 
     <dependencies>
+        <!-- Spring Boot library dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-jdbc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- Liquibase library dependencies -->
         <dependency>
             <groupId>com.mattbertolini</groupId>
             <artifactId>liquibase-slf4j</artifactId>
             <version>${liquibase-slf4j.version}</version>
         </dependency>
+
         <!-- SensibleMetrics Commons library dependencies -->
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
@@ -61,16 +83,6 @@
             <artifactId>commons</artifactId>
             <version>${sensiblemetrics-commons.version}</version>
             <scope>compile</scope>
-        </dependency>
-
-        <!-- Commons testing library dependencies -->
-        <dependency>
-            <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>commons</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
-            <classifier>tests</classifier>
-            <type>test-jar</type>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
@@ -149,11 +161,11 @@
             <version>${hibernate-core.version}</version>
         </dependency>
 
-        <!-- HSQL DB test library dependencies -->
+        <!-- Hibernate types library dependencies -->
         <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <scope>test</scope>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>${hibernate-types.version}</version>
         </dependency>
 
         <!-- Jaxb2 library dependencies -->
@@ -177,7 +189,7 @@
             <version>${modelmapper.version}</version>
         </dependency>
 
-        <!-- PostgreSQL DB library dependencies -->
+        <!-- PostgreSQL DataBase library dependencies -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -185,27 +197,26 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Spring library dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-jdbc</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <!-- P6spy library dependencies -->
         <dependency>
             <groupId>p6spy</groupId>
             <artifactId>p6spy</artifactId>
             <version>${p6spy.version}</version>
+        </dependency>
+
+        <!-- HSQL DB test library dependencies -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>commons</artifactId>
+            <version>${sensiblemetrics-commons.version}</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -371,14 +382,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <!-- Xsd profile -->
-        <profile>
-            <id>debug</id>
-            <properties>
-                <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
-            </properties>
         </profile>
 
         <!-- Xsd profile -->

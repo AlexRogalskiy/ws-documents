@@ -5,12 +5,15 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.UtilityClass;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.type.PostgresUUIDType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.sensiblemetrics.api.ws.document.generator.model.entity.BaseAuditEntity.Info.ID_FIELD_NAME;
 import static com.sensiblemetrics.api.ws.document.generator.model.entity.BaseAuditEntity.Info.ROW_VERSION_FIELD_NAME;
@@ -24,6 +27,7 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.BaseAud
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @MappedSuperclass
+@TypeDef(name = "postgres-uuid", defaultForType = UUID.class, typeClass = PostgresUUIDType.class)
 public abstract class BaseAuditEntity<ID extends Serializable> extends AuditEntity<ID> {
     /**
      * Default explicit serialVersionUID for interoperability

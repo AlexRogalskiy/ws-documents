@@ -313,11 +313,6 @@
             <artifactId>throwing-function</artifactId>
             <version>${throwing-function.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.github.mweirauch</groupId>
-            <artifactId>micrometer-jvm-extras</artifactId>
-            <version>${micrometer-jvm.version}</version>
-        </dependency>
 
         <!-- Micrometer library dependencies -->
         <dependency>
@@ -330,6 +325,11 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer-prometheus.version}</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.mweirauch</groupId>
+            <artifactId>micrometer-jvm-extras</artifactId>
+            <version>${micrometer-jvm.version}</version>
         </dependency>
 
         <!-- Apache commons library dependencies -->
@@ -344,12 +344,14 @@
             <version>${commons-compress.version}</version>
         </dependency>
 
-        <!-- Modernizer library dependencies -->
+        <!-- Plexus library dependencies -->
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
             <version>${plexus-utils.version}</version>
         </dependency>
+
+        <!-- Modernizer library dependencies -->
         <dependency>
             <groupId>org.gaul</groupId>
             <artifactId>modernizer-maven-annotations</artifactId>
@@ -607,6 +609,7 @@
 
     <build>
         <directory>${maven.multiModuleProjectDirectory}/.build/bin/${project.name}</directory>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -626,23 +629,6 @@
         </extensions>
 
         <plugins>
-            <plugin>
-                <groupId>com.fizzed</groupId>
-                <artifactId>fizzed-versionizer-maven-plugin</artifactId>
-                <version>${maven-versionizer-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-version-class</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <javaPackage>com.sensiblemetrics.api.ws</javaPackage>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
             <plugin>
                 <groupId>com.fizzed</groupId>
                 <artifactId>fizzed-watcher-maven-plugin</artifactId>
@@ -856,6 +842,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -899,7 +886,7 @@
                         <configuration>
                             <transformers>
                                 <transformer
-                                    implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Implementation-Version>${project.version}</Implementation-Version>
                                     </manifestEntries>
@@ -958,7 +945,7 @@
                         </goals>
                         <configuration>
                             <!-- if not given, 'hostname' name is used -->
-                            <hostnameProperty>my.local.ip</hostnameProperty>
+                            <hostnameProperty>local.ip</hostnameProperty>
                         </configuration>
                     </execution>
                     <execution>
@@ -968,7 +955,7 @@
                         </goals>
                         <configuration>
                             <!-- if not given, 'local.ip' name is used -->
-                            <localIpProperty>my.local.ip</localIpProperty>
+                            <localIpProperty>local.ip</localIpProperty>
                         </configuration>
                     </execution>
                     <execution>
@@ -1263,6 +1250,42 @@
     </pluginRepositories>
 
     <profiles>
+        <!-- Debug profile -->
+        <profile>
+            <id>debug</id>
+            <properties>
+                <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
+            </properties>
+        </profile>
+
+        <!-- Versionizer profile-->
+        <profile>
+            <id>versionizer</id>
+            <properties>
+                <version-java-package>com.sensiblemetrics.api.ws</version-java-package>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.fizzed</groupId>
+                        <artifactId>fizzed-versionizer-maven-plugin</artifactId>
+                        <version>${maven-versionizer-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>generate-version-class</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <javaPackage>${version-java-package}</javaPackage>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- RPM profile -->
         <profile>
             <id>rpm</id>
@@ -1318,7 +1341,7 @@
 
         <!-- Lombok profile -->
         <profile>
-            <id>lombok</id>
+            <id>delombok</id>
             <build>
                 <plugins>
                     <plugin>
@@ -1419,7 +1442,7 @@
 
         <!-- SortPom profile -->
         <profile>
-            <id>softpom</id>
+            <id>sortpom</id>
             <build>
                 <plugins>
                     <plugin>
@@ -1908,7 +1931,10 @@
             </activation>
             <properties>
                 <parallel.tests>2</parallel.tests>
-                <surefire.commands>-Duser.language=en
+                <test-groups.include/>
+
+                <surefire.commands>
+                    -Duser.language=en
                     -Duser.country=GB
                     --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
                     --illegal-access=permit
@@ -1916,16 +1942,14 @@
                 </surefire.commands>
                 <surefire.fileEncoding>-Dfile.encoding=${project.build.sourceEncoding}</surefire.fileEncoding>
                 <surefire.jmxEnabled>-Dcom.sun.management.jmxremote=false</surefire.jmxEnabled>
-
-                <surefire.memory>-Xmx1024m
+                <surefire.memory>
+                    -Xmx1024m
                     -Dsun.zip.disableMemoryMapping=true
                 </surefire.memory>
                 <surefire.stackVersion>-Djava.net.preferIPv4Stack=true</surefire.stackVersion>
                 <surefire.timezone>-Duser.timezone=US/Eastern</surefire.timezone>
-                <test-groups.include/>
-                <testAgent/>
-                <unit-tests.fail>${failIfNoTests}</unit-tests.fail>
 
+                <unit-tests.fail>${failIfNoTests}</unit-tests.fail>
                 <unit-tests.skip>${skipTests}</unit-tests.skip>
             </properties>
             <build>
@@ -1948,7 +1972,7 @@
                                 <forkedProcessTimeoutInSeconds>21600</forkedProcessTimeoutInSeconds>
                                 <redirectTestOutputToFile>true</redirectTestOutputToFile>
                                 <failIfNoTests>${unit-tests.fail}</failIfNoTests>
-                                <argLine>@{testAgent}
+                                <argLine>
                                     ${surefire.memory}
                                     ${surefire.fileEncoding}
                                     ${surefire.jmxEnabled}
@@ -1997,7 +2021,6 @@
                                     <configuration>
                                         <skip>${unit-tests.skip}</skip>
                                         <destFile>${project.build.directory}/jacoco.exec</destFile>
-                                        <propertyName>testAgent</propertyName>
                                     </configuration>
                                 </execution>
                                 <execution>
@@ -2035,8 +2058,8 @@
                 </file>
             </activation>
             <properties>
-
-                <failsafe.commands>-Duser.language=en
+                <failsafe.commands>
+                    -Duser.language=en
                     -Duser.country=GB
                     --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
                     --illegal-access=permit
@@ -2055,7 +2078,6 @@
             <build>
                 <pluginManagement>
                     <plugins>
-
                         <plugin>
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-failsafe-plugin</artifactId>
@@ -2255,7 +2277,8 @@
         <profile>
             <id>javadoc</id>
             <properties>
-                <javadoc.properties>-Xdoclint:none
+                <javadoc.properties>
+                    -Xdoclint:none
                     -J-Xmx1024m
                     -notimestamp
                     -link http://docs.oracle.com/javase/8/docs/api/
@@ -2678,7 +2701,7 @@
             </properties>
         </profile>
 
-        <!-- Development profile -->
+        <!-- Dev profile -->
         <profile>
             <id>dev</id>
             <activation>
@@ -2698,6 +2721,11 @@
         <!-- Test profile -->
         <profile>
             <id>test</id>
+            <activation>
+                <file>
+                    <exists>${basedir}/src/test</exists>
+                </file>
+            </activation>
             <properties>
                 <failsafe.memory>-Xms1g -Xmx1500m -Xss256k</failsafe.memory>
                 <integration-tests.skip>false</integration-tests.skip>
@@ -2711,15 +2739,15 @@
         <!-- Reporting profile -->
         <profile>
             <id>reporting</id>
+            <properties>
+                <skipDeploy>true</skipDeploy>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
                         <version>${maven-site-plugin.version}</version>
-                        <configuration>
-                            <skipDeploy>true</skipDeploy>
-                        </configuration>
                         <executions>
                             <execution>
                                 <id>stage-for-scm-publish</id>

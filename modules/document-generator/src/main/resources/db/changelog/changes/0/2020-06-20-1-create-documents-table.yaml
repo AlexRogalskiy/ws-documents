@@ -96,7 +96,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: status
-                  type: status_enum
+                  type: VARCHAR(64)
                   defaultValue: 'NEW'
             tableName: documents
   - changeSet:

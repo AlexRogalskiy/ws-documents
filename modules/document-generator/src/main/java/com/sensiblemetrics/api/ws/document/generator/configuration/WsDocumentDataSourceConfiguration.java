@@ -1,53 +1,60 @@
 package com.sensiblemetrics.api.ws.document.generator.configuration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.boot.autoconfigure.jmx.ParentAwareNamingStrategy;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.Role;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource;
 import org.springframework.jmx.export.naming.ObjectNamingStrategy;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaDialect;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.util.Properties;
 import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.join;
+import static org.springframework.util.StringUtils.arrayToDelimitedString;
 
+@Slf4j
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(
-        basePackages = {
-                "com.sensiblemetrics.api.ws.document.generator.model",
-                "com.sensiblemetrics.api.ws.document.generator.repository"
-        }
-)
-@Description("SensibleMetrics Web Service DataSource configuration")
-public class WsDataSourceConfiguration {
+@EnableJpaRepositories("com.sensiblemetrics.api.ws.document.generator.repository")
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+@Description("SensibleMetrics Document Web Service DataSource configuration")
+public class WsDocumentDataSourceConfiguration {
+    /**
+     * Default bean naming conventions
+     */
+    public static final String DEFAULT_DATASOURCE_BEAN = "dataSource";
+    public static final String DEFAULT_TRANSACTION_MANAGER_BEAN = "transactionManager";
+    public static final String DEFAULT_ENTITY_MANAGER_FACTORY_BEAN = "entityManagerFactory";
 
     /**
      * Default packages to scan
      */
     private static final String[] DEFAULT_PACKAGES_TO_SCAN = {
-            "com.sensiblemetrics.api.ws.document.generator.model",
-            "com.sensiblemetrics.api.ws.document.generator.repository"
+            "com.sensiblemetrics.api.ws.document.generator.model.entity"
     };
 
     /**
@@ -65,7 +72,7 @@ public class WsDataSourceConfiguration {
      * @return {@link JpaVendorAdapter}
      */
     @Bean
-    @ConditionalOnMissingBean(type = "JpaVendorAdapter")
+    @ConditionalOnMissingBean(value = JpaVendorAdapter.class)
     @Description("DataSource hibernate JPA vendor bean")
     public JpaVendorAdapter jpaVendorAdapter() {
         return new HibernateJpaVendorAdapter();
@@ -77,7 +84,7 @@ public class WsDataSourceConfiguration {
      * @return {@link JpaDialect}
      */
     @Bean
-    @ConditionalOnMissingBean(type = "JpaDialect")
+    @ConditionalOnMissingBean(value = JpaDialect.class)
     @Description("DataSource JPA dialect bean")
     public JpaDialect jpaDialect() {
         return new HibernateJpaDialect();
@@ -89,9 +96,8 @@ public class WsDataSourceConfiguration {
      * @return {@link PersistenceExceptionTranslationPostProcessor}
      */
     @Bean
-    @ConditionalOnMissingBean(type = "PersistenceExceptionTranslationPostProcessor")
-    @Description("DataSource persistence exception translation post" +
-            " processor bean")
+    @ConditionalOnMissingBean(value = PersistenceExceptionTranslationPostProcessor.class)
+    @Description("DataSource persistence exception translation post processor bean")
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
@@ -103,9 +109,9 @@ public class WsDataSourceConfiguration {
      * @return {@link PersistenceUnitManager}
      */
     @Bean
-    @ConditionalOnMissingBean(type = "PersistenceUnitManager")
+    @ConditionalOnMissingBean(value = PersistenceUnitManager.class)
     @Description("DataSource persistence unit manager bean")
-    public PersistenceUnitManager persistenceUnitManager(@Qualifier("dataSource") final DataSource dataSource) {
+    public PersistenceUnitManager persistenceUnitManager(@Qualifier(DEFAULT_DATASOURCE_BEAN) final DataSource dataSource) {
         final DefaultPersistenceUnitManager manager = new DefaultPersistenceUnitManager();
         manager.setDefaultDataSource(dataSource);
         manager.setPackagesToScan(DEFAULT_PACKAGES_TO_SCAN);
@@ -113,18 +119,10 @@ public class WsDataSourceConfiguration {
         return manager;
     }
 
-    /**
-     * Returns {@link HibernateTransactionManager} configuration by initial {@link LocalSessionFactoryBean} instance
-     *
-     * @param entityManagerFactory - initial {@link LocalSessionFactoryBean} instance
-     * @return {@link HibernateTransactionManager} configuration
-     */
-    @Bean
-    @Description("DataSource Hibernate transaction manager bean")
-    public HibernateTransactionManager transactionManager(final LocalSessionFactoryBean entityManagerFactory) {
-        final HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(entityManagerFactory.getObject());
-        return transactionManager;
+    @Bean(DEFAULT_TRANSACTION_MANAGER_BEAN)
+    @Description("DataSource Jpa transaction manager bean")
+    public PlatformTransactionManager transactionManager(@Qualifier(DEFAULT_ENTITY_MANAGER_FACTORY_BEAN) final EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
     }
 
     /**
@@ -147,24 +145,28 @@ public class WsDataSourceConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(value = ObjectNamingStrategy.class, search = SearchStrategy.CURRENT)
+    @Description("DataSource object naming strategy bean")
     public ParentAwareNamingStrategy objectNamingStrategy() {
         final ParentAwareNamingStrategy namingStrategy = new ParentAwareNamingStrategy(new AnnotationJmxAttributeSource());
         namingStrategy.setDefaultDomain(join(DEFAULT_DOMAIN_NAME_PREFIX, UUID.randomUUID().toString()));
         return namingStrategy;
     }
 
-    @Bean("entityManagerFactory")
-    @Description("DataSource local session factory bean")
-    public LocalSessionFactoryBean sessionFactory(@Qualifier("dataSource") final DataSource dataSource,
-                                                  final JpaProperties jpaProperties) throws IOException {
-        final LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource);
-        sessionFactory.setPackagesToScan(DEFAULT_PACKAGES_TO_SCAN);
-
-        final Properties properties = new Properties();
-        properties.putAll(jpaProperties.getProperties());
-        sessionFactory.setHibernateProperties(properties);
-        sessionFactory.afterPropertiesSet();
-        return sessionFactory;
+    @Bean(DEFAULT_ENTITY_MANAGER_FACTORY_BEAN)
+    @Description("DataSource entity manager factory bean")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(final EntityManagerFactoryBuilder builder,
+                                                                       final JpaProperties jpaProperties,
+                                                                       @Qualifier(DEFAULT_DATASOURCE_BEAN) final DataSource dataSource) {
+        log.info(
+                "DB [{}] <Default> with JPA properties: \n\n{}\n",
+                jpaProperties.getDatabase(),
+                arrayToDelimitedString(jpaProperties.getProperties().entrySet().toArray(), System.lineSeparator())
+        );
+        return builder
+                .dataSource(dataSource)
+                .properties(jpaProperties.getProperties())
+                .packages(DEFAULT_PACKAGES_TO_SCAN)
+                .persistenceUnit(DEFAULT_PERSISTENCE_UNIT_NAME)
+                .build();
     }
 }

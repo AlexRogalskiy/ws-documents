@@ -30,7 +30,7 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Slf4j
 @Aspect
 @ConditionalOnProperty(prefix = LoggingAspect.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
-@Description("Logging aspect configuration")
+@Description("Web Service Logging aspect configuration")
 public class LoggingAspect {
     /**
      * Default logging property prefix
@@ -50,8 +50,8 @@ public class LoggingAspect {
     /**
      * Pointcut that matches {@link LoggingInfo}
      */
-    @Pointcut("@annotation(com.sensiblemetrics.api.ws.commons.annotation.LoggingInfo)" +
-            "|| @within(com.sensiblemetrics.api.ws.commons.annotation.LoggingInfo)")
+    @Pointcut("@annotation(com.sensiblemetrics.api.ws.logger.annotation.LoggingInfo)" +
+            "|| @within(com.sensiblemetrics.api.ws.logger.annotation.LoggingInfo)")
     public void loggingInfoPointcut() {
     }
 

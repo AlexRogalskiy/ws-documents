@@ -130,7 +130,7 @@ management:
     build:
       enabled: false
     git:
-      mode: full
+      mode: FULL
   endpoint:
     beans:
       cache:

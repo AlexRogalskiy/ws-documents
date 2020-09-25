@@ -31,8 +31,9 @@ import java.util.List;
         WsDocumentTemplateFormatProperty.class,
         WsDocumentStorageProperty.class
 })
-@Description("SensibleMetrics Web Service configuration")
-public class WsServiceConfiguration {
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+@Description("SensibleMetrics Document Web Service configuration")
+public class WsDocumentServiceConfiguration {
 
     @Bean
     @Description("Default model mapper configuration bean")
@@ -93,7 +94,7 @@ public class WsServiceConfiguration {
 
         @Bean(name = DOCUMENT_WS_ENDPOINT_BEAN_NAME)
         @Description("Default document WS-endpoint property configuration bean")
-        public WsAddressingProperty.WsEndpoint documentWsEndpoint(final WsAddressingProperty property) {
+        public WsAddressingProperty.WsEndpoint documentWsEndpoint() {
             return this.endpointConfigurationProvider.getOrThrow(DOCUMENT_WS_ENDPOINT_KEY);
         }
     }

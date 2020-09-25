@@ -17,6 +17,7 @@ class ErrorTemplateTypeTest {
 
     @Test
     void test_check_ErrorTemplateType_By_Name() {
+        System.out.println("s" == "s");
         assertThat(ErrorTemplateType.SERVICE_UNAVAILABLE.toString(), equalTo("error-30"));
         assertThat(ErrorTemplateType.SERVICE_OPERATION_ERROR.toString(), equalTo("error-40"));
         assertThat(ErrorTemplateType.BAD_REQUEST.toString(), equalTo("error-50"));

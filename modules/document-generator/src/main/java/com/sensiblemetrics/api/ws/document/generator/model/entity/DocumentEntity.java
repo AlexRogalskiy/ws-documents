@@ -3,6 +3,7 @@ package com.sensiblemetrics.api.ws.document.generator.model.entity;
 import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
 import com.sensiblemetrics.api.ws.commons.constraint.NamePattern;
 import com.sensiblemetrics.api.ws.document.generator.enumeration.StatusType;
+import com.sensiblemetrics.api.ws.document.generator.model.converter.StatusTypeConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -27,7 +28,7 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.Documen
 @Entity(name = MODEL_NAME)
 @Table(name = TABLE_NAME)
 @BatchSize(size = 10)
-@TypeDef(name = "status_enum", typeClass = StatusEnumType.class)
+@TypeDef(name = "status_type_enum", typeClass = StatusEnumType.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class DocumentEntity extends BaseAuditEntity<UUID> {
     /**
@@ -68,8 +69,9 @@ public class DocumentEntity extends BaseAuditEntity<UUID> {
             ConstraintGroup.OnDelete.class
     }, message = "{model.entity.document.status.notNull}")
     @Enumerated(EnumType.STRING)
-    @Type(type = "status_enum")
-    @Column(name = STATUS_FIELD_NAME, nullable = false, length = 64)
+    //@Type(type = "status_type_enum")
+    @Convert(converter = StatusTypeConverter.class)
+    @Column(name = STATUS_FIELD_NAME, columnDefinition = "status_enum", nullable = false, length = 64)
     private StatusType status;
 
     @UtilityClass
