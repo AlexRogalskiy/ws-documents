@@ -1,7 +1,7 @@
 # Base OS layer
 FROM openjdk:latest
 
-RUN groupadd spring && useradd -m -G spring -s /bin/bash spring
+RUN groupadd spring && useradd -m -g spring -s /bin/bash spring
 USER spring:spring
 
 VOLUME /tmp
