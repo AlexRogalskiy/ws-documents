@@ -5,16 +5,17 @@ import com.sensiblemetrics.api.ws.metrics.aspect.TrackingTimeAspect;
 import com.sensiblemetrics.api.ws.metrics.property.WsMetricsProperty;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
+import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.ImmutableTag;
 import io.micrometer.core.instrument.LongTaskTimer;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.MeterBinder;
+import io.micrometer.core.instrument.config.MeterFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.actuate.metrics.web.servlet.WebMvcTagsContributor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,7 +25,10 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.streamOf;
 
 @Configuration
 @Import(TrackingTimeAspect.class)
@@ -41,6 +45,9 @@ public abstract class WsMetricsConfiguration {
     public static final String METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME = "metricsCommonTagsCustomizer";
     public static final String METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME = "namingConventionCustomizer";
     public static final String METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME = "webMvcTagsContributor";
+    public static final String METER_REGISTRY_TIMED_ASPECT_BEAN_NAME = "timedAspect";
+    public static final String METER_REGISTRY_INCLUDE_FILTER_BEAN_NAME = "includeMeterFilter";
+    public static final String METER_REGISTRY_EXCLUDE_FILTER_BEAN_NAME = "excludeMeterFilter";
 
     @Bean(MEMORY_METRICS_METER_BINDER_BEAN_NAME)
     @ConditionalOnClass(ProcessMemoryMetrics.class)
@@ -57,14 +64,12 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME)
-    @ConditionalOnBean(WsMetricsProperty.class)
     @Description("Metrics naming convention customizer bean")
     public MeterRegistryCustomizer<MeterRegistry> metricsNamingConventionCustomizer(final WsMetricsProperty metricsProperty) {
         return registry -> registry.config().namingConvention(metricsProperty.getNamingConvention());
     }
 
     @Bean(METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME)
-    @ConditionalOnBean(WsMetricsProperty.class)
     @Description("Metrics common tags customizer bean")
     public MeterRegistryCustomizer<MeterRegistry> metricsCommonTagsCustomizer(final WsMetricsProperty metricsProperty) {
         return registry -> OptionalConsumer.of(metricsProperty.getDefaults().getTags())
@@ -73,10 +78,27 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
-    @ConditionalOnBean(WsMetricsProperty.class)
     @Description("Metrics Web MVC tags contributor bean")
     public WebMvcTagsContributor webMvcTagsContributor(final WsMetricsProperty metricsProperty) {
         return new CustomWebMvcTagsContributor(metricsProperty);
+    }
+
+    @Bean(METER_REGISTRY_TIMED_ASPECT_BEAN_NAME)
+    @Description("Metrics timed aspect configuration bean")
+    public TimedAspect timedAspect(final MeterRegistry registry) {
+        return new TimedAspect(registry);
+    }
+
+    @Bean(METER_REGISTRY_INCLUDE_FILTER_BEAN_NAME)
+    @Description("Actuator include meter filter configuration bean")
+    public MeterFilter includeMeterFilter(final WsMetricsProperty metricsProperty) {
+        return MeterFilter.accept(v -> streamOf(metricsProperty.getPatterns().getInclude()).anyMatch(p -> Pattern.matches(p, v.getName())));
+    }
+
+    @Bean(METER_REGISTRY_EXCLUDE_FILTER_BEAN_NAME)
+    @Description("Actuator exclude meter filter configuration bean")
+    public MeterFilter excludeMeterFilter(final WsMetricsProperty metricsProperty) {
+        return MeterFilter.deny(v -> streamOf(metricsProperty.getPatterns().getExclude()).anyMatch(p -> Pattern.matches(p, v.getName())));
     }
 
     @RequiredArgsConstructor

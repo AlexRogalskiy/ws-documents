@@ -213,6 +213,8 @@
         <micrometer-jvm.version>0.2.0</micrometer-jvm.version>
         <micrometer-prometheus.version>1.5.5</micrometer-prometheus.version>
         <micrometer.version>1.5.5</micrometer.version>
+        <jolokia.version>1.6.2</jolokia.version>
+
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <mockito-junit-jupiter.version>3.5.13</mockito-junit-jupiter.version>
         <mockito.version>3.5.13</mockito.version>
@@ -222,6 +224,7 @@
         <slf4j-api.version>1.7.30</slf4j-api.version>
 
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <spring-cloud-kubernetes.version>1.1.6.RELEASE</spring-cloud-kubernetes.version>
         <throwing-function.version>1.5.1</throwing-function.version>
 
@@ -249,6 +252,13 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-kubernetes-dependencies</artifactId>
                 <version>${spring-cloud-kubernetes.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -338,6 +348,11 @@
             <groupId>io.github.mweirauch</groupId>
             <artifactId>micrometer-jvm-extras</artifactId>
             <version>${micrometer-jvm.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jolokia</groupId>
+            <artifactId>jolokia-core</artifactId>
+            <version>${jolokia.version}</version>
         </dependency>
 
         <!-- Apache commons library dependencies -->
@@ -2219,8 +2234,14 @@
         <!-- Prometheus profile -->
         <profile>
             <id>prometheus</id>
+            <activation>
+                <property>
+                    <name>prometheus.pushgateway.enabled</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <properties>
-                <management.metrics.export.prometheus.pushgateway.enabled>true
+                <management.metrics.export.prometheus.pushgateway.enabled>${prometheus.pushgateway.enabled}
                 </management.metrics.export.prometheus.pushgateway.enabled>
                 <prometheus-simpleclient.version>0.9.0</prometheus-simpleclient.version>
             </properties>

@@ -104,7 +104,7 @@ spring:
         use-sql-comments: true
         max-fetch-depth: 3
         default-batch-fetch-size: 30
-        generate_statistics: false
+        generate_statistics: true
         enable_lazy_load_no_trans: true
         globally_quoted_identifiers: true
         jdbc.lob.non-contextual-creation: true
@@ -122,6 +122,11 @@ spring:
     exclude: org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
 
 management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
   server:
     servlet:
       context-path: /management
@@ -132,6 +137,9 @@ management:
     git:
       mode: FULL
   endpoint:
+    jolokia:
+      config:
+        debug: true
     beans:
       cache:
         time-to-live: 10s
@@ -145,11 +153,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
+        include: [ "jolokia", "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
       base-path: /actuator
       path-mapping:
         info: status
   metrics:
+    tags:
+      region: us-east-1
+      type: webdocs
     export:
       prometheus:
         enabled: true
@@ -190,6 +201,9 @@ ws-documents:
     handlers:
       tracking-time:
         enabled: true
+    patterns:
+      exclude:
+        - tomcat.*
 
   api-status:
     node:

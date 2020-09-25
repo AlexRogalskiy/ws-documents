@@ -20,6 +20,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_DELIMITER;
 import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_PREFIX;
@@ -47,6 +48,14 @@ public class WsMetricsProperty {
     @NestedConfigurationProperty
     @NotNull(message = "{property.metrics.handlers.notNull}")
     private Handlers handlers = new Handlers();
+
+    /**
+     * Default metrics patterns
+     */
+    @Valid
+    @NestedConfigurationProperty
+    @NotNull(message = "{property.metrics.patterns.notNull}")
+    private Patterns patterns = new Patterns();
 
     /**
      * Default naming convention
@@ -122,7 +131,34 @@ public class WsMetricsProperty {
     }
 
     /**
-     * Logging handlers configuration properties
+     * Metrics patterns configuration properties
+     */
+    @Data
+    @Validated
+    @Accessors(chain = true)
+    public static class Patterns {
+        /**
+         * Default handlers property prefix
+         */
+        public static final String PROPERTY_PREFIX = WsMetricsProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "patterns";
+
+        /**
+         * Default {@link Set} collection of {@link String} patterns to include
+         */
+        @Valid
+        @NullOrNotEmpty(message = "{property.metrics.patterns.include.nullOrNotEmpty}")
+        private Set<@NotBlank String> include;
+
+        /**
+         * Default {@link Set} collection of {@link String} patterns to exclude
+         */
+        @Valid
+        @NullOrNotEmpty(message = "{property.metrics.patterns.exclude.nullOrNotEmpty}")
+        private Set<@NotBlank String> exclude;
+    }
+
+    /**
+     * Metrics handlers configuration properties
      */
     @Data
     @Validated
@@ -143,7 +179,7 @@ public class WsMetricsProperty {
     }
 
     /**
-     * Logging handler configuration properties
+     * Metrics handler configuration properties
      */
     @Data
     @Validated

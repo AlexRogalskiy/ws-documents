@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.ArrayUtils.EMPTY_OBJECT_ARRAY;
 
 @Slf4j
 @UtilityClass
@@ -172,5 +173,121 @@ public class ServiceUtils {
                         }
                     }
                 }, false);
+    }
+
+    /**
+     * Returns non-nullable {@link Stream} of {@code T} by input collection of {@code T} values
+     *
+     * @param <T>    type of input element to be converted from by operation
+     * @param values - initial input collection of {@code T} values
+     * @return non-nullable {@link Stream} of {@code T}
+     */
+    @NonNull
+    @SafeVarargs
+    public static <T> Stream<T> streamOf(final T... values) {
+        return Arrays.stream(Optional.ofNullable(values)
+                .orElseGet(() -> cast(EMPTY_OBJECT_ARRAY)));
+    }
+
+    /**
+     * Returns non-nullable {@link Stream} of {@code T} by input {@link Iterable} collection of {@code T} values
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param iterable - initial input {@link Iterable} collection of {@code T} values
+     * @param parallel - initial input {@code boolean} parallel flag
+     * @return non-nullable {@link Stream} of {@code T}
+     */
+    @NonNull
+    public static <T> Stream<T> streamOf(final Iterable<T> iterable,
+                                         final boolean parallel) {
+        return StreamSupport.stream(iterable.spliterator(), parallel);
+    }
+
+    /**
+     * Returns non-nullable {@link Stream} of {@code T} by input {@link Iterator}
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param iterator - initial input {@link Iterator}
+     * @param parallel - initial input parallel flag
+     * @return non-nullable {@link Stream} of {@code T}
+     */
+    @NonNull
+    public static <T> Stream<T> streamOf(final Iterator<T> iterator,
+                                         final boolean parallel) {
+        Assert.notNull(iterator, "Iterator should not be null");
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), parallel);
+    }
+
+    /**
+     * Returns non-nullable {@link Stream} of {@code T} by input {@link Iterator}
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param iterator - initial input {@link Iterator}
+     * @return non-nullable {@link Stream} of {@code T}
+     */
+    @NonNull
+    public static <T> Stream<T> streamOf(final Iterator<T> iterator) {
+        return streamOf(iterator, false);
+    }
+
+    /**
+     * Returns flat {@link Stream} of {@code T} items by input array of {@link Optional}s
+     *
+     * @param <T>       type of configurable optional item
+     * @param optionals - initial input array of {@link Optional}s
+     * @return {@link Stream} of {@code T} items
+     */
+    @NonNull
+    @SafeVarargs
+    public static <T> Stream<T> flatOf(final Optional<T>... optionals) {
+        return streamOf(optionals).flatMap(ServiceUtils::streamOpt);
+    }
+
+    /**
+     * Returns non-nullable {@link Stream} of {@code T} by input {@link Iterable} collection of {@code T} values
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param iterable - initial input {@link Iterable} collection of {@code T} values
+     * @return non-nullable {@link Stream} of {@code T}
+     */
+    @NonNull
+    public static <T> Stream<T> streamOf(final Iterable<T> iterable) {
+        return Optional.ofNullable(iterable).map(ServiceUtils::stream).orElseGet(Stream::empty);
+    }
+
+    /**
+     * Returns {@link Stream} by transforming input {@link Optional} depending upon whether a value is present
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param optional - initial input {@link Optional} of {@code T} values
+     * @return {@link Stream}
+     */
+    @NonNull
+    public static <T> Stream<T> streamOpt(final Optional<T> optional) {
+        return optional.map(Stream::of).orElseGet(Stream::empty);
+    }
+
+    /**
+     * Returns non-nullable {@link Stream} of {@code T} by input {@link Iterable} collection of {@code T} values
+     *
+     * @param <T>      type of input element to be converted from by operation
+     * @param iterable - initial input {@link Iterable} collection of {@code T} values
+     * @return non-nullable {@link Stream} of {@code T}
+     */
+    @NonNull
+    public static <T> Stream<T> stream(final Iterable<T> iterable) {
+        return (iterable instanceof Collection) ? ((Collection<T>) iterable).stream() : StreamSupport.stream(iterable.spliterator(), false);
+    }
+
+    /**
+     * Returns {@link T} casted object
+     *
+     * @param <T>    type of input element to be converted from by operation
+     * @param object - initial input {@link Object} to cast
+     * @return {@link T} casted object
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(final Object object) {
+        return (T) object;
     }
 }
