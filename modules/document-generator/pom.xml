@@ -20,7 +20,7 @@
     <properties>
         <docx4j.version>6.1.2</docx4j.version>
         <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
-        <hibernate-types.version>2.9.12</hibernate-types.version>
+        <hibernate-types.version>2.9.13</hibernate-types.version>
 
         <hikari.version>3.4.5</hikari.version>
 
