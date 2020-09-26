@@ -137,25 +137,25 @@ Choose one of the modules and add to your `pom.xml`
 </dependency>
 ```
 
-- [**WebDocs Actuator**](https://github.com/AlexRogalskiy/ws-documents/actuator)  
+- [**WebDocs Actuator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/actuator)  
   `webdocs-actuator` - Library to work with Actuator API.
 
-- [**WebDocs Commons**](https://github.com/AlexRogalskiy/ws-documents/commons)  
+- [**WebDocs Commons**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/commons)  
   `webdocs-commons` - Library with utilities for common use cases.
 
-- [**WebDocs Document-Generator**](https://github.com/AlexRogalskiy/ws-documents/document-generator)  
+- [**WebDocs Document-Generator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/document-generator)  
   `webdocs-document-generator` - Library to work with Document-Generator API.
 
-- [**WebDocs Executor**](https://github.com/AlexRogalskiy/ws-documents/executor)  
+- [**WebDocs Executor**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/executor)  
   `webdocs-executor` - Library to work with Executor API.
 
-- [**WebDocs Logger**](https://github.com/AlexRogalskiy/ws-documents/logger)  
+- [**WebDocs Logger**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/logger)  
   `webdocs-logger` - Library to work with Logger API.
 
-- [**WebDocs Metrics**](https://github.com/AlexRogalskiy/ws-documents/metrics)  
+- [**WebDocs Metrics**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/metrics)  
   `webdocs-metrics` - Library to work with Metrics API.
 
-- [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/router)  
+- [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/router)  
   `webdocs-router` - Library to work with Router API.
 
 ## Version Store
