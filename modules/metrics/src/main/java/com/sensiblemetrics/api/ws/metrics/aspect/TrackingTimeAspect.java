@@ -15,18 +15,13 @@ import org.springframework.lang.Nullable;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_DELIMITER;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Slf4j
 @Aspect
-@ConditionalOnProperty(prefix = TrackingTimeAspect.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = WsMetricsProperty.Handlers.TRACKING_TIME_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @Description("Web Service Tracking time aspect configuration")
 public class TrackingTimeAspect {
-    /**
-     * Default tracking time property prefix
-     */
-    public static final String PROPERTY_PREFIX = WsMetricsProperty.Handlers.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "tracking-time";
 
     /**
      * Pointcut that matches {@link TrackingTime}

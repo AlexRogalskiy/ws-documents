@@ -159,7 +159,7 @@ management:
         info: status
   metrics:
     tags:
-      region: us-east-1
+      region: ${spring.application.region:us-east-1}
       type: webdocs
     export:
       prometheus:
@@ -197,9 +197,15 @@ ws-documents:
       description: WebDocs Generator Service
       tags:
         - key: scope
-          value: WebDocs
+          value: ${spring.profiles.active:local}
+    meters:
+      datasource:
+        name: webdocs.datasource
+        description: DataSource status
     handlers:
       tracking-time:
+        enabled: true
+      monitoring-time:
         enabled: true
     patterns:
       exclude:
@@ -237,7 +243,7 @@ ws-documents:
       names: Accept,Content-Type,Content-Length
       pattern: ".*"
     handlers:
-      logging:
+      reporting-data:
         enabled: true
 
   actuator:

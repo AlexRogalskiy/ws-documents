@@ -88,6 +88,7 @@ public class WsLoggingProperty {
          * Default handlers property prefix
          */
         public static final String PROPERTY_PREFIX = WsLoggingProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "handlers";
+        public static final String REPORTING_DATA_PROPERTY_PREFIX = PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "reporting-data";
 
         /**
          * Logging handler

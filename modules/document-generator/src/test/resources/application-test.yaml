@@ -132,6 +132,8 @@ ws-documents:
     handlers:
       tracking-time:
         enabled: true
+      monitoring-time:
+        enabled: true
 
   api-status:
     node:

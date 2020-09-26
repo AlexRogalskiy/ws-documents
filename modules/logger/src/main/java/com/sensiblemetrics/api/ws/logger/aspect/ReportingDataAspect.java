@@ -25,17 +25,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_DELIMITER;
-
 @Slf4j
 @Aspect
-@ConditionalOnProperty(prefix = LoggingAspect.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
-@Description("Web Service Logging aspect configuration")
-public class LoggingAspect {
-    /**
-     * Default logging property prefix
-     */
-    public static final String PROPERTY_PREFIX = WsLoggingProperty.Handlers.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "log-data";
+@ConditionalOnProperty(prefix = WsLoggingProperty.Handlers.REPORTING_DATA_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@Description("Web Service Reporting data aspect configuration")
+public class ReportingDataAspect {
 
     /**
      * Pointcut that matches {@link Repository}, {@link Service}, {@link RestController} and {@link Controller} components

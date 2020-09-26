@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DataSourceStatusProbe implements MeterBinder {
     private static final String SELECT_1 = "SELECT 1;";
@@ -24,12 +25,16 @@ public class DataSourceStatusProbe implements MeterBinder {
     private final Iterable<Tag> tags;
     private final DataSource dataSource;
 
-    public DataSourceStatusProbe(final DataSource dataSource) {
-        Assert.notNull(dataSource, "dataSource cannot be null");
+    public DataSourceStatusProbe(final DataSource dataSource,
+                                 final String name,
+                                 final String description,
+                                 final List<Tag> tags) {
+        Assert.notNull(dataSource, "DataSource cannot be null");
+
         this.dataSource = dataSource;
-        this.name = "data_source";
-        this.description = "DataSource status";
-        this.tags = tags(dataSource);
+        this.name = name;
+        this.description = description;
+        this.tags = Tags.concat(tags, tags(dataSource));
     }
 
     private boolean status() {

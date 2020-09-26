@@ -22,5 +22,5 @@ ws-documents:
       names: Accept,Content-Type,Content-Length
       pattern: ".*"
     handlers:
-      logging:
+      reporting-data:
         enabled: true

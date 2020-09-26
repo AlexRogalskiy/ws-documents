@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.logger.configuration;
 
-import com.sensiblemetrics.api.ws.logger.aspect.LoggingAspect;
+import com.sensiblemetrics.api.ws.logger.aspect.ReportingDataAspect;
 import com.sensiblemetrics.api.ws.logger.property.WsLoggingProperty;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.*;
 
 @Configuration
-@Import(LoggingAspect.class)
+@Import(ReportingDataAspect.class)
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @ConditionalOnProperty(prefix = WsLoggingProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsLoggingProperty.class)

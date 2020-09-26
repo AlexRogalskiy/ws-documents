@@ -26,6 +26,8 @@ ws-documents:
     handlers:
       tracking-time:
         enabled: true
+      monitoring-time:
+        enabled: true
     patterns:
       exclude:
         - tomcat.*

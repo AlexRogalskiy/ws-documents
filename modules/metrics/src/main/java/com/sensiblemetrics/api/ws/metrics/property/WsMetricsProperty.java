@@ -86,10 +86,15 @@ public class WsMetricsProperty {
     @Accessors(chain = true)
     public static class MeterProperty {
         /**
-         * Default consumer
+         * Default metrics property prefix
          */
-        @NullOrNotBlank(message = "{property.metrics.meter.consumer.nullOrNotBlank}")
-        private String consumer;
+        public static final String METER_PROPERTY_PREFIX = PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "meters";
+
+        /**
+         * Default name
+         */
+        @NullOrNotBlank(message = "{property.metrics.meter.name.nullOrNotBlank}")
+        private String name;
 
         /**
          * Default description
@@ -168,6 +173,8 @@ public class WsMetricsProperty {
          * Default handlers property prefix
          */
         public static final String PROPERTY_PREFIX = WsMetricsProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "handlers";
+        public static final String TRACKING_TIME_PROPERTY_PREFIX = PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "tracking-time";
+        public static final String MONITORING_TIME_PROPERTY_PREFIX = PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "monitoring-time";
 
         /**
          * Tracking time handler
@@ -176,6 +183,14 @@ public class WsMetricsProperty {
         @NestedConfigurationProperty
         @NotNull(message = "{property.metrics.handlers.tracking-time.notNull}")
         private Handler trackingTime = new Handler();
+
+        /**
+         * Monitoring counter/time handler
+         */
+        @Valid
+        @NestedConfigurationProperty
+        @NotNull(message = "{property.metrics.handlers.monitoring-time.notNull}")
+        private Handler monitoringTime = new Handler();
     }
 
     /**

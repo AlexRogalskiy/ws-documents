@@ -5,9 +5,13 @@ services:
     container_name: prometheus
     image: prom/prometheus
     volumes:
+      - msengg_prometheus:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
+    networks:
+      webdocs:
+        ipv4_address: 10.13.0.5
 
   grafana:
     container_name: grafana
@@ -16,3 +20,17 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
+    networks:
+      webdocs:
+        ipv4_address: 10.13.0.6
+
+volumes:
+  msengg_prometheus:
+
+networks:
+  webdocs:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.13.0.0/16
+          gateway: 10.13.0.1
