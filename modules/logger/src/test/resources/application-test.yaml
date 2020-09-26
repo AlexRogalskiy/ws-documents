@@ -16,7 +16,7 @@ spring:
         max-size: 20
         queue-capacity: 100000
 
-ws-documents:
+webdocs:
   logging:
     headers:
       names: Accept,Content-Type,Content-Length

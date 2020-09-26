@@ -16,7 +16,7 @@ spring:
         max-size: 20
         queue-capacity: 100000
 
-ws-documents:
+webdocs:
   addressing:
     namespace: "http://api.sensiblemetrics.com/ws/"
     endpoints:

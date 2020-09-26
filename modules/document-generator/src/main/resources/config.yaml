@@ -1,22 +1,23 @@
-# SensibleMetrics Web Service Actuator test configuration
----
-spring:
-  messages:
-    encoding: UTF-8
-    basename: i18n/messages
-    # 1 hour
-    cache-duration: 3600
-  main:
-    allow-bean-definition-overriding: true
-  task:
-    execution:
-      thread-name-prefix: test
-      pool:
-        core-size: 10
-        max-size: 20
-        queue-capacity: 100000
-
 webdocs:
+  metrics:
+    defaults:
+      description: WebDocs Generator Service
+      tags:
+        - key: scope
+          value: ${spring.profiles.active:local}
+    meters:
+      datasource:
+        name: webdocs.datasource
+        description: DataSource status
+    handlers:
+      tracking-time:
+        enabled: true
+      monitoring-time:
+        enabled: true
+    patterns:
+      exclude:
+        - tomcat.*
+
   api-status:
     node:
       name: ${java.rmi.server.hostname:localhost}
@@ -27,9 +28,6 @@ webdocs:
       version: '@project.version@'
       name: '@project.name@'
       timestamp: '@maven.build.timestamp@'
-    shutdown:
-      indicate-error-after: 5ms
-      phase-out-after: 20ms
 
   info:
     # application info
@@ -46,6 +44,14 @@ webdocs:
         vendor: ${java.specification.vendor}
         vm-name: ${java.vm.name}
         runtime-version: ${java.runtime.version}
+
+  logging:
+    headers:
+      names: Accept,Content-Type,Content-Length
+      pattern: ".*"
+    handlers:
+      reporting-data:
+        enabled: true
 
   actuator:
     security:

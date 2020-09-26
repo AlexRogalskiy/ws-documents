@@ -1,5 +1,7 @@
 # Base OS layer
-FROM openjdk:latest
+ARG IMAGE_SOURCE
+ARG IMAGE_TAG
+FROM ${IMAGE_SOURCE:openjdk}:${IMAGE_TAG:latest}
 
 RUN groupadd spring && useradd -m -g spring -s /bin/bash spring
 USER spring:spring

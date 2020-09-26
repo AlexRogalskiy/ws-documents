@@ -8,8 +8,12 @@
     <property name="LOG_FILE" value="LogFile"/>
 
     <property name="CONSOLE_LOG_PATTERN"
-              value="%d %-4relative [%thread] %highlight(%-5level) %cyan(%logger{35}) - %msg%n"/>
-    <property name="FILE_LOG_PATTERN" value="%d{[yyyy-MM-dd HH:mm:ss]} [%thread] %-5level %logger{36} - %msg%n"/>
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="UDP_APPENDER_LOG_PATTERN"
+              value="%-5level --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
@@ -42,6 +46,51 @@
             <pattern>${FILE_LOG_PATTERN}</pattern>
             <outputPatternAsHeader>true</outputPatternAsHeader>
         </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <appender name="JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${LOG_FILE}.json</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.json</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+        <!--<maxFileSize>200MB</maxFileSize>-->
+        <!--</triggeringPolicy>-->
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}",
+                        "severity": "%level",
+                        "pid": "${PID:-}",
+                        "thread": "%thread",
+                        "class": "%logger{40}",
+                        "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!--
+        Appender below will write logs into the system journal fileInfo (/var/log/syslog).
+        To check it you need:
+        1\ uncomment the lines below in the fileInfo /etc/rsyslog.conf:
+            module(load="imudp")
+            input(type="imudp" port="514")
+        2\ restart rsyslog service:
+            sudo service rsyslog restart
+    -->
+    <appender name="UDP_APPENDER" class="ch.qos.logback.classic.net.SyslogAppender">
+        <syslogHost>localhost</syslogHost>
+        <facility>LOCAL0</facility>
+        <suffixPattern>${UDP_APPENDER_LOG_PATTERN}</suffixPattern>
     </appender>
 
     <!-- Logger configuration -->
@@ -57,5 +106,6 @@
     <root level="ERROR">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
+        <appender-ref ref="JSON"/>
     </root>
 </configuration>

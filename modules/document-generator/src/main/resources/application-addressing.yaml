@@ -1,6 +1,6 @@
 # SensibleMetrics Document Web Service Addressing configuration
 ---
-ws-documents:
+webdocs:
   addressing:
     namespace: "http://api.sensiblemetrics.com/ws/"
     endpoints:
