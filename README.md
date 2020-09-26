@@ -125,29 +125,8 @@ kubectl port-forward spring-boot-jib 8080
 docker pull alexanderr/ws-documents:0.1.0-SNAPSHOT
 ```
 
-## Authors
+## Usage
 
-WS-Documents is maintained by:
-* [Alexander Rogalskiy](https://github.com/AlexRogalskiy) 
-
-with community support please contact with us if you have some question or proposition.
-
-### Version Store
-
-[./pom.xml](https://github.com/AlexRogalskiy/ws-documents/blob/master/pom.xml)
-
-## Team Tools
-
-[![alt tag](http://pylonsproject.org/img/logo-jetbrains.png)](https://www.jetbrains.com/) 
-
-SensibleMetrics Team would like inform that JetBrains is helping by provided IDE to develop the application. Thanks to its support program for an Open Source projects!
-
-[![alt tag](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=org.schemaspy%3Aschemaspy)
-
-SensibleMetrics WS-Documents project is using SonarCloud for code quality. 
-Thanks to SonarQube Team for free analysis solution for open source projects.
-
-### Usage:
 Choose one of the modules and add to your `pom.xml`
 
 ```xml
@@ -179,10 +158,34 @@ Choose one of the modules and add to your `pom.xml`
 - [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/router)  
   `webdocs-router` - Library to work with Router API.
 
-### Also:
+## Miscellaneous
+
   You can find more useful libs and examples on [wiki](https://github.com/AlexRogalskiy/ws-documents/wiki)
 
+## Authors
+
+WS-Documents is maintained by:
+* [Alexander Rogalskiy](https://github.com/AlexRogalskiy) 
+
+with community support please contact with us if you have some question or proposition.
+
+### Version Store
+
+[./pom.xml](https://github.com/AlexRogalskiy/ws-documents/blob/master/pom.xml)
+
+## Team Tools
+
+[![alt tag](http://pylonsproject.org/img/logo-jetbrains.png)](https://www.jetbrains.com/) 
+
+SensibleMetrics Team would like inform that JetBrains is helping by provided IDE to develop the application. Thanks to its support program for an Open Source projects!
+
+[![alt tag](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=org.schemaspy%3Aschemaspy)
+
+SensibleMetrics WS-Documents project is using SonarCloud for code quality. 
+Thanks to SonarQube Team for free analysis solution for open source projects.
+
 ## License
+
 SensibleMetrics WS-Documents is distributed under LGPL version 3 or later, see COPYING.LESSER(LGPL) and COPYING(GPL).   
 LGPLv3 is additional permissions on top of GPLv3.
 
