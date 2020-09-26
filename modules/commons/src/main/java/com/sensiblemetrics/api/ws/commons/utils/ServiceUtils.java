@@ -290,4 +290,43 @@ public class ServiceUtils {
     public static <T> T cast(final Object object) {
         return (T) object;
     }
+
+    /**
+     * Returns null-safe cast argument by input {@link Class} or throw {@link Exception}
+     *
+     * @param <T>       type of class instance
+     * @param value     - initial input {@link Object} to be casted to {@link Class}
+     * @param clazz     - initial input {@link Class} to cast to
+     * @param throwable - initial input target {@link Throwable}
+     * @return casted {@code T} object
+     */
+    @NonNull
+    public static <T, X extends Throwable> T safeCastOrThrow(final Object value, final Class<? extends T> clazz, final X throwable) throws X {
+        return cast(value, clazz).orElseThrow(() -> throwable);
+    }
+
+    /**
+     * Returns null-safe argument cast by input {@link Class}
+     *
+     * @param <T>   type of class instance
+     * @param value - initial input {@link Object} to be casted to {@link Class}
+     * @param clazz - initial input {@link Class} to cast to
+     * @return casted {@code T} object
+     */
+    @NonNull
+    public static <T> T safeCast(final Object value, final Class<T> clazz) {
+        return safeCastOrThrow(value, clazz, new IllegalArgumentException(String.format("Cannot cast input value: {%s}, to class: {%s}", value, clazz)));
+    }
+
+    /**
+     * Returns null-safe argument cast by input {@link Class}
+     *
+     * @param <T>   type of class instance
+     * @param value - initial input {@link Object} to be casted to {@link Class}
+     * @param clazz - initial input {@link Class} to cast to
+     * @return casted {@link T} object wrapped by {@link Optional}
+     */
+    private static <T> Optional<T> cast(final Object value, final Class<T> clazz) {
+        return Optional.ofNullable(clazz).filter(c -> c.isInstance(value)).map(c -> c.cast(value));
+    }
 }

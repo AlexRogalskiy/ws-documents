@@ -158,6 +158,10 @@ Choose one of the modules and add to your `pom.xml`
 - [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/router)  
   `webdocs-router` - Library to work with Router API.
 
+## Version Store
+
+[./pom.xml](https://github.com/AlexRogalskiy/ws-documents/blob/master/pom.xml)
+
 ## Miscellaneous
 
   You can find more useful libs and examples on [wiki](https://github.com/AlexRogalskiy/ws-documents/wiki)
@@ -168,10 +172,6 @@ WS-Documents is maintained by:
 * [Alexander Rogalskiy](https://github.com/AlexRogalskiy) 
 
 with community support please contact with us if you have some question or proposition.
-
-### Version Store
-
-[./pom.xml](https://github.com/AlexRogalskiy/ws-documents/blob/master/pom.xml)
 
 ## Team Tools
 

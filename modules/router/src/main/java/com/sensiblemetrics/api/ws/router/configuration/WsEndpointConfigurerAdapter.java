@@ -5,6 +5,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Role;
 import org.springframework.stereotype.Component;
+import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 import org.springframework.xml.xsd.XsdSchema;
@@ -42,5 +43,19 @@ public class WsEndpointConfigurerAdapter {
      */
     public XsdSchema createSimpleXsdSchema(final WsAddressingProperty.WsEndpoint endpoint) {
         return new SimpleXsdSchema(findInClasspath(endpoint.getResourcePattern()));
+    }
+
+    /**
+     * Returns new {@link MessageDispatcherServlet} instance
+     *
+     * @return {@link MessageDispatcherServlet}
+     */
+    public MessageDispatcherServlet createMessageDispatcherServlet(final WsAddressingProperty property) {
+        final MessageDispatcherServlet dispatcherServlet = new MessageDispatcherServlet();
+        dispatcherServlet.setTransformWsdlLocations(property.isTransformWsdlLocations());
+        dispatcherServlet.setEnableLoggingRequestDetails(property.isEnableLoggingRequests());
+        dispatcherServlet.setTransformSchemaLocations(property.isTransformSchemaLocations());
+        dispatcherServlet.setNamespace(property.getNamespace());
+        return dispatcherServlet;
     }
 }

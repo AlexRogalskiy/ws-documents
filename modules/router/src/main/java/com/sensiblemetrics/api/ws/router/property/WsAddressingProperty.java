@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_DELIMITER;
 import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_PREFIX;
+import static org.springframework.util.StringUtils.toStringArray;
 
 @Data
 @Validated
@@ -115,6 +116,15 @@ public class WsAddressingProperty {
          * Enable/disable web service endpoint configuration ({@code true} by default)
          */
         private boolean enabled = true;
+    }
+
+    /**
+     * Returns {@link String} array of url mappings
+     *
+     * @return {@link String} array of url mappings
+     */
+    public String[] getUrlMappingsAsArray() {
+        return toStringArray(this.urlMappings);
     }
 
     /**
