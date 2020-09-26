@@ -133,7 +133,7 @@ class ErrorTemplateTypeTest {
 
     private static CustomTypeSafeMatcher<ErrorTemplateType> createTypeMatcher(final String errorCode,
                                                                               final String errorDescription) {
-        return new CustomTypeSafeMatcher<>("Compare error code and description message") {
+        return new CustomTypeSafeMatcher<ErrorTemplateType>("Compare error code and description message") {
 
             /**
              * Subclasses should implement this. The item will already have been checked for
@@ -150,7 +150,7 @@ class ErrorTemplateTypeTest {
     }
 
     private static Function<ErrorTemplateType, CustomTypeSafeMatcher<ErrorTemplateType>> createTypeMatcher() {
-        return value -> new CustomTypeSafeMatcher<>("Compare error template types on a property basis") {
+        return value -> new CustomTypeSafeMatcher<ErrorTemplateType>("Compare error template types on a property basis") {
 
             /**
              * Subclasses should implement this. The item will already have been checked for
