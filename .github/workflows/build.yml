@@ -21,6 +21,9 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -62,6 +65,9 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
@@ -103,6 +109,9 @@ jobs:
         os: [ ubuntu-latest ]
     name: Build with Zing JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@v2
         with:

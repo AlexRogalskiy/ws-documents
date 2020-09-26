@@ -13,7 +13,10 @@ jobs:
       with:
         java-version: 11
 
-    - name: 'Checkout project'
+    - name: Prepare git
+      run: git config --global core.autocrlf false
+
+    - name: Checkout repository
       uses: actions/checkout@v1
 
     - name: 'Attach git to origin with write access'

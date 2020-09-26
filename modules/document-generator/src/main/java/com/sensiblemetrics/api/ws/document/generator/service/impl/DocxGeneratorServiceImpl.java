@@ -5,8 +5,8 @@ import com.sensiblemetrics.api.ws.document.generator.handler.DocumentEventHandle
 import com.sensiblemetrics.api.ws.document.generator.model.domain.DocumentEvent;
 import com.sensiblemetrics.api.ws.document.generator.model.domain.MessageData;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentStorageProperty;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.WsDocumentStorageProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.WsDocumentTemplateProperty;
 import com.sensiblemetrics.api.ws.document.generator.service.interfaces.DocxGeneratorService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +42,8 @@ import static java.lang.String.format;
 @Service
 @RequiredArgsConstructor
 public class DocxGeneratorServiceImpl implements DocxGeneratorService {
-    private final DocumentStorageProperty documentStorageProperty;
-    private final DocumentTemplateProperty documentTemplateProperty;
+    private final WsDocumentStorageProperty documentStorageProperty;
+    private final WsDocumentTemplateProperty documentTemplateProperty;
     private final ConversionService conversionService;
     private final ApplicationEventPublisher eventPublisher;
 

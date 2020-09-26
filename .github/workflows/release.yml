@@ -22,22 +22,29 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@master
         with:
           submodules: "recursive"
           fetch-depth: 2
+
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
           java-package: jdk
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
+
       - name: Build project
         run: |
           zip --junk-paths document-generator-ws README.md
+
       - name: Create checksum
         run: echo ${{ github.sha }} > checksum.txt
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -56,6 +63,7 @@ jobs:
             - Updates on Document-Generator MicroService API
           draft: true
           prerelease: false
+
       - name: Upload release asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
@@ -78,22 +86,29 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macOS-latest ]
     name: Build with JDK ${{ matrix.java }} on ${{ matrix.architecture }} with ${{ matrix.os }}
     steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
       - name: Checkout repository
         uses: actions/checkout@master
         with:
           submodules: "recursive"
           fetch-depth: 2
+
       - name: Setup JDK ${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
           java-package: jdk
           java-version: ${{ matrix.java }}
           architecture: ${{ matrix.architecture }}
+
       - name: Build project
         run: |
           zip --junk-paths document-generator-ws README.md
+
       - name: Create checksum
         run: echo ${{ github.sha }} > checksum.txt
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -112,6 +127,7 @@ jobs:
             - Updates on Document-Generator MicroService API
           draft: true
           prerelease: false
+
       - name: Upload release asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1

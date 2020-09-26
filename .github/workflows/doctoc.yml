@@ -11,10 +11,16 @@ jobs:
     name: Doc TOC Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
       - name: Install doctoc
         run: npm i -g doctoc
 

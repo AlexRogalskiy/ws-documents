@@ -22,7 +22,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Run tests
         run: |
@@ -43,7 +47,11 @@ jobs:
     if: github.event_name == 'push'
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Build image
         run: docker build . --file docker/java/Dockerfile --tag image

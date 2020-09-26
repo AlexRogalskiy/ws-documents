@@ -14,7 +14,10 @@ jobs:
   Anchore-Build-Scan:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the code
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Build the Docker image

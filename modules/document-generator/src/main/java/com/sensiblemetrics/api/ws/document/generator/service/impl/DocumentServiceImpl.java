@@ -6,10 +6,10 @@ import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity
 import com.sensiblemetrics.api.ws.document.generator.repository.DocumentRepository;
 import com.sensiblemetrics.api.ws.document.generator.service.interfaces.DocumentService;
 import com.sensiblemetrics.api.ws.document.generator.service.interfaces.DocxGeneratorService;
+import com.sensiblemetrics.api.ws.metrics.annotation.MonitoredService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -23,7 +23,7 @@ import static com.sensiblemetrics.api.ws.document.generator.enumeration.StatusTy
 
 @Slf4j
 @Getter
-@Service
+@MonitoredService
 @RequiredArgsConstructor
 public class DocumentServiceImpl extends BaseServiceImpl<DocumentEntity, UUID> implements DocumentService {
     private final DocumentRepository repository;

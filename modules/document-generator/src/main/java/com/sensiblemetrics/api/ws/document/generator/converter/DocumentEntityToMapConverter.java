@@ -2,7 +2,7 @@ package com.sensiblemetrics.api.ws.document.generator.converter;
 
 import com.google.common.collect.ImmutableMap;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
-import com.sensiblemetrics.api.ws.document.generator.property.DocumentTemplateFormatProperty;
+import com.sensiblemetrics.api.ws.document.generator.property.WsDocumentTemplateFormatProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.converter.Converter;
@@ -21,11 +21,11 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 
 @Component
 public class DocumentEntityToMapConverter implements Converter<DocumentEntity, Map<String, String>> {
-    private final DocumentTemplateFormatProperty documentTemplateFormatProperty;
+    private final WsDocumentTemplateFormatProperty documentTemplateFormatProperty;
 
     @Lazy
     @Autowired
-    public DocumentEntityToMapConverter(final DocumentTemplateFormatProperty documentTemplateFormatProperty) {
+    public DocumentEntityToMapConverter(final WsDocumentTemplateFormatProperty documentTemplateFormatProperty) {
         this.documentTemplateFormatProperty = documentTemplateFormatProperty;
     }
 
@@ -38,7 +38,7 @@ public class DocumentEntityToMapConverter implements Converter<DocumentEntity, M
     @NonNull
     @Override
     public Map<String, String> convert(@NonNull final DocumentEntity source) {
-        final DocumentTemplateFormatProperty.MarkerMappings mappings = this.documentTemplateFormatProperty.getMarkerMappings();
+        final WsDocumentTemplateFormatProperty.MarkerMappings mappings = this.documentTemplateFormatProperty.getMarkerMappings();
 
         final String docIdFormat = this.format(source.getId(), mappings.getId().getPattern());
         final String docCompanyFormat = this.format(source.getCompany(), mappings.getCompany().getPattern());

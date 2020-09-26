@@ -71,10 +71,10 @@ spring:
     open-in-view: false
     generate-ddl: false
     database: POSTGRESQL
-    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         validator:
@@ -104,7 +104,7 @@ spring:
         use-sql-comments: true
         max-fetch-depth: 3
         default-batch-fetch-size: 30
-        generate_statistics: false
+        generate_statistics: true
         enable_lazy_load_no_trans: true
         globally_quoted_identifiers: true
         jdbc.lob.non-contextual-creation: true
@@ -122,6 +122,11 @@ spring:
     exclude: org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
 
 management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
   server:
     servlet:
       context-path: /management
@@ -130,8 +135,11 @@ management:
     build:
       enabled: false
     git:
-      mode: full
+      mode: FULL
   endpoint:
+    jolokia:
+      config:
+        debug: true
     beans:
       cache:
         time-to-live: 10s
@@ -145,11 +153,14 @@ management:
   endpoints:
     web:
       exposure:
-        include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
+        include: [ "jolokia", "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
       base-path: /actuator
       path-mapping:
         info: status
   metrics:
+    tags:
+      region: ${spring.application.region:us-east-1}
+      type: webdocs
     export:
       prometheus:
         enabled: true
@@ -180,58 +191,70 @@ management:
           server:
             requests: 20ms,50ms
 
-ws-metrics:
-  defaults:
-    description: WebDocs Generator Service
-    tags:
-      - key: scope
-        value: WebDocs
+ws-documents:
+  metrics:
+    defaults:
+      description: WebDocs Generator Service
+      tags:
+        - key: scope
+          value: ${spring.profiles.active:local}
+    meters:
+      datasource:
+        name: webdocs.datasource
+        description: DataSource status
+    handlers:
+      tracking-time:
+        enabled: true
+      monitoring-time:
+        enabled: true
+    patterns:
+      exclude:
+        - tomcat.*
 
-api-status:
-  node:
-    name: ${java.rmi.server.hostname:localhost}
-  # build properties from maven
-  build:
-    groupId: '@project.groupId@'
-    artifactId: '@project.artifactId@'
-    version: '@project.version@'
-    name: '@project.name@'
-    timestamp: '@maven.build.timestamp@'
+  api-status:
+    node:
+      name: ${java.rmi.server.hostname:localhost}
+    # build properties from maven
+    build:
+      groupId: '@project.groupId@'
+      artifactId: '@project.artifactId@'
+      version: '@project.version@'
+      name: '@project.name@'
+      timestamp: '@maven.build.timestamp@'
 
-info:
-  # application info
-  app:
-    name: '@project.name@'
-    description: '@project.description@'
-    url: '@project.url@'
-    encoding: '@project.build.sourceEncoding@'
-  # environment variables
-  env:
-    java:
-      source: @java.version@
-      target: @java.version@
-      vendor: ${java.specification.vendor}
-      vm-name: ${java.vm.name}
-      runtime-version: ${java.runtime.version}
+  info:
+    # application info
+    app:
+      name: '@project.name@'
+      description: '@project.description@'
+      url: '@project.url@'
+      encoding: '@project.build.sourceEncoding@'
+    # environment variables
+    env:
+      java:
+        source: @java.version@
+        target: @java.version@
+        vendor: ${java.specification.vendor}
+        vm-name: ${java.vm.name}
+        runtime-version: ${java.runtime.version}
 
-logging:
-  headers:
-    names: Accept,Content-Type,Content-Length
-    pattern: ".*"
-  handlers:
-    logging:
-      enabled: true
-    tracking-time:
-      enabled: true
+  logging:
+    headers:
+      names: Accept,Content-Type,Content-Length
+      pattern: ".*"
+    handlers:
+      reporting-data:
+        enabled: true
 
-actuator:
-  endpoints:
-    health:
-      names: health
-      roles: ROLE_USER
-    status:
-      names: status
-      roles: ROLE_USER
-    threaddump:
-      names: threaddump
-      roles: ROLE_ADMIN
+  actuator:
+    security:
+      endpoints:
+        health:
+          names: health
+          roles: ROLE_USER
+        status:
+          names: status
+          roles: ROLE_USER
+        threaddump:
+          names: threaddump
+          roles: ROLE_ADMIN

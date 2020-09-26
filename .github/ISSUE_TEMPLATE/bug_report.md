@@ -1,23 +1,11 @@
-# Bug Report template
+---
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
 
-<table>
-  <tbody>
-    <tr>
-      <th>Report name</th>
-      <th>Description</th>
-      <th>Title</th>
-      <th>Labels</th>
-      <th>Assignees</th>
-    </tr>
-    <tr>
-      <td>Name</td>
-      <td>Short description</td>
-      <td>Name/Title</td>
-      <td>Tag</td>
-      <td>Developer</td>
-    </tr>
-  </tbody>
-</table>
+---
 
 **Describe the bug**
 A clear and concise description of what the bug is.

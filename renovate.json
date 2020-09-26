@@ -1,15 +1,22 @@
 {
-  "extends": [
-    "config:base",
-	":maintainLockFilesWeekly",
-    ":prHourlyLimitNone",
-    ":prConcurrentLimitNone"
-  ],
-  "automerge": true,
-  "automergeType": "branch",
-  "major": {
-    "automerge": false
-  },
-  "rangeStrategy": "bump",
-  "labels": ["java dependencies"]
+    "extends": [
+        "config:base",
+        ":maintainLockFilesWeekly",
+        ":prHourlyLimitNone",
+        ":prConcurrentLimitNone"
+    ],
+    "schedule": [
+        "after 10pm every weekday",
+        "before 5am every weekday",
+        "every weekend"
+    ],
+    "automerge": true,
+    "automergeType": "branch",
+    "major": {
+        "automerge": false
+    },
+    "rangeStrategy": "bump",
+    "labels": [
+        "java dependencies"
+    ]
 }

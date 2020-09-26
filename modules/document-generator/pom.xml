@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,208 +11,218 @@
     </parent>
 
     <name>com.sensiblemetrics.api.ws.document.generator</name>
-    <description>Document Generator WebService API</description>
+    <description>WebDocs Document-Generator API</description>
+    <artifactId>webdocs-document-generator</artifactId>
+    <packaging>jar</packaging>
     <url>https://github.com/AlexRogalskiy/ws-documents/document-generator</url>
     <inceptionYear>2020</inceptionYear>
-    <artifactId>document-generator</artifactId>
-    <packaging>jar</packaging>
 
     <properties>
         <spring-boot-thin.version>1.0.25.RELEASE</spring-boot-thin.version>
 
-        <hikari.version>3.4.5</hikari.version>
-        <liquibase.version>4.0.0</liquibase.version>
-        <liquibase-slf4j.version>3.0.0</liquibase-slf4j.version>
-        <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
-        <p6spy.version>3.9.1</p6spy.version>
-        <modelmapper.version>2.3.8</modelmapper.version>
         <docx4j.version>6.1.2</docx4j.version>
-        <jaxb2-basics.version>1.11.1-PUBLISHED-BY-MISTAKE</jaxb2-basics.version>
-        <postgresql.version>42.2.16</postgresql.version>
+        <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
+        <hibernate-types.version>2.9.13</hibernate-types.version>
+
+        <hikari.version>3.4.5</hikari.version>
 
         <image.to.path>registry.hub.docker.com/alexanderr/ws-documents</image.to.path>
+        <jaxb2-basics.version>1.11.1-PUBLISHED-BY-MISTAKE</jaxb2-basics.version>
+        <liquibase-slf4j.version>3.0.0</liquibase-slf4j.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
+        <liquibase.version>4.0.0</liquibase.version>
+        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
 
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
         <maven-liquibase-plugin.version>4.0.0</maven-liquibase-plugin.version>
-        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
+        <modelmapper.version>2.3.8</modelmapper.version>
+        <p6spy.version>3.9.1</p6spy.version>
+        <postgresql.version>42.2.16</postgresql.version>
+
+        <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
 
-    <profiles>
-        <!-- Uber jar profile -->
-        <profile>
-            <id>uber-jar</id>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-shade-plugin</artifactId>
-                            <version>${maven-shade-plugin.version}</version>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
+    <dependencies>
+        <!-- Liquibase library dependencies -->
+        <dependency>
+            <groupId>com.mattbertolini</groupId>
+            <artifactId>liquibase-slf4j</artifactId>
+            <version>${liquibase-slf4j.version}</version>
+        </dependency>
 
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>shaded</shadedClassifierName>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+        <!-- SensibleMetrics library dependencies -->
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-actuator</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-commons</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-executor</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-logger</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-metrics</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-router</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
-        <!-- HSQLDB profile -->
-        <profile>
-            <id>hsqldb</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>${maven-exec-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <mainClass>org.hsqldb.server.Server</mainClass>
-                            <arguments>
-                                <argument>--database.0</argument>
-                                <argument>file:${project.build.directory}/db/documentdb</argument>
-                                <argument>--dbname.0</argument>
-                                <argument>documentdb</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+        <!-- Hikari connection pool library dependencies -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikari.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-        <!-- Liquibase profile -->
-        <profile>
-            <id>liquibase</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.liquibase</groupId>
-                        <artifactId>liquibase-maven-plugin</artifactId>
-                        <version>${maven-liquibase-plugin.version}</version>
-                        <configuration>
-                            <propertyFile>${liquibase.propertyFile}</propertyFile>
-                            <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
-                            <diffChangeLogFile>
-                                ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
-                            </diffChangeLogFile>
-                            <promptOnNonLocalDatabase>true</promptOnNonLocalDatabase>
-                            <verbose>true</verbose>
-                            <logging>debug</logging>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+        <!-- Docx4j library dependencies -->
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j</artifactId>
+            <version>${docx4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-compress</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-        <!-- Xsd profile -->
-        <profile>
-            <id>debug</id>
-            <properties>
-                <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
-            </properties>
-        </profile>
+        <!-- Hibernate ORM library dependencies -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate-core.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.glassfish.jaxb</groupId>
+                    <artifactId>jaxb-runtime</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
 
-        <!-- Xsd profile -->
-        <profile>
-            <id>xsd</id>
-            <properties>
-                <xjc.skip>false</xjc.skip>
-                <schema.directory>${project.basedir}/src/main/resources/schemas</schema.directory>
-                <packageName>com.sensiblemetrics.api.ws.document.generator.generated</packageName>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>jaxb2-maven-plugin</artifactId>
-                        <version>${maven-jaxb2-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>xjc</id>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>xjc</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <skipXjc>${xjc.skip}</skipXjc>
-                            <addGeneratedAnnotation>true</addGeneratedAnnotation>
-                            <createJavaDocAnnotations>true</createJavaDocAnnotations>
-                            <failOnNoSchemas>true</failOnNoSchemas>
-                            <generateEpisode>true</generateEpisode>
-                            <noGeneratedHeaderComments>true</noGeneratedHeaderComments>
-                            <clearOutputDir>true</clearOutputDir>
-                            <packageName>${packageName}</packageName>
-                            <sources>
-                                <source>${schema.directory}</source>
-                            </sources>
-                            <arguments>
-                                <argument>-XtoString</argument>
-                                <argument>-Xequals</argument>
-                                <argument>-XhashCode</argument>
-                            </arguments>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.jvnet.jaxb2_commons</groupId>
-                                <artifactId>jaxb2-basics</artifactId>
-                                <version>${jaxb2-basics.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+        <!-- Hibernate types library dependencies -->
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>${hibernate-types.version}</version>
+        </dependency>
+
+        <!-- Jaxb2 library dependencies -->
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics</artifactId>
+            <version>${jaxb2-basics.version}</version>
+        </dependency>
+
+        <!-- Liquibase library dependencies -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
+
+        <!-- Model Mapper library dependencies -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
+        </dependency>
+
+        <!-- PostgreSQL DataBase library dependencies -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- P6spy library dependencies -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>${p6spy.version}</version>
+        </dependency>
+
+        <!-- HSQL DB test library dependencies -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- SensibleMetrics test library dependencies -->
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-commons</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
+        <defaultGoal>clean package</defaultGoal>
         <finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
-        <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
         <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/java</testSourceDirectory>
-        <defaultGoal>clean package</defaultGoal>
+        <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
         <resources>
             <resource>
-                <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
+                <directory>${project.basedir}/src/main/resources</directory>
             </resource>
             <resource>
-                <directory>${project.build.directory}/generated-sources/jaxb</directory>
                 <filtering>true</filtering>
+                <directory>${project.build.directory}/generated-sources/jaxb</directory>
             </resource>
         </resources>
         <testResources>
             <testResource>
-                <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>true</filtering>
+                <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
 
@@ -267,133 +276,254 @@
         </plugins>
     </build>
 
-    <dependencies>
-        <!-- Spring library dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-jdbc</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+    <profiles>
+        <!-- Jib profile -->
+        <profile>
+            <id>jib</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>jib-maven-plugin</artifactId>
+                        <version>${maven-jib-plugin.version}</version>
+                        <configuration>
+                            <allowInsecureRegistries>true</allowInsecureRegistries>
+                            <from>
+                                <image>${image.from.path}</image>
+                            </from>
+                            <container>
+                                <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                                <jvmFlags>
+                                    <jvmFlag>-Xdebug</jvmFlag>
+                                    <jvmFlag>-Xms128m</jvmFlag>
+                                    <jvmFlag>-Xmx128m</jvmFlag>
+                                    <jvmFlag>-Duser.timezone=GMT+08</jvmFlag>
+                                    <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                                    <jvmFlag>-Djava.awt.headless=true</jvmFlag>
+                                    <jvmFlag>-XX:InitialRAMFraction=2</jvmFlag>
+                                    <jvmFlag>-XX:MinRAMFraction=2</jvmFlag>
+                                    <jvmFlag>-XX:MaxRAMFraction=2</jvmFlag>
+                                    <jvmFlag>-XX:+UseG1GC</jvmFlag>
+                                    <jvmFlag>-XX:MaxGCPauseMillis=100</jvmFlag>
+                                    <jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
+                                </jvmFlags>
+                                <ports>
+                                    <port>8089</port>
+                                </ports>
+                                <format>Docker</format>
+                            </container>
+                            <to>
+                                <image>${image.to.path}:${project.version}</image>
+                                <tags>
+                                    <tag>alpine</tag>
+                                    <tag>latest</tag>
+                                </tags>
+                            </to>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>dockerBuild</id>
+                                <goals>
+                                    <goal>dockerBuild</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>build</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <phase>deploy</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-        <!-- Commons library dependencies -->
-        <dependency>
-            <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>commons</artifactId>
-            <version>${commons.version}</version>
-            <scope>compile</scope>
-        </dependency>
+        <!-- Uber jar profile -->
+        <profile>
+            <id>uber-jar</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-shade-plugin</artifactId>
+                            <version>${maven-shade-plugin.version}</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
 
-        <!-- Model Mapper library dependencies -->
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>${modelmapper.version}</version>
-        </dependency>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>${maven-shade-plugin.version}</version>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
+                            <minimizeJar>true</minimizeJar>
+                            <outputFile>${project.build.directory}/maven-shade/reduced-pom.zip</outputFile>
 
-        <!-- PostgreSQL DB library dependencies -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-            <scope>runtime</scope>
-        </dependency>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>module-info.java</exclude>
+                                </excludes>
+                            </artifactSet>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <transformers>
+                                        <transformer
+                                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <manifestEntries>
+                                                <Implementation-Version>${project.version}</Implementation-Version>
+                                            </manifestEntries>
+                                        </transformer>
+                                    </transformers>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
 
-        <!-- Docx4j library dependencies -->
-        <dependency>
-            <groupId>org.docx4j</groupId>
-            <artifactId>docx4j</artifactId>
-            <version>${docx4j.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+                    <plugin>
+                        <groupId>org.moditect</groupId>
+                        <artifactId>moditect-maven-plugin</artifactId>
+                        <version>${maven-moditect-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>add-module-infos</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>add-module-info</goal>
+                                </goals>
+                                <configuration>
+                                    <overwriteExistingFiles>true</overwriteExistingFiles>
+                                    <module>
+                                        <moduleInfoFile>
+                                            src/main/java/module-info.java
+                                        </moduleInfoFile>
+                                    </module>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-        <!-- Jaxb2 library dependencies -->
-        <dependency>
-            <groupId>org.jvnet.jaxb2_commons</groupId>
-            <artifactId>jaxb2-basics</artifactId>
-            <version>${jaxb2-basics.version}</version>
-        </dependency>
+        <!-- HSQLDB profile -->
+        <profile>
+            <id>hsqldb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${maven-exec-plugin.version}</version>
+                        <configuration>
+                            <mainClass>org.hsqldb.server.Server</mainClass>
+                            <arguments>
+                                <argument>--database.0</argument>
+                                <argument>file:${project.build.directory}/db/documentdb</argument>
+                                <argument>--dbname.0</argument>
+                                <argument>documentdb</argument>
+                            </arguments>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-        <!-- Hikari connection pool library dependencies -->
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>${hikari.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>tools</artifactId>
-                    <groupId>com.sun</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!-- Liquibase profile -->
+        <profile>
+            <id>liquibase</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${maven-liquibase-plugin.version}</version>
+                        <configuration>
+                            <propertyFile>${liquibase.propertyFile}</propertyFile>
+                            <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+                            <diffChangeLogFile>
+                                ${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml
+                            </diffChangeLogFile>
+                            <promptOnNonLocalDatabase>true</promptOnNonLocalDatabase>
+                            <verbose>true</verbose>
+                            <logging>debug</logging>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
 
-        <!-- Liquibase library dependencies -->
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>${liquibase.version}</version>
-        </dependency>
-
-        <!-- Liquibase library dependencies -->
-        <dependency>
-            <groupId>com.mattbertolini</groupId>
-            <artifactId>liquibase-slf4j</artifactId>
-            <version>${liquibase-slf4j.version}</version>
-        </dependency>
-
-        <!-- Hibernate ORM library dependencies -->
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>${hibernate-core.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.glassfish.jaxb</groupId>
-                    <artifactId>jaxb-runtime</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate-core.version}</version>
-        </dependency>
-
-        <!-- P6spy library dependencies -->
-        <dependency>
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
-            <version>${p6spy.version}</version>
-        </dependency>
-
-        <!-- HSQL DB test library dependencies -->
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Commons testing library dependencies -->
-        <dependency>
-            <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>commons</artifactId>
-            <version>${commons.version}</version>
-            <classifier>tests</classifier>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+        <!-- Xsd profile -->
+        <profile>
+            <id>xsd</id>
+            <properties>
+                <packageName>com.sensiblemetrics.api.ws.document.generator.generated</packageName>
+                <schema.directory>${project.basedir}/src/main/resources/schemas</schema.directory>
+                <xjc.skip>false</xjc.skip>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jaxb2-maven-plugin</artifactId>
+                        <version>${maven-jaxb2-plugin.version}</version>
+                        <configuration>
+                            <skipXjc>${xjc.skip}</skipXjc>
+                            <addGeneratedAnnotation>true</addGeneratedAnnotation>
+                            <createJavaDocAnnotations>true</createJavaDocAnnotations>
+                            <failOnNoSchemas>true</failOnNoSchemas>
+                            <generateEpisode>true</generateEpisode>
+                            <noGeneratedHeaderComments>true</noGeneratedHeaderComments>
+                            <clearOutputDir>true</clearOutputDir>
+                            <packageName>${packageName}</packageName>
+                            <sources>
+                                <source>${schema.directory}</source>
+                            </sources>
+                            <arguments>
+                                <argument>-XtoString</argument>
+                                <argument>-Xequals</argument>
+                                <argument>-XhashCode</argument>
+                            </arguments>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.jvnet.jaxb2_commons</groupId>
+                                <artifactId>jaxb2-basics</artifactId>
+                                <version>${jaxb2-basics.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>xjc</id>
+                                <goals>
+                                    <goal>xjc</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
