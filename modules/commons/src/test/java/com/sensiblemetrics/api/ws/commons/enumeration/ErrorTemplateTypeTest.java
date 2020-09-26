@@ -1,68 +1,126 @@
 package com.sensiblemetrics.api.ws.commons.enumeration;
 
-import com.sensiblemetrics.api.ws.commons.common.flow.TestTag;
-import com.sensiblemetrics.api.ws.commons.common.annotation.UnitTest;
+import com.sensiblemetrics.api.ws.commons.common.annotation.SimpleTest;
+import com.sensiblemetrics.api.ws.commons.common.annotation.VariableSource;
+import com.sensiblemetrics.api.ws.commons.common.configuration.TestTag;
+import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.CustomTypeSafeMatcher;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import static com.sensiblemetrics.api.ws.commons.enumeration.ErrorTemplateType.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@UnitTest
+@SimpleTest
 @Tag(TestTag.ENUMERATION)
 class ErrorTemplateTypeTest {
 
-    @Test
-    void test_check_ErrorTemplateType_By_Name() {
-        System.out.println("s" == "s");
-        assertThat(ErrorTemplateType.SERVICE_UNAVAILABLE.toString(), equalTo("error-30"));
-        assertThat(ErrorTemplateType.SERVICE_OPERATION_ERROR.toString(), equalTo("error-40"));
-        assertThat(ErrorTemplateType.BAD_REQUEST.toString(), equalTo("error-50"));
-        assertThat(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR.toString(), equalTo("error-50"));
-        assertThat(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION.toString(), equalTo("error-60"));
-    }
+    private static final Stream<Arguments> errorTemplateTypeValues = Stream.of(
+            Arguments.of(SERVICE_UNAVAILABLE, createTypeMatcher("error-0030", "error.service.unavailable")),
+            Arguments.of(SERVICE_OPERATION_ERROR, createTypeMatcher("error-0040", "error.operation.invalid")),
+            Arguments.of(BAD_REQUEST, createTypeMatcher("error-0050", "error.request.invalid")),
+            Arguments.of(DOCUMENT_PROCESSING_ERROR, createTypeMatcher("error-0060", "error.document.processing.invalid")),
+            Arguments.of(INVALID_ENDPOINT_CONFIGURATION, createTypeMatcher("error-0070", "error.endpoint.configuration.invalid")),
+            Arguments.of(INVALID_ENDPOINT_SECURITY_CONFIGURATION, createTypeMatcher("error-0080", "error.endpoint.security.configuration.invalid"))
+    );
 
-    @Test
-    void test_check_ErrorTemplateType_By_Value() {
-        assertThat(ErrorTemplateType.valueOf("SERVICE_UNAVAILABLE"), equalTo(ErrorTemplateType.SERVICE_UNAVAILABLE));
-        assertThat(ErrorTemplateType.valueOf("SERVICE_OPERATION_ERROR"), equalTo(ErrorTemplateType.SERVICE_OPERATION_ERROR));
-        assertThat(ErrorTemplateType.valueOf("BAD_REQUEST"), equalTo(ErrorTemplateType.BAD_REQUEST));
-        assertThat(ErrorTemplateType.valueOf("DOCUMENT_PROCESSING_ERROR"), equalTo(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR));
-        assertThat(ErrorTemplateType.valueOf("INVALID_ENDPOINT_CONFIGURATION"), equalTo(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION));
-    }
-
-    @Test
-    void test_check_ErrorTemplateType_By_ValueOf_with_Class() {
-        // given
-        final String value = "SERVICE_UNAVAILABLE";
-
-        // when
-        final ErrorTemplateType actual = ErrorTemplateType.valueOf(ErrorTemplateType.class, value);
-
+    @ParameterizedTest
+    @VariableSource("errorTemplateTypeValues")
+    void testCheckErrorTemplateTypeByCodeAndDescription(final ErrorTemplateType enumType,
+                                                        final Matcher<ErrorTemplateType> matcher) {
         // then
-        assertThat(actual, equalTo(ErrorTemplateType.SERVICE_UNAVAILABLE));
+        assertThat(enumType, matcher);
     }
 
-    @Test
-    void test_check_ErrorTemplateType_whenPassed_KEY() {
-        // given
-        final String value = "error-30";
-        final String description = "error.service.unavailable";
-
-        // when
-        final ErrorTemplateType actual = ErrorTemplateType.findByCode(value);
-
+    @ParameterizedTest
+    @MethodSource
+    void testCheckErrorTemplateTypeByName(final ErrorTemplateType enumType,
+                                          final Matcher<String> matcher) {
         // then
-        assertNotNull(actual, "Error template not exist");
-        assertThat(actual.getErrorCode(), equalTo(value));
-        assertThat(actual.getErrorMessage(), equalTo(description));
+        assertThat(enumType.toString(), matcher);
+    }
+
+    private static Stream<Arguments> testCheckErrorTemplateTypeByName() {
+        return Stream.of(
+                Arguments.of(SERVICE_UNAVAILABLE, equalTo("error-0030")),
+                Arguments.of(SERVICE_OPERATION_ERROR, equalTo("error-0040")),
+                Arguments.of(BAD_REQUEST, equalTo("error-0050")),
+                Arguments.of(DOCUMENT_PROCESSING_ERROR, equalTo("error-0060")),
+                Arguments.of(INVALID_ENDPOINT_CONFIGURATION, equalTo("error-0070")),
+                Arguments.of(INVALID_ENDPOINT_SECURITY_CONFIGURATION, equalTo("error-0080"))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void testCheckErrorTemplateTypeByValue(final String enumName,
+                                           final Matcher<ErrorTemplateType> matcher) {
+        // then
+        assertThat(EnumUtils.getEnum(ErrorTemplateType.class, enumName), matcher);
+    }
+
+    private static Stream<Arguments> testCheckErrorTemplateTypeByValue() {
+        return Stream.of(
+                Arguments.of("SERVICE_UNAVAILABLE", equalTo(SERVICE_UNAVAILABLE)),
+                Arguments.of("SERVICE_OPERATION_ERROR", equalTo(SERVICE_OPERATION_ERROR)),
+                Arguments.of("BAD_REQUEST", equalTo(BAD_REQUEST)),
+                Arguments.of("DOCUMENT_PROCESSING_ERROR", equalTo(DOCUMENT_PROCESSING_ERROR)),
+                Arguments.of("INVALID_ENDPOINT_CONFIGURATION", equalTo(INVALID_ENDPOINT_CONFIGURATION)),
+                Arguments.of("INVALID_ENDPOINT_SECURITY_CONFIGURATION", equalTo(INVALID_ENDPOINT_SECURITY_CONFIGURATION))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void testCheckErrorTemplateTypeByValueOfWithClass(final String enumName,
+                                                      final Matcher<ErrorTemplateType> matcher) {
+        // then
+        assertThat(ErrorTemplateType.valueOf(ErrorTemplateType.class, enumName), matcher);
+    }
+
+    private static Stream<Arguments> testCheckErrorTemplateTypeByValueOfWithClass() {
+        return Stream.of(
+                Arguments.of("SERVICE_UNAVAILABLE", equalTo(SERVICE_UNAVAILABLE)),
+                Arguments.of("SERVICE_OPERATION_ERROR", equalTo(SERVICE_OPERATION_ERROR)),
+                Arguments.of("BAD_REQUEST", equalTo(BAD_REQUEST)),
+                Arguments.of("DOCUMENT_PROCESSING_ERROR", equalTo(DOCUMENT_PROCESSING_ERROR)),
+                Arguments.of("INVALID_ENDPOINT_CONFIGURATION", equalTo(INVALID_ENDPOINT_CONFIGURATION)),
+                Arguments.of("INVALID_ENDPOINT_SECURITY_CONFIGURATION", equalTo(INVALID_ENDPOINT_SECURITY_CONFIGURATION))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void testCheckErrorTemplateTypeWhenPassedCode(final String enumCode,
+                                                  final Matcher<ErrorTemplateType> matcher) {
+        // then
+        assertThat(ErrorTemplateType.findByCode(enumCode), matcher);
+    }
+
+    private static Stream<Arguments> testCheckErrorTemplateTypeWhenPassedCode() {
+        return Stream.of(
+                Arguments.of("error-0030", equalTo(SERVICE_UNAVAILABLE)),
+                Arguments.of("error-0040", equalTo(SERVICE_OPERATION_ERROR)),
+                Arguments.of("error-0050", equalTo(BAD_REQUEST)),
+                Arguments.of("error-0060", equalTo(DOCUMENT_PROCESSING_ERROR)),
+                Arguments.of("error-0070", equalTo(INVALID_ENDPOINT_CONFIGURATION)),
+                Arguments.of("error-0080", equalTo(INVALID_ENDPOINT_SECURITY_CONFIGURATION))
+        );
     }
 
     @Test
-    void test_get_ErrorTemplateType_whenPassed_NON_EXISTED_Value() {
+    void testCheckErrorTemplateType_whenPassedNonExistedType() {
         // given
         final String errorMessage = "No enum constant";
 
@@ -71,5 +129,42 @@ class ErrorTemplateTypeTest {
 
         // then
         assertThat(thrown.getMessage(), startsWith(errorMessage));
+    }
+
+    private static CustomTypeSafeMatcher<ErrorTemplateType> createTypeMatcher(final String errorCode,
+                                                                              final String errorDescription) {
+        return new CustomTypeSafeMatcher<>("Compare error code and description message") {
+
+            /**
+             * Subclasses should implement this. The item will already have been checked for
+             * the specific type and will never be null.
+             *
+             * @param item - initial input {@link ErrorTemplateType} to operate by
+             */
+            @Override
+            protected boolean matchesSafely(final ErrorTemplateType item) {
+                return StringUtils.equals(item.getErrorCode(), errorCode)
+                        && StringUtils.equals(item.getErrorMessage(), errorDescription);
+            }
+        };
+    }
+
+    private static Function<ErrorTemplateType, CustomTypeSafeMatcher<ErrorTemplateType>> createTypeMatcher() {
+        return value -> new CustomTypeSafeMatcher<>("Compare error template types on a property basis") {
+
+            /**
+             * Subclasses should implement this. The item will already have been checked for
+             * the specific type and will never be null.
+             *
+             * @param item - initial input {@link ErrorTemplateType} to operate by
+             */
+            @Override
+            protected boolean matchesSafely(final ErrorTemplateType item) {
+                return item.ordinal() == value.ordinal()
+                        && StringUtils.equals(item.name(), value.name())
+                        && StringUtils.equals(item.getErrorCode(), value.getErrorCode())
+                        && StringUtils.equals(item.getErrorMessage(), value.getErrorMessage());
+            }
+        };
     }
 }

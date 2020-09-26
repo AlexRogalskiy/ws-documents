@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.commons.common.flow;
+package com.sensiblemetrics.api.ws.commons.common.configuration;
 
 import lombok.experimental.UtilityClass;
 
