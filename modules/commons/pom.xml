@@ -11,8 +11,8 @@
     </parent>
 
     <name>com.sensiblemetrics.api.ws.commons</name>
-    <description>WS Documents Commons API</description>
-    <artifactId>commons</artifactId>
+    <description>WebDocs Commons API</description>
+    <artifactId>webdocs-commons</artifactId>
     <packaging>jar</packaging>
     <url>https://github.com/AlexRogalskiy/ws-documents/commons</url>
     <inceptionYear>2020</inceptionYear>

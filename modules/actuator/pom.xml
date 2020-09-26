@@ -11,22 +11,22 @@
     </parent>
 
     <name>com.sensiblemetrics.api.ws.actuator</name>
-    <description>WS Documents Actuator API</description>
-    <artifactId>actuator</artifactId>
+    <description>WebDocs Actuator API</description>
+    <artifactId>webdocs-actuator</artifactId>
     <packaging>jar</packaging>
     <url>https://github.com/AlexRogalskiy/ws-documents/actuator</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>
-        <sensiblemetrics-commons.version>0.1.0-SNAPSHOT</sensiblemetrics-commons.version>
+        <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
 
     <dependencies>
-        <!-- SensibleMetrics commons library dependencies -->
+        <!-- SensibleMetrics library dependencies -->
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>commons</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-commons</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

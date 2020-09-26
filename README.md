@@ -1,6 +1,20 @@
 # README
 
-![Build](https://github.com/AlexRogalskiy/ws-documents/workflows/Build/badge.svg?branch=master&event=push) ![Create Release](https://github.com/AlexRogalskiy/ws-documents/workflows/Release-draft/badge.svg?branch=master)
+![Build](https://github.com/AlexRogalskiy/ws-documents/workflows/Build/badge.svg?branch=master&event=push)
+![Create Release](https://github.com/AlexRogalskiy/ws-documents/workflows/Release-draft/badge.svg?branch=master)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/AlexRogalskiy/ws-documents)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/AlexRogalskiy/ws-documents)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/AlexRogalskiy/ws-documents)
+![Github All Contributors](https://img.shields.io/github/all-contributors/AlexRogalskiy/ws-documents)
+![GitHub repo size](https://img.shields.io/github/repo-size/AlexRogalskiy/ws-documents)
+![Lines of code](https://img.shields.io/tokei/lines/github/AlexRogalskiy/ws-documents)
+![GitHub last commit](https://img.shields.io/github/last-commit/AlexRogalskiy/ws-documents)
+![GitHub](https://img.shields.io/github/license/AlexRogalskiy/ws-documents)
+![GitHub All Releases](https://img.shields.io/github/downloads/AlexRogalskiy/ws-documents/total)
+![Docker Pulls](https://img.shields.io/docker/pulls/alexanderr/ws-documents)
+![GitHub language count](https://img.shields.io/github/languages/count/AlexRogalskiy/ws-documents)
+![GitHub search hit counter](https://img.shields.io/github/search/AlexRogalskiy/ws-documents/goto)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AlexRogalskiy_ws-documents&metric=alert_status)](https://sonarcloud.io/dashboard?id=AlexRogalskiy_ws-documents)
 
 ## Summary
 
@@ -132,6 +146,41 @@ SensibleMetrics Team would like inform that JetBrains is helping by provided IDE
 
 SensibleMetrics WS-Documents project is using SonarCloud for code quality. 
 Thanks to SonarQube Team for free analysis solution for open source projects.
+
+### Usage:
+Choose one of the modules and add to your `pom.xml`
+
+```xml
+<dependency>
+    <groupId>com.sensiblemetrics.api.ws</groupId>
+    <artifactId>{module.artifactId}</artifactId>
+    <version>{lib.version}</version>
+</dependency>
+```
+
+- [**WebDocs Actuator**](https://github.com/AlexRogalskiy/ws-documents/actuator)  
+  `webdocs-actuator` - Library to work with Actuator API.
+
+- [**WebDocs Commons**](https://github.com/AlexRogalskiy/ws-documents/commons)  
+  `webdocs-commons` - Library with utilities for common use cases.
+
+- [**WebDocs Document-Generator**](https://github.com/AlexRogalskiy/ws-documents/document-generator)  
+  `webdocs-document-generator` - Library to work with Document-Generator API.
+
+- [**WebDocs Executor**](https://github.com/AlexRogalskiy/ws-documents/executor)  
+  `webdocs-executor` - Library to work with Executor API.
+
+- [**WebDocs Logger**](https://github.com/AlexRogalskiy/ws-documents/logger)  
+  `webdocs-logger` - Library to work with Logger API.
+
+- [**WebDocs Metrics**](https://github.com/AlexRogalskiy/ws-documents/metrics)  
+  `webdocs-metrics` - Library to work with Metrics API.
+
+- [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/router)  
+  `webdocs-router` - Library to work with Router API.
+
+### Also:
+  You can find more useful libs and examples on [wiki](https://github.com/AlexRogalskiy/ws-documents/wiki)
 
 ## License
 SensibleMetrics WS-Documents is distributed under LGPL version 3 or later, see COPYING.LESSER(LGPL) and COPYING(GPL).   

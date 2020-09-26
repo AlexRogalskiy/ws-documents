@@ -116,6 +116,7 @@
         <repackage.skip>false</repackage.skip>
         <skipTests>false</skipTests>
         <package-tests.skip>true</package-tests.skip>
+        <copy-dependencies.skip>true</copy-dependencies.skip>
 
         <license.licenseName>default</license.licenseName>
         <license.licenseResolver>${project.baseUri}src/license</license.licenseResolver>
@@ -195,6 +196,8 @@
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
         <maven-qulice-plugin.version>0.18.19</maven-qulice-plugin.version>
         <maven-release-plugin.version>3.0.0-M1</maven-release-plugin.version>
+        <maven-scm-provider-gitexe.version>1.11.2</maven-scm-provider-gitexe.version>
+        <maven-scm-api.version>1.11.2</maven-scm-api.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <maven-moditect-plugin.version>1.0.0.RC1</maven-moditect-plugin.version>
@@ -231,6 +234,17 @@
         <validation-api.version>2.0.1.Final</validation-api.version>
         <wsdl4j.version>1.6.3.wso2v3</wsdl4j.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com/AlexRogalskiy/ws-documents.git
+        </connection>
+        <developerConnection>
+            scm:git:git@github.com:/AlexRogalskiy/ws-documents.git
+        </developerConnection>
+        <url>
+            git://github.com/AlexRogalskiy/ws-documents
+        </url>
+    </scm>
 
     <dependencyManagement>
         <dependencies>
@@ -750,10 +764,24 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <failOnWarning>false</failOnWarning>
+                            <ignoreNonCompile>true</ignoreNonCompile>
+                            <outputXML>true</outputXML>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-dependencies</id>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
+                        <configuration>
+                            <skip>${copy-dependencies.skip}</skip>
+                        </configuration>
                         <phase>package</phase>
                     </execution>
                 </executions>
@@ -919,6 +947,18 @@
                     <allowTimestampedSnapshots>true</allowTimestampedSnapshots>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-provider-gitexe</artifactId>
+                        <version>${maven-scm-provider-gitexe.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.scm</groupId>
+                        <artifactId>maven-scm-api</artifactId>
+                        <version>${maven-scm-api.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
@@ -1037,22 +1077,6 @@
                             </sources>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>attach-zip</id>
-                        <goals>
-                            <goal>attach-artifact</goal>
-                        </goals>
-                        <configuration>
-                            <artifacts>
-                                <artifact>
-                                    <file>
-                                        ${project.build.directory}/${project.artifactId}-${project.version}.zip
-                                    </file>
-                                    <type>zip;zip.type=docs;zip.deployed=false</type>
-                                </artifact>
-                            </artifacts>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
@@ -1079,23 +1103,10 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${maven-jacoco-plugin.version}</version>
+                <configuration>
+                    <append>true</append>
+                </configuration>
                 <executions>
-                    <execution>
-                        <id>pre-unit-tests</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <propertyName>jacocoArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                    </execution>
                     <execution>
                         <id>default-jacoco-check</id>
                         <goals>
@@ -2072,6 +2083,7 @@
                                 <showSuccess>false</showSuccess>
                             </configuration>
                         </plugin>
+
                         <plugin>
                             <groupId>org.jacoco</groupId>
                             <artifactId>jacoco-maven-plugin</artifactId>
@@ -2090,7 +2102,13 @@
                                     <phase>process-test-classes</phase>
                                     <configuration>
                                         <skip>${unit-tests.skip}</skip>
-                                        <destFile>${project.build.directory}/jacoco.exec</destFile>
+                                        <!-- Sets the path to the file which contains the execution data. -->
+                                        <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                                        <!--
+                                            Sets the name of the property containing the settings
+                                            for JaCoCo runtime agent.
+                                        -->
+                                        <propertyName>surefireArgLine</propertyName>
                                     </configuration>
                                 </execution>
                                 <execution>
@@ -2101,7 +2119,11 @@
                                     <phase>test</phase>
                                     <configuration>
                                         <skip>${unit-tests.skip}</skip>
-                                        <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                                        <!-- Sets the path to the file which contains the execution data. -->
+                                        <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                                        <!-- Sets the output directory for the code coverage report. -->
+                                        <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut
+                                        </outputDirectory>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -2140,7 +2162,6 @@
                 <integration-tests.fail>${failIfNoTests}</integration-tests.fail>
 
                 <integration-tests.skip>${skipTests}</integration-tests.skip>
-                <itAgent/>
                 <parallel.tests>2</parallel.tests>
                 <test-groups.include/>
             </properties>
@@ -2159,7 +2180,7 @@
                                 <forkCount>${parallel.tests}</forkCount>
                                 <reuseForks>true</reuseForks>
                                 <failIfNoTests>${integration-tests.fail}</failIfNoTests>
-                                <argLine>@{itAgent}
+                                <argLine>
                                     ${failsafe.memory}
                                     ${failsafe.timezone}
                                     ${failsafe.commands}
@@ -2180,6 +2201,7 @@
                                 </execution>
                             </executions>
                         </plugin>
+
                         <plugin>
                             <groupId>org.jacoco</groupId>
                             <artifactId>jacoco-maven-plugin</artifactId>
@@ -2198,8 +2220,13 @@
                                     <phase>pre-integration-test</phase>
                                     <configuration>
                                         <skip>${integration-tests.skip}</skip>
-                                        <destFile>${project.build.directory}/jacoco-it.exec</destFile>
-                                        <propertyName>itAgent</propertyName>
+                                        <!-- Sets the path to the file which contains the execution data. -->
+                                        <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                                        <!--
+                                            Sets the name of the property containing the settings
+                                            for JaCoCo runtime agent.
+                                        -->
+                                        <propertyName>failsafeArgLine</propertyName>
                                     </configuration>
                                 </execution>
                                 <execution>
@@ -2210,7 +2237,11 @@
                                     <phase>post-integration-test</phase>
                                     <configuration>
                                         <skip>${integration-tests.skip}</skip>
-                                        <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+                                        <!-- Sets the path to the file which contains the execution data. -->
+                                        <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+                                        <!-- Sets the output directory for the code coverage report. -->
+                                        <outputDirectory>${project.reporting.outputDirectory}/jacoco-it
+                                        </outputDirectory>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -2489,6 +2520,30 @@
                                                 </zipfileset>
                                             </zip>
                                         </target>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>build-helper-maven-plugin</artifactId>
+                            <version>${maven-javadoc-plugin.version}</version>
+                            <executions>
+                                <execution>
+                                    <id>attach-zip</id>
+                                    <goals>
+                                        <goal>attach-artifact</goal>
+                                    </goals>
+                                    <configuration>
+                                        <artifacts>
+                                            <artifact>
+                                                <file>
+                                                    ${project.build.directory}/${project.artifactId}-${project.version}.zip
+                                                </file>
+                                                <type>zip;zip.type=docs;zip.deployed=false</type>
+                                            </artifact>
+                                        </artifacts>
                                     </configuration>
                                 </execution>
                             </executions>

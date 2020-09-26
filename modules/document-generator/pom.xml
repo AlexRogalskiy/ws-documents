@@ -11,13 +11,15 @@
     </parent>
 
     <name>com.sensiblemetrics.api.ws.document.generator</name>
-    <description>WS Documents Document-Generator API</description>
-    <artifactId>document-generator</artifactId>
+    <description>WebDocs Document-Generator API</description>
+    <artifactId>webdocs-document-generator</artifactId>
     <packaging>jar</packaging>
     <url>https://github.com/AlexRogalskiy/ws-documents/document-generator</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>
+        <spring-boot-thin.version>1.0.25.RELEASE</spring-boot-thin.version>
+
         <docx4j.version>6.1.2</docx4j.version>
         <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
         <hibernate-types.version>2.9.13</hibernate-types.version>
@@ -38,9 +40,8 @@
         <modelmapper.version>2.3.8</modelmapper.version>
         <p6spy.version>3.9.1</p6spy.version>
         <postgresql.version>42.2.16</postgresql.version>
-        <sensiblemetrics-commons.version>0.1.0-SNAPSHOT</sensiblemetrics-commons.version>
 
-        <spring-boot-thin.version>1.0.25.RELEASE</spring-boot-thin.version>
+        <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
 
     <dependencies>
@@ -71,41 +72,41 @@
             <version>${liquibase-slf4j.version}</version>
         </dependency>
 
-        <!-- SensibleMetrics Commons library dependencies -->
+        <!-- SensibleMetrics library dependencies -->
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>actuator</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-actuator</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>commons</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-commons</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>executor</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-executor</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>logger</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-logger</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>metrics</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-metrics</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>router</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-router</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -210,10 +211,12 @@
             <artifactId>hsqldb</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- SensibleMetrics test library dependencies -->
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>commons</artifactId>
-            <version>${sensiblemetrics-commons.version}</version>
+            <artifactId>webdocs-commons</artifactId>
+            <version>${sensiblemetrics.version}</version>
             <classifier>tests</classifier>
             <type>test-jar</type>
             <scope>test</scope>
