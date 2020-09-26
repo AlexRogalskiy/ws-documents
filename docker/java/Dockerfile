@@ -1,7 +1,8 @@
 # Base OS layer
-ARG IMAGE_SOURCE
-ARG IMAGE_TAG
-FROM ${IMAGE_SOURCE:openjdk}:${IMAGE_TAG:latest}
+# docker build -t container_tag --build-arg IMAGE_SOURCE=openjdk IMAGE_TAG=latest .
+ARG IMAGE_SOURCE=openjdk
+ARG IMAGE_TAG=latest
+FROM ${IMAGE_SOURCE}:${IMAGE_TAG}
 
 RUN groupadd spring && useradd -m -g spring -s /bin/bash spring
 USER spring:spring
