@@ -1,20 +1,10 @@
-# Custom Issue template
+---
+name: Custom issue template
+about: Describe this issue template's purpose here.
+title: ''
+labels: ''
+assignees: ''
 
-<table>
-  <tbody>
-    <tr>
-      <th>Issue name</th>
-      <th>Description</th>
-      <th>Title</th>
-      <th>Labels</th>
-      <th>Assignees</th>
-    </tr>
-    <tr>
-      <td>Issue</td>
-      <td>Short description</td>
-      <td>Name/Title</td>
-      <td>Tag</td>
-      <td>Developer</td>
-    </tr>
-  </tbody>
-</table>
+---
+
+
