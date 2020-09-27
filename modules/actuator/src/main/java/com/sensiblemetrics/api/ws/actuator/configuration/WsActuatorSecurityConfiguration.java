@@ -22,7 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public abstract class WsActuatorSecurityConfiguration {
 
     /**
-     * Actuator {@link WebSecurityConfigurerAdapter} adapter implementation
+     * Actuator {@link WebSecurityConfigurerAdapter} implementation
      */
     @Configuration(proxyBeanMethods = false)
     @RequiredArgsConstructor
@@ -55,7 +55,7 @@ public abstract class WsActuatorSecurityConfiguration {
     }
 
     /**
-     * Actuator empty {@link WebSecurityConfigurerAdapter} adapter implementation
+     * Actuator empty {@link WebSecurityConfigurerAdapter} implementation
      */
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "false", matchIfMissing = true)
@@ -70,9 +70,7 @@ public abstract class WsActuatorSecurityConfiguration {
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
             http.requestMatcher(EndpointRequest.toAnyEndpoint())
-                    .authorizeRequests((requests) ->
-                            requests.anyRequest().permitAll()
-                    );
+                    .authorizeRequests(requests -> requests.anyRequest().permitAll());
         }
     }
 }

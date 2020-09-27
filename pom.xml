@@ -84,6 +84,7 @@
         <module>modules/logger</module>
         <module>modules/metrics</module>
         <module>modules/router</module>
+        <module>modules/security</module>
     </modules>
 
     <properties>

@@ -46,11 +46,13 @@
 
     <!-- Logger configuration -->
     <logger name="ROOT" level="WARN"/>
+
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.transaction" level="WARN"/>
     <logger name="org.hibernate" level="WARN"/>
-    <logger name="com.sensiblemetrics.api.ws.*" level="WARN" additivity="false">
+
+    <logger name="com.sensiblemetrics.api.ws.commons" level="WARN" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
 

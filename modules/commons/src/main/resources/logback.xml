@@ -113,13 +113,7 @@
     <logger name="org.springframework.web" level="ERROR"/>
     <logger name="org.springframework.transaction" level="ERROR"/>
 
-    <logger name="org.hibernate" level="ERROR"/>
-    <logger name="org.hibernate.sql" level="ERROR"/>
-    <logger name="org.hibernate.cache" level="ERROR"/>
-    <logger name="org.hibernate.type" level="ERROR"/>
-    <logger name="org.hibernate.type.descriptor.sql" level="ERROR"/>
-
-    <logger name="com.sensiblemetrics.api.ws.*" level="ERROR" additivity="false">
+    <logger name="com.sensiblemetrics.api.ws.commons" level="ERROR" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
 
