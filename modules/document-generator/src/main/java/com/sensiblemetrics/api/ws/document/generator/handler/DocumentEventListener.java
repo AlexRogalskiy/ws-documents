@@ -15,7 +15,7 @@ import java.time.Instant;
 @Getter
 @Component
 @RequiredArgsConstructor
-public class DefaultApplicationEventListener {
+public class DocumentEventListener {
     private final DocumentService documentService;
 
     /**

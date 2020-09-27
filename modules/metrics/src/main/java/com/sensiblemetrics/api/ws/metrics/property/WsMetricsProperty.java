@@ -39,7 +39,7 @@ public class WsMetricsProperty {
     /**
      * Default {@link List} of {@link String} simple common tags
      */
-    private static final List<String> DEFAULT_SIMPLE_COMMON_TAGS = Lists.newArrayList("scope", "WebDocs");
+    private static final List<String> DEFAULT_SIMPLE_COMMON_TAGS = Lists.newArrayList("scope", "webdocs");
 
     /**
      * Default metrics handlers
@@ -133,6 +133,15 @@ public class WsMetricsProperty {
          * Enable/disable meter ({@code true} by default)
          */
         private boolean enabled = true;
+
+        /**
+         * Returns {@link String} array of tags
+         *
+         * @return {@link String} array of tags
+         */
+        public String[] getSimpleTagsAsArray() {
+            return this.simpleTags.toArray(new String[0]);
+        }
     }
 
     /**

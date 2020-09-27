@@ -20,7 +20,8 @@ public class DefaultFailureAnalyzer extends AbstractFailureAnalyzer<BeanNotOfReq
      */
     @NonNull
     @Override
-    protected FailureAnalysis analyze(final Throwable exception, final BeanNotOfRequiredTypeException cause) {
+    protected FailureAnalysis analyze(final Throwable exception,
+                                      final BeanNotOfRequiredTypeException cause) {
         return new FailureAnalysis(this.getDescription(cause), this.getAction(cause), cause);
     }
 

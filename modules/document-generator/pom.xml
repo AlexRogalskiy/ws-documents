@@ -23,6 +23,8 @@
         <docx4j.version>6.1.2</docx4j.version>
         <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
         <hibernate-types.version>2.9.13</hibernate-types.version>
+        <cache-api.version>1.1.1</cache-api.version>
+        <ehcache.version>3.9.0</ehcache.version>
 
         <hikari.version>3.4.5</hikari.version>
 
@@ -141,12 +143,34 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate-core.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jcache</artifactId>
+            <version>${hibernate-core.version}</version>
+        </dependency>
 
         <!-- Hibernate types library dependencies -->
         <dependency>
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
             <version>${hibernate-types.version}</version>
+        </dependency>
+
+        <!-- Cache library dependencies -->
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${cache-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>${ehcache.version}</version>
         </dependency>
 
         <!-- Jaxb2 library dependencies -->

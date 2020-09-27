@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
 
     <!--    <property name="LOG_DIR" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>-->
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>
     <property name="LOG_DIR" value="./log/application"/>
     <property name="LOG_ARCHIVE_DIR" value="${LOG_DIR}/archive"/>
-    <property name="LOG_FILE" value="LogFile"/>
+    <!--    <property name="LOG_FILE" value="LogFile"/>-->
 
     <property name="CONSOLE_LOG_PATTERN"
               value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
@@ -32,6 +35,8 @@
     <!-- File appender configuration -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_DIR}/${LOG_FILE}.log</file>
+        <append>true</append>
+        <immediateFlush>false</immediateFlush>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>${LOG_ARCHIVE_DIR}/${LOG_FILE}_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
@@ -78,6 +83,12 @@
         </encoder>
     </appender>
 
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>1024</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>
+
     <!--
         Appender below will write logs into the system journal fileInfo (/var/log/syslog).
         To check it you need:
@@ -95,10 +106,19 @@
 
     <!-- Logger configuration -->
     <logger name="ROOT" level="ERROR"/>
+
     <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework.core" level="ERROR"/>
+    <logger name="org.springframework.boot" level="ERROR"/>
     <logger name="org.springframework.web" level="ERROR"/>
     <logger name="org.springframework.transaction" level="ERROR"/>
+
     <logger name="org.hibernate" level="ERROR"/>
+    <logger name="org.hibernate.sql" level="ERROR"/>
+    <logger name="org.hibernate.cache" level="ERROR"/>
+    <logger name="org.hibernate.type" level="ERROR"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="ERROR"/>
+
     <logger name="com.sensiblemetrics.api.ws.*" level="ERROR" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>

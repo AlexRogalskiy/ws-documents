@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.document.generator.model.entity;
+package com.sensiblemetrics.api.ws.document.generator.model.converter;
 
 import org.hibernate.Session;
 import org.hibernate.tuple.ValueGenerator;

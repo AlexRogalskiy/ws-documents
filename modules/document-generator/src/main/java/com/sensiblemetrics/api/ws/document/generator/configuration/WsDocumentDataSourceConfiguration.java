@@ -1,19 +1,24 @@
 package com.sensiblemetrics.api.ws.document.generator.configuration;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.cache.jcache.ConfigSettings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.boot.autoconfigure.jmx.ParentAwareNamingStrategy;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Role;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource;
 import org.springframework.jmx.export.naming.ObjectNamingStrategy;
@@ -38,10 +43,11 @@ import static org.springframework.util.StringUtils.arrayToDelimitedString;
 
 @Slf4j
 @Configuration
+@EnableJpaAuditing
 @EnableTransactionManagement
 @EnableJpaRepositories("com.sensiblemetrics.api.ws.document.generator.repository")
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Document Web Service DataSource configuration")
+@Description("SensibleMetrics Web Service Document Generator DataSource configuration")
 public class WsDocumentDataSourceConfiguration {
     /**
      * Default bean naming conventions
@@ -136,6 +142,19 @@ public class WsDocumentDataSourceConfiguration {
         final PersistenceAnnotationBeanPostProcessor postProcessor = new PersistenceAnnotationBeanPostProcessor();
         postProcessor.setDefaultPersistenceUnitName(DEFAULT_PERSISTENCE_UNIT_NAME);
         return postProcessor;
+    }
+
+    /**
+     * Returns second level cache {@link HibernatePropertiesCustomizer}
+     *
+     * @param cacheManager initial input {@link JCacheCacheManager} instance
+     * @return second level cache {@link HibernatePropertiesCustomizer}
+     */
+    @Bean
+    @ConditionalOnBean(JCacheCacheManager.class)
+    @Description("DataSource hibernate second level cache customizer bean")
+    public HibernatePropertiesCustomizer hibernateSecondLevelCacheCustomizer(final JCacheCacheManager cacheManager) {
+        return properties -> properties.put(ConfigSettings.CACHE_MANAGER, cacheManager.getCacheManager());
     }
 
     /**

@@ -19,7 +19,7 @@ import static com.sensiblemetrics.api.ws.document.generator.configuration.WsDocu
 
 @Configuration
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Document Web Service Actuator configuration")
+@Description("SensibleMetrics Web Service Document Generator Actuator configuration")
 public class WsDocumentActuatorConfiguration {
 
     @Bean

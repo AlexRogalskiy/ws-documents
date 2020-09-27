@@ -23,7 +23,7 @@ import java.util.List;
 @ConditionalOnProperty(prefix = WsAddressingProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsAddressingProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Addressing configuration")
+@Description("SensibleMetrics Web Service Router Addressing configuration")
 public abstract class WsAddressingConfiguration {
 
     @Configuration

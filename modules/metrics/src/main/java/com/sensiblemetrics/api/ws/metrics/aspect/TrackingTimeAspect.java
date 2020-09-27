@@ -1,14 +1,12 @@
 package com.sensiblemetrics.api.ws.metrics.aspect;
 
 import com.sensiblemetrics.api.ws.metrics.annotation.TrackingTime;
-import com.sensiblemetrics.api.ws.metrics.property.WsMetricsProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Description;
 import org.springframework.lang.Nullable;
 
@@ -19,7 +17,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Slf4j
 @Aspect
-@ConditionalOnProperty(prefix = WsMetricsProperty.Handlers.TRACKING_TIME_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @Description("Web Service Tracking time aspect configuration")
 public class TrackingTimeAspect {
 

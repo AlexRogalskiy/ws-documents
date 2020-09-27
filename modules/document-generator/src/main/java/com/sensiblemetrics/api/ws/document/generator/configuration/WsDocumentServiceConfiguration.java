@@ -32,7 +32,7 @@ import java.util.List;
         WsDocumentStorageProperty.class
 })
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Document Web Service configuration")
+@Description("SensibleMetrics Web Service Document Generator Service configuration")
 public class WsDocumentServiceConfiguration {
 
     @Bean
@@ -41,7 +41,6 @@ public class WsDocumentServiceConfiguration {
                                    final List<PropertyMap<?, ?>> propertyMaps) {
         final ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
-                .setFieldMatchingEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
                 .setMethodAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC)
                 .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR)
@@ -63,7 +62,7 @@ public class WsDocumentServiceConfiguration {
     @RequiredArgsConstructor
     @EnableConfigurationProperties(WsAddressingProperty.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Document Web Service configuration")
+    @Description("SensibleMetrics Web Service Document configuration")
     public static class WsDocumentConfiguration {
         /**
          * Default document definition bean naming conventions

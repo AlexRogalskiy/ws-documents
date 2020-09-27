@@ -8,11 +8,24 @@ server:
     enabled: true
     min-response-size: 1024
   forward-headers-strategy: FRAMEWORK
+  error:
+    path: /error
+    include-stacktrace: never
+    whitelabel:
+      enabled: false
+  tomcat:
+    mbeanregistry:
+      enabled: true
+    accesslog:
+      enabled: true
+      pattern: '%t %a "%r" %s (%D ms)'
 
 spring:
   output:
     ansi:
       enabled: NEVER
+  main:
+    log-startup-info: true
   profiles:
     include: document, addressing, cloud
   application:
@@ -21,6 +34,11 @@ spring:
     basename: i18n/common_messages, i18n/messages
     # 1 hour
     cache-duration: 3600
+  cache:
+    type: JCACHE
+    jcache:
+      config: classpath:ehcache-config.xml
+      provider: org.ehcache.jsr107.EhcacheCachingProvider
   aop:
     proxy-target-class: true
   devtools:
@@ -29,6 +47,9 @@ spring:
     throw-exception-if-no-handler-found: true
     log-resolved-exception: true
     locale-resolver: FIXED
+    async:
+      # 1 hour
+      request-timeout: 3600000
   task:
     execution:
       thread-name-prefix: document-generator
@@ -73,10 +94,21 @@ spring:
     database: POSTGRESQL
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
+      javax:
+        persistence:
+          sharedCache:
+            #required - enable selective caching mode - only entities with @Cacheable annotation will use L2 cache (ALL)
+            mode: ENABLE_SELECTIVE
       hibernate:
+        javax:
+          cache:
+            missing_cache_strategy: create
+            provider: org.ehcache.jsr107.EhcacheCachingProvider
         dialect: org.hibernate.dialect.PostgreSQLDialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        ejb.naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        ejb:
+          use_class_enhancer: true
+          naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
         validator:
           apply_to_ddl: true
           autoregister_listeners: true
@@ -97,8 +129,18 @@ spring:
           flush_before_completion: true
           auto_close_session: false
         cache:
-          use_second_level_cache: false
-          use_query_cache: false
+          region:
+            factory_class: org.hibernate.cache.ehcache.internal.EhcacheRegionFactory
+          use_query_cache: true
+          use_second_level_cache: true
+          use_structured_entries: true
+          default-cache-concurrency-strategy: TRANSACTIONAL
+          configuration-resource-name: classpath:ehcache.xml
+        jdbc:
+          fetch_size: 50
+          batch_size: 30
+          batch_versioned_data: true
+          time_zone: UTC
         show-sql: true
         format-sql: true
         use-sql-comments: true

@@ -26,19 +26,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 import java.util.function.Function;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.streamOf;
-
 @Configuration
 @EnableAspectJAutoProxy
-@Import(TrackingTimeAspect.class)
+@Import(WsMetricsConfigurerAdapter.class)
 @ConditionalOnProperty(prefix = WsMetricsProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsMetricsProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Metrics configuration")
+@Description("SensibleMetrics Web Service Metrics configuration")
 public abstract class WsMetricsConfiguration {
     /**
      * Default metrics bean naming conventions
@@ -50,6 +47,7 @@ public abstract class WsMetricsConfiguration {
     public static final String METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME = "webMvcTagsContributor";
     public static final String METER_REGISTRY_TIMED_ASPECT_BEAN_NAME = "timedAspect";
     public static final String METER_REGISTRY_MONITORING_TIME_ASPECT_BEAN_NAME = "monitoringTimeAspect";
+    public static final String METER_REGISTRY_TRACKING_TIME_ASPECT_BEAN_NAME = "trackingTimeAspect";
     public static final String METER_REGISTRY_INCLUDE_FILTER_BEAN_NAME = "includeMeterFilter";
     public static final String METER_REGISTRY_EXCLUDE_FILTER_BEAN_NAME = "excludeMeterFilter";
 
@@ -78,7 +76,7 @@ public abstract class WsMetricsConfiguration {
     public MeterRegistryCustomizer<MeterRegistry> metricsCommonTagsCustomizer(final WsMetricsProperty metricsProperty) {
         return registry -> OptionalConsumer.of(metricsProperty.getDefaults().getTags())
                 .ifPresent(value -> registry.config().commonTags(value))
-                .ifNotPresent(() -> registry.config().commonTags(metricsProperty.getDefaults().getSimpleTags().toArray(new String[0])));
+                .ifNotPresent(() -> registry.config().commonTags(metricsProperty.getDefaults().getSimpleTagsAsArray()));
     }
 
     @Bean(METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
@@ -100,16 +98,25 @@ public abstract class WsMetricsConfiguration {
         return new MonitoringTimeAspect(registry);
     }
 
+    @Bean(METER_REGISTRY_TRACKING_TIME_ASPECT_BEAN_NAME)
+    @Description("Tracking time aspect bean")
+    @ConditionalOnProperty(prefix = WsMetricsProperty.Handlers.TRACKING_TIME_PROPERTY_PREFIX, value = "enabled", havingValue = "true")
+    public TrackingTimeAspect trackingTimeAspect() {
+        return new TrackingTimeAspect();
+    }
+
     @Bean(METER_REGISTRY_INCLUDE_FILTER_BEAN_NAME)
     @Description("Actuator include meter filter configuration bean")
-    public MeterFilter includeMeterFilter(final WsMetricsProperty metricsProperty) {
-        return MeterFilter.accept(v -> streamOf(metricsProperty.getPatterns().getInclude()).anyMatch(p -> Pattern.matches(p, v.getName())));
+    public MeterFilter includeMeterFilter(final WsMetricsConfigurerAdapter configurerAdapter,
+                                          final WsMetricsProperty metricsProperty) {
+        return MeterFilter.accept(configurerAdapter.createMeterTagPredicate(metricsProperty.getPatterns().getInclude()));
     }
 
     @Bean(METER_REGISTRY_EXCLUDE_FILTER_BEAN_NAME)
     @Description("Actuator exclude meter filter configuration bean")
-    public MeterFilter excludeMeterFilter(final WsMetricsProperty metricsProperty) {
-        return MeterFilter.deny(v -> streamOf(metricsProperty.getPatterns().getExclude()).anyMatch(p -> Pattern.matches(p, v.getName())));
+    public MeterFilter excludeMeterFilter(final WsMetricsConfigurerAdapter configurerAdapter,
+                                          final WsMetricsProperty metricsProperty) {
+        return MeterFilter.deny(configurerAdapter.createMeterTagPredicate(metricsProperty.getPatterns().getExclude()));
     }
 
     @RequiredArgsConstructor
