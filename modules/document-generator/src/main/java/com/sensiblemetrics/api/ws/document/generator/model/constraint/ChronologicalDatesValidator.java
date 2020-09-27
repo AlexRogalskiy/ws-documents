@@ -25,7 +25,7 @@ public class ChronologicalDatesValidator implements ConstraintValidator<Chronolo
      * Default {@link ChronologicalDates} datetime existence {@link Predicate}
      */
     private final Predicate<AuditEntity<?>> datesExistPredicate =
-            value -> value.getCreatedDate().isEmpty() || value.getLastModifiedDate().isEmpty();
+            value -> !(value.getCreatedDate().isPresent() && value.getLastModifiedDate().isPresent());
 
     /**
      * Default {@link ChronologicalDates} datetime order {@link Predicate}
