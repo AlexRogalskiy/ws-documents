@@ -31,7 +31,10 @@ import java.util.stream.Stream;
 
 @Configuration
 @EnableAspectJAutoProxy
-@Import(WsMetricsConfigurerAdapter.class)
+@Import({
+        WsMetricsConfigurerAdapter.class,
+        WsMetricsHealthConfiguration.class
+})
 @ConditionalOnProperty(prefix = WsMetricsProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsMetricsProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
