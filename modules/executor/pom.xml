@@ -14,7 +14,7 @@
     <description>WebDocs Executor API</description>
     <artifactId>webdocs-executor</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/executor</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/executor</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>

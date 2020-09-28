@@ -14,7 +14,7 @@
     <description>WebDocs Admin API</description>
     <artifactId>webdocs-admin</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/admin</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/admin</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>

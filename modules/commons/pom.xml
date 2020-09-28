@@ -14,7 +14,7 @@
     <description>WebDocs Commons API</description>
     <artifactId>webdocs-commons</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/commons</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/commons</url>
     <inceptionYear>2020</inceptionYear>
 
     <build>

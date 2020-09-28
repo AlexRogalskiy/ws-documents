@@ -14,7 +14,7 @@
     <description>WebDocs Caching API</description>
     <artifactId>webdocs-caching</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/caching</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/caching</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>

@@ -14,7 +14,7 @@
     <description>WebDocs Security API</description>
     <artifactId>webdocs-security</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/security</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/security</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>

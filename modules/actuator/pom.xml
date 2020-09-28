@@ -14,7 +14,7 @@
     <description>WebDocs Actuator API</description>
     <artifactId>webdocs-actuator</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/actuator</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/actuator</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>

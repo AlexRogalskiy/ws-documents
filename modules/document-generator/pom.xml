@@ -14,7 +14,7 @@
     <description>WebDocs Document-Generator API</description>
     <artifactId>webdocs-document-generator</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/document-generator</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/document-generator</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>

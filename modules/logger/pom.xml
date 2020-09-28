@@ -14,7 +14,7 @@
     <description>WebDocs Logger API</description>
     <artifactId>webdocs-logger</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/logger</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/logger</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>
