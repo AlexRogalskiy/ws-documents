@@ -12,6 +12,7 @@ services:
       - "8080:8080"
     links:
       - config-server
+
   config-server:
     image: hyness/spring-cloud-config-server
     environment:

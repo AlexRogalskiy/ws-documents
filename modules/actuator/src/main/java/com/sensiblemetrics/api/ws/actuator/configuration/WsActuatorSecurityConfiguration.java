@@ -28,7 +28,7 @@ public abstract class WsActuatorSecurityConfiguration {
     @RequiredArgsConstructor
     @ConditionalOnProperty(prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Auth Actuator Web Security configuration adapter")
+    @Description("Authentication Actuator Web Security configuration adapter")
     public static class AuthActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final WsActuatorSecurityProperty property;
 
@@ -60,7 +60,7 @@ public abstract class WsActuatorSecurityConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "false", matchIfMissing = true)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Empty Actuator Web Security configuration adapter")
+    @Description("NoAuthentication Actuator Web Security configuration adapter")
     public static class NoAuthActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         /**
          * {@inheritDoc}

@@ -1,78 +1,92 @@
 package com.sensiblemetrics.api.ws.admin.configuration;
 
 import com.sensiblemetrics.api.ws.admin.property.WsAdminProperty;
-import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;
-import de.codecentric.boot.admin.server.notify.CompositeNotifier;
-import de.codecentric.boot.admin.server.notify.LoggingNotifier;
-import de.codecentric.boot.admin.server.notify.Notifier;
-import de.codecentric.boot.admin.server.notify.RemindingNotifier;
-import de.codecentric.boot.admin.server.notify.filter.FilteringNotifier;
-import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
-import lombok.RequiredArgsConstructor;
+import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Description;
-import org.springframework.context.annotation.Role;
-
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
+import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Slf4j
 @Configuration
+@Import(WsAdminNotificationConfiguration.class)
 @ConditionalOnProperty(prefix = WsAdminProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsAdminProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Admin configuration")
 public abstract class WsAdminConfiguration {
 
-    @Configuration
-    @RequiredArgsConstructor
-    @ConditionalOnProperty(prefix = WsAdminProperty.Handlers.NOTIFICATION_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+    @Profile("insecure")
+    @Configuration(proxyBeanMethods = false)
+    @EnableConfigurationProperties(AdminServerProperties.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Web Service Admin Notifier configuration")
-    public static class AdminNotificationConfiguration {
-        /**
-         * Default admin bean naming conventions
-         */
-        public static final String ADMIN_LOGGING_NOTIFIER_BEAN_NAME = "loggingNotifier";
-        public static final String ADMIN_FILTERING_NOTIFIER_BEAN_NAME = "filteringNotifier";
-        public static final String ADMIN_REMINDING_NOTIFIER_BEAN_NAME = "remindingNotifier";
+    @Description("Authentication Admin Web Security configuration adapter")
+    public static class AuthAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+        private final String adminContextPath;
 
-        private final InstanceRepository repository;
-        private final ObjectProvider<List<Notifier>> otherNotifiers;
-
-        @Bean(ADMIN_LOGGING_NOTIFIER_BEAN_NAME)
-        @ConditionalOnClass(ProcessThreadMetrics.class)
-        @Description("Admin logging notifier configuration bean")
-        public LoggingNotifier loggerNotifier() {
-            return new LoggingNotifier(this.repository);
+        public AuthAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
+            this.adminContextPath = adminServerProperties.getContextPath();
         }
 
-        @Bean(ADMIN_FILTERING_NOTIFIER_BEAN_NAME)
-        @ConditionalOnClass(ProcessThreadMetrics.class)
-        @Description("Admin filtering notifier configuration bean")
-        public FilteringNotifier filteringNotifier() {
-            final CompositeNotifier delegate = new CompositeNotifier(this.otherNotifiers.getIfAvailable(Collections::emptyList));
-            return new FilteringNotifier(delegate, this.repository);
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().permitAll())
+                    .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                            .ignoringRequestMatchers(
+                                    new AntPathRequestMatcher(this.adminContextPath + "/instances",
+                                            HttpMethod.POST.toString()),
+                                    new AntPathRequestMatcher(this.adminContextPath + "/instances/*",
+                                            HttpMethod.DELETE.toString()),
+                                    new AntPathRequestMatcher(this.adminContextPath + "/actuator/**")
+                            )
+                    );
+        }
+    }
+
+    @Profile("secure")
+    @Configuration(proxyBeanMethods = false)
+    @EnableConfigurationProperties(AdminServerProperties.class)
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Description("NoAuthentication Admin Web Security configuration adapter")
+    public static class NoAuthAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+        private final String adminContextPath;
+
+        public NoAuthAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
+            this.adminContextPath = adminServerProperties.getContextPath();
         }
 
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.authorizeRequests(authorizeRequests -> authorizeRequests
+                    .antMatchers(this.adminContextPath + "/assets/**").permitAll()
+                    .antMatchers(this.adminContextPath + "/login").permitAll().anyRequest().authenticated())
+                    .formLogin(formLogin -> formLogin.loginPage(this.adminContextPath + "/login").successHandler(this.authenticationSuccessHandler()))
+                    .logout(logout -> logout.logoutUrl(this.adminContextPath + "/logout"))
+                    .httpBasic(Customizer.withDefaults())
+                    .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                            .ignoringRequestMatchers(
+                                    new AntPathRequestMatcher(this.adminContextPath + "/instances",
+                                            HttpMethod.POST.toString()),
+                                    new AntPathRequestMatcher(this.adminContextPath + "/instances/*",
+                                            HttpMethod.DELETE.toString()),
+                                    new AntPathRequestMatcher(this.adminContextPath + "/actuator/**")
+                            )
+                    );
+        }
 
-        @Bean(value = ADMIN_REMINDING_NOTIFIER_BEAN_NAME, initMethod = "start", destroyMethod = "stop")
-        @ConditionalOnBean(FilteringNotifier.class)
-        @Description("Admin reminding notifier configuration bean")
-        public RemindingNotifier remindingNotifier(final FilteringNotifier filteringNotifier) {
-            final RemindingNotifier notifier = new RemindingNotifier(filteringNotifier, this.repository);
-            notifier.setReminderPeriod(Duration.ofMinutes(10));
-            notifier.setCheckReminderInverval(Duration.ofSeconds(10));
-            return notifier;
+        private SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {
+            final SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+            successHandler.setTargetUrlParameter("redirectTo");
+            successHandler.setDefaultTargetUrl(this.adminContextPath + "/");
+            return successHandler;
         }
     }
 }
