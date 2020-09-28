@@ -59,9 +59,7 @@ public class WsDocumentDataSourceConfiguration {
     /**
      * Default packages to scan
      */
-    private static final String[] DEFAULT_PACKAGES_TO_SCAN = {
-            "com.sensiblemetrics.api.ws.document.generator.model.entity"
-    };
+    private static final String[] DEFAULT_PACKAGES_TO_SCAN = {"com.sensiblemetrics.api.ws.document.generator.model.entity"};
 
     /**
      * Default persistence unit name

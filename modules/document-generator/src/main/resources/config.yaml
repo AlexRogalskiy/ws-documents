@@ -50,7 +50,7 @@ webdocs:
       names: Accept,Content-Type,Content-Length
       pattern: ".*"
     handlers:
-      reporting-data:
+      reporting:
         enabled: true
 
   actuator:

@@ -2,7 +2,6 @@ package com.sensiblemetrics.api.ws.actuator.property;
 
 import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotEmpty;
 import com.sensiblemetrics.api.ws.commons.helper.MapBuilder;
-import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -22,38 +21,38 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WsInfoServiceProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = WsInfoApiStatusProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Api Status Info configuration properties")
-public class WsInfoServiceProperty {
+@Description("SensibleMetrics Web Service Info Api Status configuration properties")
+public class WsInfoApiStatusProperty {
     /**
-     * Default info service property prefix
+     * Default info api status property prefix
      */
     public static final String PROPERTY_PREFIX = WsApiStatusProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "node.info";
 
     /**
-     * Info service settings
+     * Info settings
      */
     @Valid
     @NestedConfigurationProperty
     @NotNull(message = "{property.api-status.node.info.settings.notNull}")
-    private WsInfoServiceProperty.InfoSettings settings = new InfoSettings();
+    private WsInfoApiStatusProperty.InfoSettings settings = new InfoSettings();
 
     /**
-     * Info service parameter names
+     * Info parameter names
      */
     @Valid
     @NestedConfigurationProperty
     @NotNull(message = "{property.api-status.node.info.parameter-names.notNull}")
-    private WsInfoServiceProperty.InfoParameterNames parameterNames = new InfoParameterNames();
+    private WsInfoApiStatusProperty.InfoParameterNames parameterNames = new InfoParameterNames();
 
     /**
-     * Info service metrics
+     * Info metrics
      */
     @Valid
     @NestedConfigurationProperty
     @NotNull(message = "{property.api-status.node.info.metrics.notNull}")
-    private WsInfoServiceProperty.InfoMetrics metrics = new InfoMetrics();
+    private WsInfoApiStatusProperty.InfoMetrics metrics = new InfoMetrics();
 
     @Data
     @Validated

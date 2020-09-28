@@ -25,6 +25,12 @@
         <!-- SensibleMetrics library dependencies -->
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-admin</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
             <artifactId>webdocs-actuator</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>

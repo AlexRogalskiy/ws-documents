@@ -1,13 +1,13 @@
-package com.sensiblemetrics.api.ws.security.configuration;
+package com.sensiblemetrics.api.ws.security.handler;
 
 import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyFilter;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
 
-class CustomEncryptablePropertyFilter implements EncryptablePropertyFilter {
+public class CustomEncryptablePropertyFilter implements EncryptablePropertyFilter {
     private final String prefix;
 
-    CustomEncryptablePropertyFilter(final String prefix) {
+    public CustomEncryptablePropertyFilter(final String prefix) {
         Assert.notNull(prefix, "Property prefix should not be null");
         this.prefix = prefix;
     }

@@ -35,6 +35,7 @@ public abstract class WsAddressingConfiguration {
          */
         public static final String MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME = "messageDispatcherServletCustomizer";
         public static final String CONTEXT_MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME = "applicationContextMessageDispatcherServletCustomizer";
+        public static final String ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME = "endpointConfigurationProvider";
 
         @Bean
         @ConditionalOnMissingBean
@@ -65,8 +66,8 @@ public abstract class WsAddressingConfiguration {
             return dispatcherServlet -> dispatcherServlet.setApplicationContext(applicationContext);
         }
 
-        @Bean
-        @ConditionalOnMissingBean
+        @Bean(ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME)
+        @ConditionalOnMissingBean(name = ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME)
         @Description("Default WS-endpoint factory bean")
         public EndpointConfigurationProvider endpointConfigurationProvider(final WsAddressingProperty property) {
             return name -> property.getEndpoints().get(name);

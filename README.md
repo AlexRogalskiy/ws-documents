@@ -137,6 +137,9 @@ Choose one of the modules and add to your `pom.xml`
 </dependency>
 ```
 
+- [**WebDocs Admin**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/admin)  
+  `webdocs-admin` - Library to work with Admin API.
+
 - [**WebDocs Actuator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/actuator)  
   `webdocs-actuator` - Library to work with Actuator API.
 

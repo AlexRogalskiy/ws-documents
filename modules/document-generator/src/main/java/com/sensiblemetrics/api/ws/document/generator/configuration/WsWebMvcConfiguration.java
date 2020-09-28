@@ -1,10 +1,12 @@
 package com.sensiblemetrics.api.ws.document.generator.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.Role;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.lang.NonNull;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @Configuration
 @EnableWebMvc
 @RequiredArgsConstructor
+@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Document Generator WebMvc configuration")
 public class WsWebMvcConfiguration implements WebMvcConfigurer {
 

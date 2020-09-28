@@ -23,7 +23,7 @@ public abstract class WsSecurityConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = WsSecurityProperty.SSL_PROPERTY_PREFIX, value = "enabled", havingValue = "false", matchIfMissing = true)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SSL web security configurer adapter")
+    @Description("SSL Web Security configuration adapter")
     public static class SslWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         @Override

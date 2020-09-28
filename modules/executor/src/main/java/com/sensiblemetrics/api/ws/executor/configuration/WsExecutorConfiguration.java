@@ -25,17 +25,17 @@ import java.util.concurrent.RejectedExecutionHandler;
 @Import(TaskExecutionAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "spring.task.execution", value = "enabled", havingValue = "true", matchIfMissing = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Executor configuration")
+@Description("SensibleMetrics Web Service Executor configuration")
 public abstract class WsExecutorConfiguration {
     /**
      * Default thread pool task executor bean naming convention
      */
-    public static final String THREAD_POOL_TASK_EXECUTOR_BEAN_NAME = "threadPoolTaskExecutor";
+    public static final String TASK_EXECUTOR_BUILDER_BEAN_NAME = "taskExecutorBuilder";
 
     @Configuration
     @RequiredArgsConstructor
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Commons Web Service Task Executor configuration")
+    @Description("SensibleMetrics Web Service Task Executor configuration")
     public static class WsTaskExecutorConfiguration implements AsyncConfigurer {
         /**
          * Default async task executor bean naming convention
@@ -68,10 +68,10 @@ public abstract class WsExecutorConfiguration {
         }
     }
 
-    @Bean(name = THREAD_POOL_TASK_EXECUTOR_BEAN_NAME, destroyMethod = "shutdown")
+    @Bean(destroyMethod = "shutdown")
     @ConditionalOnMissingBean
-    @DependsOn("taskExecutorBuilder")
-    @Description("Default thread pool task executor configuration bean")
+    @DependsOn(TASK_EXECUTOR_BUILDER_BEAN_NAME)
+    @Description("Thread pool task executor configuration bean")
     public ThreadPoolTaskExecutor threadPoolTaskExecutor(final TaskExecutorBuilder taskExecutorBuilder,
                                                          final RejectedExecutionHandler rejectedExecutionHandler) {
         final ThreadPoolTaskExecutor taskExecutor = taskExecutorBuilder.build();
@@ -85,7 +85,7 @@ public abstract class WsExecutorConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnClass(DefaultTimeoutCallableProcessingInterceptor.class)
-    @Description("Default callable processing interceptor bean")
+    @Description("Callable processing interceptor configuration bean")
     public CallableProcessingInterceptor callableProcessingInterceptor() {
         return new DefaultTimeoutCallableProcessingInterceptor();
     }
@@ -93,7 +93,7 @@ public abstract class WsExecutorConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnClass(DefaultRejectedExecutionHandler.class)
-    @Description("Default rejected execution handler bean")
+    @Description("Rejected execution handler configuration bean")
     public RejectedExecutionHandler rejectedExecutionHandler() {
         return new DefaultRejectedExecutionHandler();
     }

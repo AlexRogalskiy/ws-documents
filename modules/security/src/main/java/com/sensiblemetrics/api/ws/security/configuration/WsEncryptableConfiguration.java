@@ -1,5 +1,8 @@
 package com.sensiblemetrics.api.ws.security.configuration;
 
+import com.sensiblemetrics.api.ws.security.handler.CustomEncryptablePropertyDetector;
+import com.sensiblemetrics.api.ws.security.handler.CustomEncryptablePropertyFilter;
+import com.sensiblemetrics.api.ws.security.handler.CustomEncryptablePropertyResolver;
 import com.sensiblemetrics.api.ws.security.property.WsEncryptableProperty;
 import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyDetector;
 import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyFilter;
@@ -55,11 +58,12 @@ public abstract class WsEncryptableConfiguration {
 
     @Bean(ENCRYPTABLE_PROPERTY_RESOLVER_BEAN_NAME)
     @ConditionalOnMissingBean(name = ENCRYPTABLE_PROPERTY_RESOLVER_BEAN_NAME)
-    @ConditionalOnBean(SimpleStringPBEConfig.class)
+    @ConditionalOnBean({WsEncryptableProperty.class, SimpleStringPBEConfig.class})
     @ConditionalOnClass(CustomEncryptablePropertyResolver.class)
     @Description("Security encryptable property resolver bean")
-    public EncryptablePropertyResolver encryptablePropertyResolver(final SimpleStringPBEConfig config) {
-        return new CustomEncryptablePropertyResolver(config);
+    public EncryptablePropertyResolver encryptablePropertyResolver(final WsEncryptableProperty property,
+                                                                   final SimpleStringPBEConfig config) {
+        return new CustomEncryptablePropertyResolver(property.getEncryptedPrefix(), config);
     }
 
     @Bean(ENCRYPTABLE_PROPERTY_FILTER_BEAN_NAME)
@@ -76,10 +80,6 @@ public abstract class WsEncryptableConfiguration {
     @ConditionalOnBean(WsEncryptableProperty.class)
     @Description("Default String Encryptor configuration bean")
     public SimpleStringPBEConfig stringEncryptorConfig(final WsEncryptableProperty property) {
-        return this.getConfig(property);
-    }
-
-    private SimpleStringPBEConfig getConfig(final WsEncryptableProperty property) {
         final SimpleStringPBEConfig config = new SimpleStringPBEConfig();
         config.setPasswordCharArray("password".toCharArray());
         config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");

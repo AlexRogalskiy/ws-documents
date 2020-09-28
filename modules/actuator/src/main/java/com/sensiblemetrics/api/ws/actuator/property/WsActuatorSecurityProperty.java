@@ -18,13 +18,14 @@ import java.util.Map;
 
 import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_DELIMITER;
 import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_PREFIX;
+import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.streamOf;
 
 @Data
 @Validated
 @Accessors(chain = true)
 @ConfigurationProperties(prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Actuator Security configuration properties")
+@Description("SensibleMetrics Web Service Actuator Security configuration properties")
 public class WsActuatorSecurityProperty {
     /**
      * Default actuator security property prefix
@@ -62,6 +63,24 @@ public class WsActuatorSecurityProperty {
          */
         @Builder.Default
         private boolean enabled = true;
+
+        /**
+         * Return {@link String} array of names
+         *
+         * @return {@link String} array of names
+         */
+        public String[] getNamesAsArray() {
+            return streamOf(this.names).toArray(String[]::new);
+        }
+
+        /**
+         * Return {@link String} array of roles
+         *
+         * @return {@link String} array of roles
+         */
+        public String[] getRolesAsArray() {
+            return streamOf(this.roles).toArray(String[]::new);
+        }
     }
 
     /**
