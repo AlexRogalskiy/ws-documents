@@ -10,7 +10,7 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <name>com.sensiblemetrics.api.ws.actuator</name>
+    <name>com.sensiblemetrics.api.ws.security</name>
     <description>WebDocs Security API</description>
     <artifactId>webdocs-security</artifactId>
     <packaging>jar</packaging>
@@ -18,6 +18,8 @@
     <inceptionYear>2020</inceptionYear>
 
     <properties>
+        <spring-boot-jasypt.version>3.0.3</spring-boot-jasypt.version>
+
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
 
@@ -28,6 +30,13 @@
             <artifactId>webdocs-commons</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- Jasypt library dependencies -->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>${spring-boot-jasypt.version}</version>
         </dependency>
     </dependencies>
 

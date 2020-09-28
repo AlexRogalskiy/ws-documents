@@ -7,6 +7,7 @@ import com.sensiblemetrics.api.ws.logger.annotation.EnableWsEventLogging;
 import com.sensiblemetrics.api.ws.logger.annotation.EnableWsLogging;
 import com.sensiblemetrics.api.ws.metrics.annotation.EnableWsMetrics;
 import com.sensiblemetrics.api.ws.router.annotation.EnableWsAddressing;
+import com.sensiblemetrics.api.ws.security.annotation.EnableWsEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,6 +23,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableWsEventLogging
 @EnableWsActuatorSecurity
 @EnableWsAddressing
+@EnableWsEncryptableProperties
 @EnableConfigurationProperties
 @SpringBootApplication
 public class ApplicationBootstrap {

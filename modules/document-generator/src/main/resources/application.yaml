@@ -59,7 +59,7 @@ spring:
         queue-capacity: 100000
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:p6spy:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:documentdb}
+    url: ENC(DJlb8O1kpJKrkuufqyJEKT+dm1dYTtXi2UVPGlwRnb75Cv4h6KG24hDRA7+e2tB9+/wE4D0AJUnIHsDbCbSSXQmkHrKoUMhBeobs8ab0mwn31VLJSEVcCWn3ABEhy0zdKGBx9cCRee5xGyIttpgu/BYN51xSXqdLOTDYDDVHvC0=)
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER:postgres}
     password: ${DB_PASS}
@@ -232,3 +232,7 @@ management:
         http:
           server:
             requests: 20ms,50ms
+
+jasypt:
+  encryptor:
+    password: "the password"
