@@ -194,12 +194,14 @@ management:
         debug: true
     beans:
       cache:
-        time-to-live: 10s
+        time-to-live: 30s
     shutdown:
       enabled: true
     health:
       show-details: ALWAYS
       show-components: ALWAYS
+      cache:
+        time-to-live: 30s
       probes:
         enabled: true
   endpoints:
