@@ -17,6 +17,15 @@ spring:
         core-size: 10
         max-size: 20
         queue-capacity: 100000
+  boot:
+    admin:
+      ui:
+        cache.no-cache: true
+        cache-templates: false
+        external-views:
+          - label: "🚀"
+            url: http://localhost:8080/
+            order: 2000
 
 webdocs:
   admin:
