@@ -1,7 +1,6 @@
 package com.sensiblemetrics.api.ws.security.configuration;
 
 import com.sensiblemetrics.api.ws.security.property.WsSecurityProperty;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Role;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@Slf4j
 @Configuration
 @EnableConfigurationProperties(WsSecurityProperty.class)
 @ConditionalOnProperty(prefix = WsSecurityProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)

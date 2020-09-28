@@ -3,6 +3,7 @@ package com.sensiblemetrics.api.ws.metrics.configuration;
 import com.sensiblemetrics.api.ws.commons.helper.OptionalConsumer;
 import com.sensiblemetrics.api.ws.metrics.aspect.MonitoringTimeAspect;
 import com.sensiblemetrics.api.ws.metrics.aspect.TrackingTimeAspect;
+import com.sensiblemetrics.api.ws.metrics.meter.DataSourceStatusMeterBinder;
 import com.sensiblemetrics.api.ws.metrics.property.WsMetricsProperty;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessMemoryMetrics;
 import io.github.mweirauch.micrometer.jvm.extras.ProcessThreadMetrics;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -48,6 +50,7 @@ public abstract class WsMetricsConfiguration {
     public static final String METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME = "metricsCommonTagsCustomizer";
     public static final String METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME = "namingConventionCustomizer";
     public static final String METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME = "webMvcTagsContributor";
+    public static final String METER_REGISTRY_DATASOURCE_METER_PROBE_BEAN_NAME = "dataSourceStatusProbe";
     public static final String METER_REGISTRY_TIMED_ASPECT_BEAN_NAME = "timedAspect";
     public static final String METER_REGISTRY_MONITORING_TIME_ASPECT_BEAN_NAME = "monitoringTimeAspect";
     public static final String METER_REGISTRY_TRACKING_TIME_ASPECT_BEAN_NAME = "trackingTimeAspect";
@@ -120,6 +123,19 @@ public abstract class WsMetricsConfiguration {
     public MeterFilter excludeMeterFilter(final WsMetricsConfigurerAdapter configurerAdapter,
                                           final WsMetricsProperty metricsProperty) {
         return MeterFilter.deny(configurerAdapter.createMeterTagPredicate(metricsProperty.getPatterns().getExclude()));
+    }
+
+    @Bean(METER_REGISTRY_DATASOURCE_METER_PROBE_BEAN_NAME)
+    @Description("Actuator datasource status probe bean")
+    @ConditionalOnProperty(prefix = WsMetricsProperty.MeterProperty.METER_PROPERTY_PREFIX, name = "datasource")
+    public Function<DataSource, DataSourceStatusMeterBinder> dataSourceStatusProbe(final WsMetricsProperty metricsProperty) {
+        return dataSource -> {
+            final WsMetricsProperty.MeterProperty meterProperty = metricsProperty.getMeters().get("datasource");
+            final String name = meterProperty.getName();
+            final String description = meterProperty.getDescription();
+            final List<Tag> tags = meterProperty.getTags();
+            return new DataSourceStatusMeterBinder(dataSource, name, description, tags);
+        };
     }
 
     @RequiredArgsConstructor

@@ -113,7 +113,7 @@
     <logger name="org.springframework.web" level="ERROR"/>
     <logger name="org.springframework.transaction" level="ERROR"/>
 
-    <logger name="com.sensiblemetrics.api.ws.actuator" level="ERROR" additivity="false">
+    <logger name="com.sensiblemetrics.api.ws.caching" level="ERROR" additivity="false">
         <appender-ref ref="FILE"/>
     </logger>
 

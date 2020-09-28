@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.document.generator.metrics;
+package com.sensiblemetrics.api.ws.metrics.meter;
 
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -14,7 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class DataSourceStatusProbe implements MeterBinder {
+public class DataSourceStatusMeterBinder implements MeterBinder {
     private static final String SELECT_1 = "SELECT 1;";
     private static final int QUERY_TIMEOUT = 1;
     private static final double UP = 1.0;
@@ -25,10 +25,10 @@ public class DataSourceStatusProbe implements MeterBinder {
     private final Iterable<Tag> tags;
     private final DataSource dataSource;
 
-    public DataSourceStatusProbe(final DataSource dataSource,
-                                 final String name,
-                                 final String description,
-                                 final List<Tag> tags) {
+    public DataSourceStatusMeterBinder(final DataSource dataSource,
+                                       final String name,
+                                       final String description,
+                                       final List<Tag> tags) {
         Assert.notNull(dataSource, "DataSource cannot be null");
 
         this.dataSource = dataSource;
