@@ -9,10 +9,7 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.lang.NonNull;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -23,8 +20,19 @@ import java.util.Optional;
 @Configuration
 @EnableWebMvc
 @RequiredArgsConstructor
-@Description("SensibleMetrics Web Service Document Generator WebMVC configuration")
+@Description("SensibleMetrics Web Service Document Generator WebMvc configuration")
 public class WsWebMvcConfiguration implements WebMvcConfigurer {
+
+    /**
+     * Default resource locations
+     */
+    private static final String[] RESOURCE_LOCATIONS = {
+            "classpath:/META-INF/resources/",
+            "classpath:/resources/",
+            "classpath:/static/",
+            "classpath:/public/"
+    };
+
     private final AsyncTaskExecutor asyncTaskExecutor;
     private final CallableProcessingInterceptor callableProcessingInterceptor;
     private final WebMvcProperties mvcProperties;
@@ -39,6 +47,12 @@ public class WsWebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(final InterceptorRegistry interceptorRegistry) {
         interceptorRegistry.addInterceptor(this.localeChangeInterceptor());
+    }
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations(RESOURCE_LOCATIONS);
     }
 
     @Bean

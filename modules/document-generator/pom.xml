@@ -165,13 +165,6 @@
             <version>${hibernate-core.version}</version>
         </dependency>
 
-        <!-- Hibernate data type library dependencies -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-hibernate5</artifactId>
-            <version>2.11.2</version>
-        </dependency>
-
         <!-- Hibernate types library dependencies -->
         <dependency>
             <groupId>com.vladmihalcea</groupId>

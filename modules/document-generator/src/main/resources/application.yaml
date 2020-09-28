@@ -2,6 +2,10 @@
 ---
 server:
   port: 8089
+  ssl:
+    key-store: modules/document-generator/src/main/resources/key-store.jks
+    key-store-password: ENC(pZulM4Rk5Tu1gnpQ5WzifnV4EFPN5RBhFNeImxlij/y2Zxa/Iqlp2S8QpcsqKPBM)
+    key-password: ENC(q9chaN0OEEaaUJq3FyS65PZDsSf+PUyP+ssgJzkQa23Ft+KeQ6t3YyKf5IWUVfRE)
   http2:
     enabled: true
   compression:
@@ -10,7 +14,7 @@ server:
   forward-headers-strategy: FRAMEWORK
   error:
     path: /error
-    include-stacktrace: never
+    include-stacktrace: NEVER
     whitelabel:
       enabled: false
   tomcat:
@@ -50,6 +54,12 @@ spring:
     async:
       # 1 hour
       request-timeout: 3600000
+  resources:
+    add-mappings: true
+    chain:
+      strategy:
+        content:
+          enabled: true
   task:
     execution:
       thread-name-prefix: document-generator
@@ -64,7 +74,7 @@ spring:
     username: ${DB_USER:postgres}
     password: ${DB_PASS}
     sql-script-encoding: UTF-8
-    initialization-mode: never
+    initialization-mode: NEVER
     hikari:
       minimum-idle: 5
       maximum-pool-size: 25
@@ -236,3 +246,4 @@ management:
 jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+    skip-property-sources: org.springframework.boot.env.RandomValuePropertySource
