@@ -1,4 +1,4 @@
-# SensibleMetrics Document Web Service Template configuration
+# SensibleMetrics WebDocs Document Generator Web Service Template configuration
 ---
 webdocs:
   storage:

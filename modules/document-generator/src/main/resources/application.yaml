@@ -1,4 +1,4 @@
-# SensibleMetrics Document Generator WebService configuration
+# SensibleMetrics WebDocs Document Generator WebService configuration
 ---
 server:
   port: 8089

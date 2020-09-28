@@ -1,4 +1,4 @@
-# SensibleMetrics Web Service Admin test configuration
+# SensibleMetrics WebDocs Web Service Admin test configuration
 ---
 spring:
   profiles:

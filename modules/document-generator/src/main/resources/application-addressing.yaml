@@ -1,4 +1,4 @@
-# SensibleMetrics Document Web Service Addressing configuration
+# SensibleMetrics WebDocs Document Generator Web Service Addressing configuration
 ---
 webdocs:
   addressing:

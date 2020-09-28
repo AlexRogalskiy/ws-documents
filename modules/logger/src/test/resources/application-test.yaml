@@ -1,4 +1,4 @@
-# SensibleMetrics Web Service Logger test configuration
+# SensibleMetrics WebDocs Web Service Logger test configuration
 ---
 spring:
   messages:
