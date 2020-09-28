@@ -14,7 +14,7 @@ import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.findInClassp
 
 @Component
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service configurer adapter")
+@Description("SensibleMetrics Web Service Router configurer adapter")
 public class WsEndpointConfigurerAdapter {
 
     /**

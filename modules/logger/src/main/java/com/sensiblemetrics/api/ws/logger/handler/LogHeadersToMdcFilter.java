@@ -1,5 +1,5 @@
 
-package com.sensiblemetrics.api.ws.logger.configuration;
+package com.sensiblemetrics.api.ws.logger.handler;
 
 import com.sensiblemetrics.api.ws.logger.property.WsLoggingProperty;
 import org.slf4j.MDC;

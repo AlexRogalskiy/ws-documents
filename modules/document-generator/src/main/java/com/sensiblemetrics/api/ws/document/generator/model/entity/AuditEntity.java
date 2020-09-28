@@ -1,22 +1,19 @@
 package com.sensiblemetrics.api.ws.document.generator.model.entity;
 
 import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
+import com.sensiblemetrics.api.ws.document.generator.model.constraint.ChronologicalDates;
+import com.sensiblemetrics.api.ws.document.generator.model.converter.TenantGenerator;
 import lombok.Data;
 import lombok.experimental.UtilityClass;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GeneratorType;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.domain.Auditable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.PastOrPresent;
@@ -32,7 +29,11 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.AuditEn
  * @param <ID> type of entity {@link Serializable} identifier
  */
 @Data
+@DynamicInsert
+@DynamicUpdate
 @MappedSuperclass
+@ChronologicalDates
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AuditEntity<ID extends Serializable> implements Auditable<String, ID, Instant>, Serializable {
     /**
      * Default explicit serialVersionUID for interoperability

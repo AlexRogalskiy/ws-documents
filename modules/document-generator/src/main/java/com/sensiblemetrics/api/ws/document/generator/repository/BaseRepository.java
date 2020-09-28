@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
+import static org.hibernate.annotations.QueryHints.CACHEABLE;
 import static org.hibernate.jpa.QueryHints.HINT_READONLY;
 
 /**
@@ -31,7 +32,7 @@ public interface BaseRepository<E, ID extends Serializable> extends JpaRepositor
      */
     @Async
     @Query(RepositoryQuery.FIND_ALL)
-    @QueryHints(@QueryHint(name = HINT_READONLY, value = "true"))
+    @QueryHints({@QueryHint(name = HINT_READONLY, value = "true"), @QueryHint(name = CACHEABLE, value = "true")})
     <S extends E> CompletableFuture<Stream<S>> streamAll();
 
     /**

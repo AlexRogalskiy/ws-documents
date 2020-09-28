@@ -31,6 +31,12 @@
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-caching</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
             <artifactId>webdocs-commons</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
@@ -62,6 +68,12 @@
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
             <artifactId>webdocs-router</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-security</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>

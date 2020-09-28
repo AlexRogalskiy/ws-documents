@@ -7,7 +7,7 @@ public class PropertySettings {
     /**
      * Default property prefix
      */
-    public static final String DEFAULT_PROPERTY_PREFIX = "ws-documents";
+    public static final String DEFAULT_PROPERTY_PREFIX = "webdocs";
     /**
      * Default property token delimiter
      */

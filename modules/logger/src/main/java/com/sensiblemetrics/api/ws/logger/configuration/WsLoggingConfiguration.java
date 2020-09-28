@@ -1,6 +1,7 @@
 package com.sensiblemetrics.api.ws.logger.configuration;
 
 import com.sensiblemetrics.api.ws.logger.aspect.ReportingDataAspect;
+import com.sensiblemetrics.api.ws.logger.handler.LogHeadersToMdcFilter;
 import com.sensiblemetrics.api.ws.logger.property.WsLoggingProperty;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

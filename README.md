@@ -158,6 +158,9 @@ Choose one of the modules and add to your `pom.xml`
 - [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/router)  
   `webdocs-router` - Library to work with Router API.
 
+- [**WebDocs Security**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/security)  
+  `webdocs-security` - Library to work with Security API.
+
 ## Version Store
 
 [./pom.xml](https://github.com/AlexRogalskiy/ws-documents/blob/master/pom.xml)

@@ -14,12 +14,12 @@ max_line_length = 120
 [*.java]
 indent_size = 4
 max_line_length = 79
-continuation_indent_size = 8
+ij_continuation_indent_size = 8
 
 [*.story]
 indent_size = 4
 max_line_length = 79
-continuation_indent_size = 8
+ij_continuation_indent_size = 8
 
 [*.{yml, yaml}]
 indent_size = 2
@@ -32,6 +32,3 @@ indent_size = 4
 
 [*.{md, markdown}]
 trim_trailing_whitespace = false
-
-[*.avsc]
-indent_size = 4

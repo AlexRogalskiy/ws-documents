@@ -27,7 +27,7 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.BaseAud
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @MappedSuperclass
-@TypeDef(name = "postgres-uuid", defaultForType = UUID.class, typeClass = PostgresUUIDType.class)
+@TypeDef(name = "pg-uuid", defaultForType = UUID.class, typeClass = PostgresUUIDType.class)
 public abstract class BaseAuditEntity<ID extends Serializable> extends AuditEntity<ID> {
     /**
      * Default explicit serialVersionUID for interoperability

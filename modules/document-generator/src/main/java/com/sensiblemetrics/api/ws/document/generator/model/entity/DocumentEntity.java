@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.UtilityClass;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -30,6 +31,8 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.Documen
 @BatchSize(size = 10)
 @TypeDef(name = "status_type_enum", typeClass = StatusEnumType.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = CACHE_NAME)
 public class DocumentEntity extends BaseAuditEntity<UUID> {
     /**
      * Default explicit serialVersionUID for interoperability
@@ -84,6 +87,7 @@ public class DocumentEntity extends BaseAuditEntity<UUID> {
          * Default table name
          */
         static final String TABLE_NAME = "documents";
+        static final String CACHE_NAME = "documentCache";
         /**
          * Default field names
          */
