@@ -20,7 +20,7 @@ ARG JAR_FILE
 
 # Add the application's jar to the container
 ADD ${JAR_FILE} /opt/app/com.sensiblemetrics.api.ws.document.generator.jar
-ADD ./entrypoint.sh /opt/app/entrypoint.sh
+ADD modules/document-generator/src/main/docker/java/entrypoint.sh /opt/app/entrypoint.sh
 
 # Set workdir inside container
 WORKDIR /opt/app
@@ -34,4 +34,4 @@ EXPOSE 8888
 ENV TERM xterm
 
 # Run microservice process.
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT [ "./entrypoint.sh" ]
