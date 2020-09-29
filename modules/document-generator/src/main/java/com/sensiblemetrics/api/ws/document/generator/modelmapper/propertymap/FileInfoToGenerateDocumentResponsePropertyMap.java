@@ -12,19 +12,18 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class FileInfoToGenerateDocumentResponsePropertyMap extends PropertyMap<FileInfo, GenerateDocumentResponse> {
-    private final FileInfoToOperationStatusConverter fileInfoToOperationStatusConverter;
+public class FileInfoToGenerateDocumentResponsePropertyMap
+    extends PropertyMap<FileInfo, GenerateDocumentResponse> {
+  private final FileInfoToOperationStatusConverter fileInfoToOperationStatusConverter;
 
-    /**
-     * {@link GenerateDocumentResponse} {@link PropertyMap} configuration
-     */
-    @Override
-    protected void configure() {
-        // mapping destination properties
-        this.map(this.source.getDocumentId()).setId(null);
-        this.map(this.source.getFileName()).setName(null);
+  /** {@link GenerateDocumentResponse} {@link PropertyMap} configuration */
+  @Override
+  protected void configure() {
+    // mapping destination properties
+    this.map(this.source.getDocumentId()).setId(null);
+    this.map(this.source.getFileName()).setName(null);
 
-        // mapping destination properties via converters
-        this.using(this.fileInfoToOperationStatusConverter).map(this.source).setStatus(null);
-    }
+    // mapping destination properties via converters
+    this.using(this.fileInfoToOperationStatusConverter).map(this.source).setStatus(null);
+  }
 }

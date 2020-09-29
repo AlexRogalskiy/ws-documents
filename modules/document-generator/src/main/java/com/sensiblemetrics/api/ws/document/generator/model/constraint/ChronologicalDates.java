@@ -9,35 +9,36 @@ import java.lang.annotation.*;
 
 @Documented
 @Target({
-        ElementType.METHOD,
-        ElementType.FIELD,
-        ElementType.CONSTRUCTOR,
-        ElementType.PARAMETER,
-        ElementType.TYPE
+  ElementType.METHOD,
+  ElementType.FIELD,
+  ElementType.CONSTRUCTOR,
+  ElementType.PARAMETER,
+  ElementType.TYPE
 })
 @Retention(RetentionPolicy.RUNTIME)
 @ReportAsSingleViolation
 @Constraint(validatedBy = {ChronologicalDatesValidator.class})
 @Description("Chronological dates constraint annotation")
 public @interface ChronologicalDates {
-    /**
-     * Returns {@link String} validation message
-     *
-     * @return {@link String} validation message
-     */
-    String message() default "{com.sensiblemetrics.api.ws.document.generator.model.constraint.ChronologicalDates.message}";
+  /**
+   * Returns {@link String} validation message
+   *
+   * @return {@link String} validation message
+   */
+  String message() default
+      "{com.sensiblemetrics.api.ws.document.generator.model.constraint.ChronologicalDates.message}";
 
-    /**
-     * Returns {@link Class} groups array
-     *
-     * @return {@link Class} groups array
-     */
-    Class<?>[] groups() default {};
+  /**
+   * Returns {@link Class} groups array
+   *
+   * @return {@link Class} groups array
+   */
+  Class<?>[] groups() default {};
 
-    /**
-     * Returns {@link Class} array of {@link Payload}s
-     *
-     * @return {@link Class} array of {@link Payload}s
-     */
-    Class<? extends Payload>[] payload() default {};
+  /**
+   * Returns {@link Class} array of {@link Payload}s
+   *
+   * @return {@link Class} array of {@link Payload}s
+   */
+  Class<? extends Payload>[] payload() default {};
 }

@@ -29,35 +29,32 @@ import static com.sensiblemetrics.api.ws.document.generator.model.entity.BaseAud
 @MappedSuperclass
 @TypeDef(name = "pg-uuid", defaultForType = UUID.class, typeClass = PostgresUUIDType.class)
 public abstract class BaseAuditEntity<ID extends Serializable> extends AuditEntity<ID> {
-    /**
-     * Default explicit serialVersionUID for interoperability
-     */
-    private static final long serialVersionUID = 6444143028591284804L;
+  /** Default explicit serialVersionUID for interoperability */
+  private static final long serialVersionUID = 6444143028591284804L;
 
-    @Id
-    @Basic(optional = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "uuid2")
-    @NotNull(message = "{model.entity.base-audit.id.notNull}")
-    @Column(name = ID_FIELD_NAME, unique = true, updatable = false, nullable = false)
-    private ID id;
+  @Id
+  @Basic(optional = false)
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(name = "UUID", strategy = "uuid2")
+  @NotNull(message = "{model.entity.base-audit.id.notNull}")
+  @Column(name = ID_FIELD_NAME, unique = true, updatable = false, nullable = false)
+  private ID id;
 
-    @Version
-    @PositiveOrZero(message = "{model.entity.base-audit.row-version.positiveOrZero}")
-    @Column(name = ROW_VERSION_FIELD_NAME, insertable = false, updatable = false, nullable = false)
-    private long rowVersion;
+  @Version
+  @PositiveOrZero(message = "{model.entity.base-audit.row-version.positiveOrZero}")
+  @Column(name = ROW_VERSION_FIELD_NAME, insertable = false, updatable = false, nullable = false)
+  private long rowVersion;
 
-    @Override
-    public boolean isNew() {
-        return Objects.isNull(this.getId());
-    }
+  @Override
+  public boolean isNew() {
+    return Objects.isNull(this.getId());
+  }
 
-    @UtilityClass
-    public static final class Info {
-        /**
-         * Default field names
-         */
-        static final String ID_FIELD_NAME = "id";
-        static final String ROW_VERSION_FIELD_NAME = "row_version";
-    }
+  @UtilityClass
+  public static final class Info {
+    /** Default field names */
+    static final String ID_FIELD_NAME = "id";
+
+    static final String ROW_VERSION_FIELD_NAME = "row_version";
+  }
 }

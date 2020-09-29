@@ -16,37 +16,38 @@ import java.time.Instant;
 @Component
 @RequiredArgsConstructor
 public class DocumentEventListener {
-    private final DocumentService documentService;
+  private final DocumentService documentService;
 
-    /**
-     * Handles {@link DocumentEvent} by changing current status
-     *
-     * @param documentEvent initial input {@link DocumentEvent} to handle
-     */
-    @Async
-    @EventListener
-    public void handleDocumentEvent(final DocumentEvent documentEvent) {
-        this.logEvent(documentEvent);
-        this.getDocumentService().findById(documentEvent.getMessageData().getDocumentId())
-                .ifPresent(document -> {
-                    document.setStatus(documentEvent.getMessageData().getStatus());
-                    this.getDocumentService().save(document);
-                });
-    }
+  /**
+   * Handles {@link DocumentEvent} by changing current status
+   *
+   * @param documentEvent initial input {@link DocumentEvent} to handle
+   */
+  @Async
+  @EventListener
+  public void handleDocumentEvent(final DocumentEvent documentEvent) {
+    this.logEvent(documentEvent);
+    this.getDocumentService()
+        .findById(documentEvent.getMessageData().getDocumentId())
+        .ifPresent(
+            document -> {
+              document.setStatus(documentEvent.getMessageData().getStatus());
+              this.getDocumentService().save(document);
+            });
+  }
 
-    /**
-     * Describes input {@link DocumentEvent} with logging instance
-     *
-     * @param event initial input {@link DocumentEvent} to log
-     */
-    private void logEvent(final DocumentEvent event) {
-        log.info(
-                "Source: [{}] >>> handling [{}]: >>> status: [{}], timestamp: [{}], message: [{}]",
-                event.getSource().getClass().getSimpleName(),
-                event.getClass().getSimpleName(),
-                event.getMessageData().getStatus(),
-                Instant.ofEpochMilli(event.getTimestamp()),
-                event.getMessageData().getDocumentId()
-        );
-    }
+  /**
+   * Describes input {@link DocumentEvent} with logging instance
+   *
+   * @param event initial input {@link DocumentEvent} to log
+   */
+  private void logEvent(final DocumentEvent event) {
+    log.info(
+        "Source: [{}] >>> handling [{}]: >>> status: [{}], timestamp: [{}], message: [{}]",
+        event.getSource().getClass().getSimpleName(),
+        event.getClass().getSimpleName(),
+        event.getMessageData().getStatus(),
+        Instant.ofEpochMilli(event.getTimestamp()),
+        event.getMessageData().getDocumentId());
+  }
 }

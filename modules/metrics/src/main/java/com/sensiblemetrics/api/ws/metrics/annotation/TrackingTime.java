@@ -7,10 +7,10 @@ import java.util.concurrent.TimeUnit;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TrackingTime {
-    /**
-     * Returns {@link TimeUnit} instance
-     *
-     * @return {@link TimeUnit} instance
-     */
-    TimeUnit timeUnit() default TimeUnit.MILLISECONDS;
+  /**
+   * Returns {@link TimeUnit} instance
+   *
+   * @return {@link TimeUnit} instance
+   */
+  TimeUnit timeUnit() default TimeUnit.MILLISECONDS;
 }

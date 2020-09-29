@@ -10,5 +10,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Import(WsExecutorConfiguration.class)
-public @interface EnableWsExecutor {
-}
+public @interface EnableWsExecutor {}

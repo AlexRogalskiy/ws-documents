@@ -27,115 +27,137 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Aspect
-@ConditionalOnProperty(prefix = WsLoggingProperty.Handlers.REPORTING_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    prefix = WsLoggingProperty.Handlers.REPORTING_PROPERTY_PREFIX,
+    value = "enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @Description("Web Service Reporting data aspect configuration")
 public class ReportingDataAspect {
 
-    /**
-     * Pointcut that matches {@link Repository}, {@link Service}, {@link RestController} and {@link Controller} components
-     */
-    @Pointcut("within(@org.springframework.stereotype.Repository *)" +
-            " || within(@org.springframework.stereotype.Service *)" +
-            " || within(@org.springframework.web.bind.annotation.RestController *)" +
-            " || within(@org.springframework.stereotype.Controller *)")
-    public void componentPointcut() {
+  /**
+   * Pointcut that matches {@link Repository}, {@link Service}, {@link RestController} and {@link
+   * Controller} components
+   */
+  @Pointcut(
+      "within(@org.springframework.stereotype.Repository *)"
+          + " || within(@org.springframework.stereotype.Service *)"
+          + " || within(@org.springframework.web.bind.annotation.RestController *)"
+          + " || within(@org.springframework.stereotype.Controller *)")
+  public void componentPointcut() {}
+
+  /** Pointcut that matches {@link LoggingInfo} */
+  @Pointcut(
+      "@annotation(com.sensiblemetrics.api.ws.logger.annotation.LoggingInfo)"
+          + "|| @within(com.sensiblemetrics.api.ws.logger.annotation.LoggingInfo)")
+  public void loggingInfoPointcut() {}
+
+  /**
+   * Advice that logs methods throwing exceptions
+   *
+   * @param joinPoint join point for advice
+   * @param e exception
+   */
+  @AfterThrowing(pointcut = "(componentPointcut() || loggingInfoPointcut())", throwing = "e")
+  public void logAfterThrowing(final JoinPoint joinPoint, final Throwable e) {
+    this.logExecution(joinPoint);
+    if (log.isErrorEnabled()) {
+      log.error(
+          "Method error >>> {}.{}() with cause = '{}' and exception = '{}'",
+          joinPoint.getSignature().getDeclaringTypeName(),
+          joinPoint.getSignature().getName(),
+          e.getCause() != null ? e.getCause() : "NULL",
+          e.getMessage(),
+          e);
     }
+  }
 
-    /**
-     * Pointcut that matches {@link LoggingInfo}
-     */
-    @Pointcut("@annotation(com.sensiblemetrics.api.ws.logger.annotation.LoggingInfo)" +
-            "|| @within(com.sensiblemetrics.api.ws.logger.annotation.LoggingInfo)")
-    public void loggingInfoPointcut() {
+  /**
+   * Advice that logs when a method is entered and exited
+   *
+   * @param joinPoint - initial input {@link ProceedingJoinPoint} for advice
+   * @return {@link Object} result
+   * @throws Throwable throws IllegalArgumentExceptions
+   */
+  @Around("(componentPointcut() || loggingInfoPointcut())")
+  public Object logAround(final ProceedingJoinPoint joinPoint) throws Throwable {
+    this.logExecution(joinPoint);
+    if (log.isInfoEnabled()) {
+      log.info(
+          "Method enter >>> {}.{}() with argument[s] = {}",
+          joinPoint.getSignature().getDeclaringTypeName(),
+          joinPoint.getSignature().getName(),
+          Arrays.toString(joinPoint.getArgs()));
     }
-
-    /**
-     * Advice that logs methods throwing exceptions
-     *
-     * @param joinPoint join point for advice
-     * @param e         exception
-     */
-    @AfterThrowing(pointcut = "(componentPointcut() || loggingInfoPointcut())", throwing = "e")
-    public void logAfterThrowing(final JoinPoint joinPoint,
-                                 final Throwable e) {
-        this.logExecution(joinPoint);
-        if (log.isErrorEnabled()) {
-            log.error("Method error >>> {}.{}() with cause = '{}' and exception = '{}'", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e.getCause() != null ? e.getCause() : "NULL", e.getMessage(), e);
-        }
+    try {
+      final Object result = joinPoint.proceed();
+      if (log.isInfoEnabled()) {
+        log.info(
+            "Method exit >>> {}.{}() with result = {}",
+            joinPoint.getSignature().getDeclaringTypeName(),
+            joinPoint.getSignature().getName(),
+            result);
+      }
+      return result;
+    } catch (IllegalArgumentException e) {
+      log.error(
+          "Method error >>> {} in {}.{}()",
+          Arrays.toString(joinPoint.getArgs()),
+          joinPoint.getSignature().getDeclaringTypeName(),
+          joinPoint.getSignature().getName());
+      throw e;
     }
+  }
 
-    /**
-     * Advice that logs when a method is entered and exited
-     *
-     * @param joinPoint - initial input {@link ProceedingJoinPoint} for advice
-     * @return {@link Object} result
-     * @throws Throwable throws IllegalArgumentExceptions
-     */
-    @Around("(componentPointcut() || loggingInfoPointcut())")
-    public Object logAround(final ProceedingJoinPoint joinPoint) throws Throwable {
-        this.logExecution(joinPoint);
-        if (log.isInfoEnabled()) {
-            log.info("Method enter >>> {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
-        }
-        try {
-            final Object result = joinPoint.proceed();
-            if (log.isInfoEnabled()) {
-                log.info("Method exit >>> {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), result);
-            }
-            return result;
-        } catch (IllegalArgumentException e) {
-            log.error("Method error >>> {} in {}.{}()", Arrays.toString(joinPoint.getArgs()), joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
-            throw e;
-        }
-    }
+  /**
+   * Provides logging information on method execution by input {@link ProceedingJoinPoint}
+   *
+   * @param joinPoint - initial input {@link ProceedingJoinPoint} to operate by
+   */
+  private void logExecution(final JoinPoint joinPoint) {
+    final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+    final LoggingInfo methodLoggingInfoAnnotation =
+        methodSignature.getMethod().getAnnotation(LoggingInfo.class);
+    final LoggingInfo classLoggingInfoAnnotation =
+        joinPoint.getTarget().getClass().getAnnotation(LoggingInfo.class);
 
-    /**
-     * Provides logging information on method execution by input {@link ProceedingJoinPoint}
-     *
-     * @param joinPoint - initial input {@link ProceedingJoinPoint} to operate by
-     */
-    private void logExecution(final JoinPoint joinPoint) {
-        final MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        final LoggingInfo methodLoggingInfoAnnotation = methodSignature.getMethod().getAnnotation(LoggingInfo.class);
-        final LoggingInfo classLoggingInfoAnnotation = joinPoint.getTarget().getClass().getAnnotation(LoggingInfo.class);
+    Stream.of(methodLoggingInfoAnnotation, classLoggingInfoAnnotation)
+        .filter(Objects::nonNull)
+        .filter(annotation -> annotation.value().isVerbose())
+        .findAny()
+        .ifPresent(
+            v -> {
+              if (log.isInfoEnabled()) {
+                log.info("Joint point info >>> {}", joinPoint.toLongString());
+              }
+            });
 
-        Stream.of(methodLoggingInfoAnnotation, classLoggingInfoAnnotation)
-                .filter(Objects::nonNull)
-                .filter(annotation -> annotation.value().isVerbose())
-                .findAny()
-                .ifPresent(v -> {
-                    if (log.isInfoEnabled()) {
-                        log.info("Joint point info >>> {}", joinPoint.toLongString());
-                    }
-                });
+    this.logRequestAttributes(joinPoint);
+  }
 
-        this.logRequestAttributes(joinPoint);
-    }
+  /**
+   * Provides logging information on request attributes by input {@link ProceedingJoinPoint}
+   *
+   * @param joinPoint - initial input {@link ProceedingJoinPoint} to operate by
+   */
+  private void logRequestAttributes(final JoinPoint joinPoint) {
+    final ServletRequestAttributes requestAttributes =
+        (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    log.info(
+        ">>> Request attributes: url: {}, method: {}, remote address: {}, method: {}, arguments:"
+            + " {}",
+        this.getRequest(requestAttributes)
+            .map(HttpServletRequest::getRequestURL)
+            .map(StringBuffer::toString)
+            .orElse(null),
+        this.getRequest(requestAttributes).map(HttpServletRequest::getMethod).orElse(null),
+        this.getRequest(requestAttributes).map(HttpServletRequest::getRemoteAddr).orElse(null),
+        joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName(),
+        Arrays.toString(joinPoint.getArgs()));
+  }
 
-    /**
-     * Provides logging information on request attributes by input {@link ProceedingJoinPoint}
-     *
-     * @param joinPoint - initial input {@link ProceedingJoinPoint} to operate by
-     */
-    private void logRequestAttributes(final JoinPoint joinPoint) {
-        final ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        log.info(">>> Request attributes: url: {}, method: {}, remote address: {}, method: {}, arguments: {}",
-                this.getRequest(requestAttributes)
-                        .map(HttpServletRequest::getRequestURL)
-                        .map(StringBuffer::toString)
-                        .orElse(null),
-                this.getRequest(requestAttributes)
-                        .map(HttpServletRequest::getMethod)
-                        .orElse(null),
-                this.getRequest(requestAttributes)
-                        .map(HttpServletRequest::getRemoteAddr)
-                        .orElse(null),
-                joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName(),
-                Arrays.toString(joinPoint.getArgs())
-        );
-    }
-
-    private Optional<HttpServletRequest> getRequest(final ServletRequestAttributes requestAttributes) {
-        return Optional.ofNullable(requestAttributes).map(ServletRequestAttributes::getRequest);
-    }
+  private Optional<HttpServletRequest> getRequest(
+      final ServletRequestAttributes requestAttributes) {
+    return Optional.ofNullable(requestAttributes).map(ServletRequestAttributes::getRequest);
+  }
 }

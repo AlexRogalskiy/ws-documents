@@ -16,11 +16,11 @@ import java.lang.annotation.*;
 @EnableAdminServer
 @Import(WsAdminConfiguration.class)
 public @interface EnableWsAdmin {
-    /**
-     * Returns {@code boolean} flag, whether to autoregister client on startup
-     *
-     * @return true - if client autoregister is enabled, false - otherwise
-     */
-    @AliasFor(annotation = EnableDiscoveryClient.class, attribute = "autoRegister")
-    boolean autoRegister() default true;
+  /**
+   * Returns {@code boolean} flag, whether to autoregister client on startup
+   *
+   * @return true - if client autoregister is enabled, false - otherwise
+   */
+  @AliasFor(annotation = EnableDiscoveryClient.class, attribute = "autoRegister")
+  boolean autoRegister() default true;
 }

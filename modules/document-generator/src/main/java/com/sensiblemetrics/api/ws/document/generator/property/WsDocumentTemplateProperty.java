@@ -16,18 +16,18 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WsDocumentTemplateProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(
+    prefix = WsDocumentTemplateProperty.PROPERTY_PREFIX,
+    ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Document Generator Web Service Document Template configuration properties")
+@Description(
+    "SensibleMetrics Document Generator Web Service Document Template configuration properties")
 public class WsDocumentTemplateProperty {
-    /**
-     * Default document template property prefix
-     */
-    public static final String PROPERTY_PREFIX = DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "template";
+  /** Default document template property prefix */
+  public static final String PROPERTY_PREFIX =
+      DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "template";
 
-    /**
-     * Default template name pattern
-     */
-    @NotBlank(message = "{property.template.name-pattern.notBlank}")
-    private String namePattern;
+  /** Default template name pattern */
+  @NotBlank(message = "{property.template.name-pattern.notBlank}")
+  private String namePattern;
 }

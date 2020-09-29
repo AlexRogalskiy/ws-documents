@@ -6,16 +6,16 @@ import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 /**
- * {@link DocumentEntity} to {@link CreateDocumentResponse} {@link PropertyMap} binding configuration
+ * {@link DocumentEntity} to {@link CreateDocumentResponse} {@link PropertyMap} binding
+ * configuration
  */
 @Component
-public class DocumentEntityToCreateDocumentResponsePropertyMap extends PropertyMap<DocumentEntity, CreateDocumentResponse> {
-    /**
-     * {@link CreateDocumentResponse} {@link PropertyMap} configuration
-     */
-    @Override
-    protected void configure() {
-        // mapping destination properties
-        this.map(this.source.getId()).setId(null);
-    }
+public class DocumentEntityToCreateDocumentResponsePropertyMap
+    extends PropertyMap<DocumentEntity, CreateDocumentResponse> {
+  /** {@link CreateDocumentResponse} {@link PropertyMap} configuration */
+  @Override
+  protected void configure() {
+    // mapping destination properties
+    this.map(this.source.getId()).setId(null);
+  }
 }

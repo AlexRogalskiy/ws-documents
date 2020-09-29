@@ -12,15 +12,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class GetDocumentRequestToDocumentEntityPropertyMap extends PropertyMap<GetDocumentRequest, DocumentEntity> {
-    private final StringToUuidConverter stringToUuidConverter;
+public class GetDocumentRequestToDocumentEntityPropertyMap
+    extends PropertyMap<GetDocumentRequest, DocumentEntity> {
+  private final StringToUuidConverter stringToUuidConverter;
 
-    /**
-     * {@link DocumentEntity} {@link PropertyMap} configuration
-     */
-    @Override
-    protected void configure() {
-        // mapping destination properties
-        using(this.stringToUuidConverter).map(this.source.getId()).setId(null);
-    }
+  /** {@link DocumentEntity} {@link PropertyMap} configuration */
+  @Override
+  protected void configure() {
+    // mapping destination properties
+    using(this.stringToUuidConverter).map(this.source.getId()).setId(null);
+  }
 }

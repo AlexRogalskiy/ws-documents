@@ -13,5 +13,4 @@ import java.lang.annotation.*;
 @AutoConfigureCache
 @AutoConfigureWebMvc
 @AutoConfigureMockMvc
-public @interface EnableRestTest {
-}
+public @interface EnableRestTest {}

@@ -12,5 +12,4 @@ import java.lang.annotation.*;
 @Inherited
 @EnableEncryptableProperties
 @Import(WsEncryptableConfiguration.class)
-public @interface EnableWsEncryptableProperties {
-}
+public @interface EnableWsEncryptableProperties {}

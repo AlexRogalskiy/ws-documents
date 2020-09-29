@@ -10,14 +10,15 @@ import java.sql.Types;
 
 public class StatusEnumType extends org.hibernate.type.EnumType<StatusType> {
 
-    @Override
-    public void nullSafeSet(final PreparedStatement st,
-                            final Object value,
-                            final int index,
-                            final SharedSessionContractImplementor session)
-            throws HibernateException {
-        OptionalConsumer.of(value)
-                .ifPresent(v -> st.setObject(index, v.toString(), Types.OTHER))
-                .ifNotPresent(() -> st.setNull(index, Types.OTHER));
-    }
+  @Override
+  public void nullSafeSet(
+      final PreparedStatement st,
+      final Object value,
+      final int index,
+      final SharedSessionContractImplementor session)
+      throws HibernateException {
+    OptionalConsumer.of(value)
+        .ifPresent(v -> st.setObject(index, v.toString(), Types.OTHER))
+        .ifNotPresent(() -> st.setNull(index, Types.OTHER));
+  }
 }

@@ -18,13 +18,10 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Commons Web Service Cahing configuration properties")
 public class WsCachingProperty {
-    /**
-     * Default caching property prefix
-     */
-    public static final String PROPERTY_PREFIX = DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "caching";
+  /** Default caching property prefix */
+  public static final String PROPERTY_PREFIX =
+      DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "caching";
 
-    /**
-     * Enable/disable caching configuration ({@code true} by default)
-     */
-    private boolean enabled = true;
+  /** Enable/disable caching configuration ({@code true} by default) */
+  private boolean enabled = true;
 }

@@ -10,5 +10,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Import(WsCachingConfiguration.class)
-public @interface EnableWsCaching {
-}
+public @interface EnableWsCaching {}

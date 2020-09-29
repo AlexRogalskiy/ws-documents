@@ -18,70 +18,72 @@ import java.util.Set;
 
 import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.enumerationAsStream;
 
-/**
- * Log headers {@link OncePerRequestFilter} implementation
- */
+/** Log headers {@link OncePerRequestFilter} implementation */
 public class LogHeadersToMdcFilter extends OncePerRequestFilter {
-    private final Set<String> headerNames;
-    private final String pattern;
+  private final Set<String> headerNames;
+  private final String pattern;
 
-    /**
-     * Default {@link LogHeadersToMdcFilter} constructor by input {@link WsLoggingProperty.HeadersHandler}
-     *
-     * @param headersHandler - initial input {@link WsLoggingProperty.HeadersHandler}
-     */
-    public LogHeadersToMdcFilter(final WsLoggingProperty.HeadersHandler headersHandler) {
-        Assert.notNull(headersHandler, "Headers handler property should not be null");
+  /**
+   * Default {@link LogHeadersToMdcFilter} constructor by input {@link
+   * WsLoggingProperty.HeadersHandler}
+   *
+   * @param headersHandler - initial input {@link WsLoggingProperty.HeadersHandler}
+   */
+  public LogHeadersToMdcFilter(final WsLoggingProperty.HeadersHandler headersHandler) {
+    Assert.notNull(headersHandler, "Headers handler property should not be null");
 
-        this.headerNames = headersHandler.getNames();
-        this.pattern = headersHandler.getPattern();
+    this.headerNames = headersHandler.getNames();
+    this.pattern = headersHandler.getPattern();
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * @see OncePerRequestFilter
+   */
+  @Override
+  protected void doFilterInternal(
+      @NonNull final HttpServletRequest request,
+      @NonNull final HttpServletResponse response,
+      @NonNull final FilterChain filterChain)
+      throws ServletException, IOException {
+    try {
+      this.addHeaders(this.headerNames, request);
+      filterChain.doFilter(request, response);
+    } finally {
+      this.removeHeaders(this.headerNames);
     }
+  }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see OncePerRequestFilter
-     */
-    @Override
-    protected void doFilterInternal(@NonNull final HttpServletRequest request,
-                                    @NonNull final HttpServletResponse response,
-                                    @NonNull final FilterChain filterChain) throws ServletException, IOException {
-        try {
-            this.addHeaders(this.headerNames, request);
-            filterChain.doFilter(request, response);
-        } finally {
-            this.removeHeaders(this.headerNames);
-        }
-    }
+  /**
+   * Removes input {@link List} of {@link String} headers from current {@link MDC} storage
+   *
+   * @param headerNames - initial input {@link List} of {@link String} headers to remove
+   */
+  private void removeHeaders(final Set<String> headerNames) {
+    headerNames.forEach(MDC::remove);
+  }
 
-    /**
-     * Removes input {@link List} of {@link String} headers from current {@link MDC} storage
-     *
-     * @param headerNames - initial input {@link List} of {@link String} headers to remove
-     */
-    private void removeHeaders(final Set<String> headerNames) {
-        headerNames.forEach(MDC::remove);
+  /**
+   * Updates current {@link MDC} storage by input {@link List} of {@link String} headers and {@link
+   * HttpServletRequest}
+   *
+   * @param headerNames - initial input {@link Set} of {@link String} headers to filter by
+   * @param request - initial input {@link HttpServletRequest} to process by
+   */
+  private void addHeaders(final Set<String> headerNames, final HttpServletRequest request) {
+    if (!CollectionUtils.isEmpty(headerNames)) {
+      headerNames.stream()
+          .filter(name -> name.matches(this.pattern))
+          .forEach(
+              name -> {
+                final String headerValue = request.getHeader(name);
+                Optional.ofNullable(headerValue).ifPresent(value -> MDC.put(name, value));
+              });
+    } else {
+      enumerationAsStream(request.getHeaderNames())
+          .filter(name -> name.matches(this.pattern))
+          .forEach(name -> MDC.put(name, request.getHeader(name)));
     }
-
-    /**
-     * Updates current {@link MDC} storage by input {@link List} of {@link String} headers and {@link HttpServletRequest}
-     *
-     * @param headerNames - initial input {@link Set} of {@link String} headers to filter by
-     * @param request     - initial input {@link HttpServletRequest} to process by
-     */
-    private void addHeaders(final Set<String> headerNames,
-                            final HttpServletRequest request) {
-        if (!CollectionUtils.isEmpty(headerNames)) {
-            headerNames.stream()
-                    .filter(name -> name.matches(this.pattern))
-                    .forEach(name -> {
-                        final String headerValue = request.getHeader(name);
-                        Optional.ofNullable(headerValue).ifPresent(value -> MDC.put(name, value));
-                    });
-        } else {
-            enumerationAsStream(request.getHeaderNames())
-                    .filter(name -> name.matches(this.pattern))
-                    .forEach(name -> MDC.put(name, request.getHeader(name)));
-        }
-    }
+  }
 }

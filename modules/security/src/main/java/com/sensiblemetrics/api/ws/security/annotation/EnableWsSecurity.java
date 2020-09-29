@@ -10,5 +10,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Import(WsSecurityConfiguration.class)
-public @interface EnableWsSecurity {
-}
+public @interface EnableWsSecurity {}

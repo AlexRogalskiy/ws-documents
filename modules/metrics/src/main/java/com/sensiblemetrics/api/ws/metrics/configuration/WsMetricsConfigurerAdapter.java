@@ -16,13 +16,13 @@ import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.streamOf;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Metrics configurer adapter")
 public class WsMetricsConfigurerAdapter {
-    /**
-     * Returns meter tags {@link Predicate} by input {@link Set} collection of patterns
-     *
-     * @param patterns - initial input {@link Set} collection of patterns to match by
-     * @return meter tags {@link Predicate}
-     */
-    public Predicate<Meter.Id> createMeterTagPredicate(final Set<String> patterns) {
-        return tag -> streamOf(patterns).anyMatch(p -> Pattern.matches(p, tag.getName()));
-    }
+  /**
+   * Returns meter tags {@link Predicate} by input {@link Set} collection of patterns
+   *
+   * @param patterns - initial input {@link Set} collection of patterns to match by
+   * @return meter tags {@link Predicate}
+   */
+  public Predicate<Meter.Id> createMeterTagPredicate(final Set<String> patterns) {
+    return tag -> streamOf(patterns).anyMatch(p -> Pattern.matches(p, tag.getName()));
+  }
 }

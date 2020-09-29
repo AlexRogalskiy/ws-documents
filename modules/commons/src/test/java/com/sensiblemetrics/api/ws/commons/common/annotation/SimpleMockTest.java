@@ -14,5 +14,4 @@ import java.lang.annotation.*;
 @EnableBootstrapTest
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 @ExtendWith(MockitoExtension.class)
-public @interface SimpleMockTest {
-}
+public @interface SimpleMockTest {}

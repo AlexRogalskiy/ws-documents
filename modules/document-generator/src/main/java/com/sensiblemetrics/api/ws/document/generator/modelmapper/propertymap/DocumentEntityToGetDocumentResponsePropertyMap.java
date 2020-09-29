@@ -12,24 +12,26 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class DocumentEntityToGetDocumentResponsePropertyMap extends PropertyMap<DocumentEntity, GetDocumentResponse> {
-    private final StatusTypeToDocumentStatusConverter statusTypeToDocumentStatusConverter;
+public class DocumentEntityToGetDocumentResponsePropertyMap
+    extends PropertyMap<DocumentEntity, GetDocumentResponse> {
+  private final StatusTypeToDocumentStatusConverter statusTypeToDocumentStatusConverter;
 
-    /**
-     * {@link GetDocumentResponse} {@link PropertyMap} configuration
-     */
-    @Override
-    protected void configure() {
-        // mapping destination properties
-        this.map(this.source.getId()).getDocument().setId(null);
-        this.map(this.source.getCompany()).getDocument().setCompany(null);
-        this.map(this.source.getPartner()).getDocument().setPartner(null);
-        this.map(this.source.getProduct()).getDocument().setProduct(null);
-        this.map(this.source.getAmount()).getDocument().setAmount(null);
-        this.map(this.source.getPrice()).getDocument().setPrice(null);
-        this.map(this.source.getData()).getDocument().setData(null);
+  /** {@link GetDocumentResponse} {@link PropertyMap} configuration */
+  @Override
+  protected void configure() {
+    // mapping destination properties
+    this.map(this.source.getId()).getDocument().setId(null);
+    this.map(this.source.getCompany()).getDocument().setCompany(null);
+    this.map(this.source.getPartner()).getDocument().setPartner(null);
+    this.map(this.source.getProduct()).getDocument().setProduct(null);
+    this.map(this.source.getAmount()).getDocument().setAmount(null);
+    this.map(this.source.getPrice()).getDocument().setPrice(null);
+    this.map(this.source.getData()).getDocument().setData(null);
 
-        // mapping destination properties via converters
-        this.using(this.statusTypeToDocumentStatusConverter).map(this.source.getStatus()).getDocument().setStatus(null);
-    }
+    // mapping destination properties via converters
+    this.using(this.statusTypeToDocumentStatusConverter)
+        .map(this.source.getStatus())
+        .getDocument()
+        .setStatus(null);
+  }
 }

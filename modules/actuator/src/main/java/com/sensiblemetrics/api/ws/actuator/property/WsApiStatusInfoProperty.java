@@ -21,130 +21,100 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WsApiStatusInfoProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(
+    prefix = WsApiStatusInfoProperty.PROPERTY_PREFIX,
+    ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Info Api Status configuration properties")
 public class WsApiStatusInfoProperty {
-    /**
-     * Default info api status property prefix
-     */
-    public static final String PROPERTY_PREFIX = WsApiStatusProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "node.info";
+  /** Default info api status property prefix */
+  public static final String PROPERTY_PREFIX =
+      WsApiStatusProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "node.info";
 
-    /**
-     * Info settings
-     */
+  /** Info settings */
+  @Valid
+  @NestedConfigurationProperty
+  @NotNull(message = "{property.api-status.node.info.settings.notNull}")
+  private WsApiStatusInfoProperty.InfoSettings settings = new InfoSettings();
+
+  /** Info parameter names */
+  @Valid
+  @NestedConfigurationProperty
+  @NotNull(message = "{property.api-status.node.info.parameter-names.notNull}")
+  private WsApiStatusInfoProperty.InfoParameterNames parameterNames = new InfoParameterNames();
+
+  /** Info metrics */
+  @Valid
+  @NestedConfigurationProperty
+  @NotNull(message = "{property.api-status.node.info.metrics.notNull}")
+  private WsApiStatusInfoProperty.InfoMetrics metrics = new InfoMetrics();
+
+  @Data
+  @Validated
+  @Accessors(chain = true)
+  public static class InfoMetrics {
+    /** Default process uptime metric */
+    public static final String PROCESS_UPTIME_METRIC = "process.uptime";
+    /** Default logback events metric */
+    public static final String LOGBACK_EVENTS_METRIC = "logback.events";
+
+    /** Default {@link Map} collection of metric entries */
+    private static final Map<String, String> DEFAULT_METRIC_ENTRIES =
+        MapBuilder.map(String.class, String.class)
+            .entry("process-uptime", PROCESS_UPTIME_METRIC)
+            .entry("logback-events", LOGBACK_EVENTS_METRIC)
+            .build();
+
+    /** Default {@link Map} collection of metrics */
     @Valid
-    @NestedConfigurationProperty
-    @NotNull(message = "{property.api-status.node.info.settings.notNull}")
-    private WsApiStatusInfoProperty.InfoSettings settings = new InfoSettings();
+    @NullOrNotEmpty(message = "{property.api-status.node.info.metrics.entries.nullOrNotEmpty}")
+    private Map<@NotBlank String, @NotBlank String> entries = DEFAULT_METRIC_ENTRIES;
+  }
 
-    /**
-     * Info parameter names
-     */
-    @Valid
-    @NestedConfigurationProperty
-    @NotNull(message = "{property.api-status.node.info.parameter-names.notNull}")
-    private WsApiStatusInfoProperty.InfoParameterNames parameterNames = new InfoParameterNames();
+  @Data
+  @Validated
+  @Accessors(chain = true)
+  public static class InfoSettings {
+    /** Default uptime duration format setting */
+    @NotBlank(message = "{property.api-status.node.info.settings.duration-format.notBlank}")
+    private String durationFormat = "d.HH:mm:ss.SSS";
 
-    /**
-     * Info metrics
-     */
-    @Valid
-    @NestedConfigurationProperty
-    @NotNull(message = "{property.api-status.node.info.metrics.notNull}")
-    private WsApiStatusInfoProperty.InfoMetrics metrics = new InfoMetrics();
+    /** Default error description setting */
+    @NotBlank(message = "{property.api-status.node.info.settings.error-description.notBlank}")
+    private String errorDescription = "NONE";
+  }
 
-    @Data
-    @Validated
-    @Accessors(chain = true)
-    public static class InfoMetrics {
-        /**
-         * Default process uptime metric
-         */
-        public static final String PROCESS_UPTIME_METRIC = "process.uptime";
-        /**
-         * Default logback events metric
-         */
-        public static final String LOGBACK_EVENTS_METRIC = "logback.events";
+  @Data
+  @Validated
+  @Accessors(chain = true)
+  public static class InfoParameterNames {
+    /** Default server name */
+    @NotBlank(message = "{property.api-status.node.info.parameters.server-name.notBlank}")
+    private String serverName = "serverName";
 
-        /**
-         * Default {@link Map} collection of metric entries
-         */
-        private static final Map<String, String> DEFAULT_METRIC_ENTRIES = MapBuilder
-                .map(String.class, String.class)
-                .entry("process-uptime", PROCESS_UPTIME_METRIC)
-                .entry("logback-events", LOGBACK_EVENTS_METRIC)
-                .build();
+    /** Default server uptime name */
+    @NotBlank(message = "{property.api-status.node.info.parameters.uptime-name.notBlank}")
+    private String serverUptimeName = "uptime";
 
-        /**
-         * Default {@link Map} collection of metrics
-         */
-        @Valid
-        @NullOrNotEmpty(message = "{property.api-status.node.info.metrics.entries.nullOrNotEmpty}")
-        private Map<@NotBlank String, @NotBlank String> entries = DEFAULT_METRIC_ENTRIES;
-    }
+    /** Default build number name */
+    @NotBlank(message = "{property.api-status.node.info.parameters.build-number-name.notBlank}")
+    private String buildNumberName = "buildNumber";
 
-    @Data
-    @Validated
-    @Accessors(chain = true)
-    public static class InfoSettings {
-        /**
-         * Default uptime duration format setting
-         */
-        @NotBlank(message = "{property.api-status.node.info.settings.duration-format.notBlank}")
-        private String durationFormat = "d.HH:mm:ss.SSS";
+    /** Default application state name */
+    @NotBlank(message = "{property.api-status.node.info.parameters.state-name.notBlank}")
+    private String stateName = "appState";
 
-        /**
-         * Default error description setting
-         */
-        @NotBlank(message = "{property.api-status.node.info.settings.error-description.notBlank}")
-        private String errorDescription = "NONE";
-    }
+    /** Default application status name */
+    @NotBlank(message = "{property.api-status.node.info.parameters.started-status-name.notBlank}")
+    private String startedStatusName = "isStarted";
 
-    @Data
-    @Validated
-    @Accessors(chain = true)
-    public static class InfoParameterNames {
-        /**
-         * Default server name
-         */
-        @NotBlank(message = "{property.api-status.node.info.parameters.server-name.notBlank}")
-        private String serverName = "serverName";
+    /** Default application errors counter name */
+    @NotBlank(message = "{property.api-status.node.info.parameters.errors-counter-name.notBlank}")
+    private String errorsCounterName = "errors";
 
-        /**
-         * Default server uptime name
-         */
-        @NotBlank(message = "{property.api-status.node.info.parameters.uptime-name.notBlank}")
-        private String serverUptimeName = "uptime";
-
-        /**
-         * Default build number name
-         */
-        @NotBlank(message = "{property.api-status.node.info.parameters.build-number-name.notBlank}")
-        private String buildNumberName = "buildNumber";
-
-        /**
-         * Default application state name
-         */
-        @NotBlank(message = "{property.api-status.node.info.parameters.state-name.notBlank}")
-        private String stateName = "appState";
-
-        /**
-         * Default application status name
-         */
-        @NotBlank(message = "{property.api-status.node.info.parameters.started-status-name.notBlank}")
-        private String startedStatusName = "isStarted";
-
-        /**
-         * Default application errors counter name
-         */
-        @NotBlank(message = "{property.api-status.node.info.parameters.errors-counter-name.notBlank}")
-        private String errorsCounterName = "errors";
-
-        /**
-         * Default application error description name
-         */
-        @NotBlank(message = "{property.api-status.node.info.parameters.error-description-name.notBlank}")
-        private String errorDescriptionName = "errorDescription";
-    }
+    /** Default application error description name */
+    @NotBlank(
+        message = "{property.api-status.node.info.parameters.error-description-name.notBlank}")
+    private String errorDescriptionName = "errorDescription";
+  }
 }

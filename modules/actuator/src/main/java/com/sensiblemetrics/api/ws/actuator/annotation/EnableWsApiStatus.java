@@ -10,5 +10,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Import(WsApiStatusConfiguration.class)
-public @interface EnableWsApiStatus {
-}
+public @interface EnableWsApiStatus {}

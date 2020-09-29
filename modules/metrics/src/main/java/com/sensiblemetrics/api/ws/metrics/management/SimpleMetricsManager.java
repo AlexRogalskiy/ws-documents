@@ -24,21 +24,18 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SimpleMetricsManager implements MetricsManager {
-    private final MeterRegistry meterRegistry;
-    private final SampleStore sampleStore;
+  private final MeterRegistry meterRegistry;
+  private final SampleStore sampleStore;
 
-    @Override
-    public void trackTimerMetrics(final String metricName,
-                                  final String... tags) {
-        final Timer timer = this.meterRegistry.timer(metricName, tags);
-        this.sampleStore.get().stop(timer);
+  @Override
+  public void trackTimerMetrics(final String metricName, final String... tags) {
+    final Timer timer = this.meterRegistry.timer(metricName, tags);
+    this.sampleStore.get().stop(timer);
+  }
 
-    }
-
-    @Override
-    public void trackCounterMetrics(final String metricName,
-                                    final double value,
-                                    final String... tags) {
-        this.meterRegistry.counter(metricName, tags).increment(value);
-    }
+  @Override
+  public void trackCounterMetrics(
+      final String metricName, final double value, final String... tags) {
+    this.meterRegistry.counter(metricName, tags).increment(value);
+  }
 }
