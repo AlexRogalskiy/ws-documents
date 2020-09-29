@@ -1,3 +1,4 @@
+# SensibleMetrics WebDocs configuration
 webdocs:
   metrics:
     defaults:

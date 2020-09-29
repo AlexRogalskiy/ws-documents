@@ -6,6 +6,7 @@ server:
     key-store: modules/document-generator/src/main/resources/key-store.jks
     key-store-password: ENC(pZulM4Rk5Tu1gnpQ5WzifnV4EFPN5RBhFNeImxlij/y2Zxa/Iqlp2S8QpcsqKPBM)
     key-password: ENC(q9chaN0OEEaaUJq3FyS65PZDsSf+PUyP+ssgJzkQa23Ft+KeQ6t3YyKf5IWUVfRE)
+    key-store-type: PKCS12
   http2:
     enabled: true
   compression:

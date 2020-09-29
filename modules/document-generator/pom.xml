@@ -155,7 +155,7 @@
             <version>${hibernate-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jcache</artifactId>
             <version>${hibernate-core.version}</version>
         </dependency>
@@ -268,24 +268,12 @@
         </testResources>
 
         <plugins>
-            <!--        mvn jasypt:encrypt-value -Djasypt.encryptor.password="the password" -Djasypt.plugin.value="theValueYouWantToEncrypt"-->
-            <!--        mvn jasypt:encrypt -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:decrypt-value -Djasypt.encryptor.password="the password" -Djasypt.plugin.value="DbG1GppXOsFa2G69PnmADvQFI3esceEhJYbaEIKCcEO5C85JEqGAhfcjFMGnoRFf"-->
-            <!--        mvn jasypt:decrypt -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:reencrypt -Djasypt.plugin.old.password=OLD -Djasypt.encryptor.password=NEW-->
-            <!--        mvn jasypt:upgrade -Djasypt.encryptor.password=EXAMPLE-->
-            <!--        mvn jasypt:load flyway:migrate -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:encrypt -Djasypt.plugin.path="file:src/main/test/application.properties" -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:encrypt -Djasypt.plugin.path="file:src/main/resources/flyway.properties" -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:encrypt -Djasypt.plugin.path="file:src/main/resources/application.yaml" -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:encrypt -Dspring.profiles.active=cloud -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:decrypt -Djasypt.plugin.path="file:src/main/resources/application.yaml" -Djasypt.encryptor.password="the password"-->
-            <!--        mvn jasypt:encrypt -Djasypt.plugin.path="file:src/main/resources/application.yaml" -Djasypt.encryptor.password="the password"-->
             <plugin>
                 <groupId>com.github.ulisesbocchio</groupId>
                 <artifactId>jasypt-maven-plugin</artifactId>
                 <version>${maven-jasypt-plugin.version}</version>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -294,6 +282,7 @@
                     <encoding>${project.build.outputEncoding}</encoding>
                     <nonFilteredFileExtensions>
                         <nonFilteredFileExtension>docx</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
                 </configuration>
             </plugin>

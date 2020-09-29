@@ -24,7 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Document Generator WebMvc configuration")
-public class WsWebMvcConfiguration implements WebMvcConfigurer {
+public class WsDocumentWebMvcConfiguration implements WebMvcConfigurer {
 
     /**
      * Default resource locations
