@@ -28,7 +28,7 @@ jobs:
         uses: anchore/scan-action@master
         with:
           image-reference: "localbuild/testimage:latest"
-          dockerfile-path: "docker/java/Dockerfile"
+          dockerfile-path: "modules/document-generator/src/main/docker/java/Dockerfile"
           acs-report-enable: true
 
       - name: Upload Anchore Scan Report
