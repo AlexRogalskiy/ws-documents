@@ -11,6 +11,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/AlexRogalskiy/ws-documents)
 ![GitHub](https://img.shields.io/github/license/AlexRogalskiy/ws-documents)
 ![GitHub All Releases](https://img.shields.io/github/downloads/AlexRogalskiy/ws-documents/total)
+![Docker Automated build](https://img.shields.io/docker/automated/alexanderr/ws-documents)
 ![Docker Pulls](https://img.shields.io/docker/pulls/alexanderr/ws-documents)
 ![GitHub language count](https://img.shields.io/github/languages/count/AlexRogalskiy/ws-documents)
 ![GitHub search hit counter](https://img.shields.io/github/search/AlexRogalskiy/ws-documents/goto)
