@@ -29,7 +29,7 @@
         <hikari.version>3.4.5</hikari.version>
 
         <image.to.path>registry.hub.docker.com/alexanderr/ws-documents</image.to.path>
-        <jaxb2-basics.version>1.11.1</jaxb2-basics.version>
+        <jaxb2-basics.version>1.11.1-PUBLISHED-BY-MISTAKE</jaxb2-basics.version>
         <liquibase-slf4j.version>3.0.0</liquibase-slf4j.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
