@@ -28,7 +28,7 @@ import static org.springframework.util.StringUtils.toStringArray;
 @Accessors(chain = true)
 @ConfigurationProperties(prefix = WsAddressingProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Addressing configuration properties")
+@Description("SensibleMetrics Web Service Addressing configuration properties")
 public class WsAddressingProperty {
     /**
      * Default addressing property prefix
@@ -69,7 +69,7 @@ public class WsAddressingProperty {
     private List<@NotBlank String> urlMappings = DEFAULT_URL_MAPPINGS;
 
     /**
-     * Default rule entries
+     * Default endpoint entries
      */
     @Valid
     @NotEmpty(message = "{property.addressing.endpoints.notEmpty}")

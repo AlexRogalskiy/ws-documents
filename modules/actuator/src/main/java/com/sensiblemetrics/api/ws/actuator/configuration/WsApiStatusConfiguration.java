@@ -6,7 +6,7 @@ import com.sensiblemetrics.api.ws.actuator.indicator.TaskSchedulerHealthIndicato
 import com.sensiblemetrics.api.ws.actuator.indicator.WsApiStatusInfoContributor;
 import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusProperty;
 import com.sensiblemetrics.api.ws.actuator.property.WsGracefulShutdownProperty;
-import com.sensiblemetrics.api.ws.actuator.property.WsInfoServiceProperty;
+import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusInfoProperty;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -21,16 +21,16 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @EnableConfigurationProperties({
         WsGracefulShutdownProperty.class,
         WsApiStatusProperty.class,
-        WsInfoServiceProperty.class
+        WsApiStatusInfoProperty.class
 })
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Api status configuration")
+@Description("SensibleMetrics Web Service Api Status configuration")
 public abstract class WsApiStatusConfiguration {
 
     @Bean
     @ConditionalOnBean(WsGracefulShutdownProperty.class)
     @ConditionalOnClass(GracefulShutdownHealthIndicator.class)
-    @Description("Actuator graceful shutdown health indicator bean")
+    @Description("Actuator graceful shutdown health indicator configuration bean")
     @ConditionalOnProperty(prefix = WsGracefulShutdownProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true")
     public GracefulShutdownHealthIndicator gracefulShutdownHealthIndicator(final WsGracefulShutdownProperty property) {
         return new GracefulShutdownHealthIndicator(property);
@@ -39,14 +39,14 @@ public abstract class WsApiStatusConfiguration {
     @Bean
     @ConditionalOnBean(ThreadPoolTaskScheduler.class)
     @ConditionalOnClass(TaskSchedulerHealthIndicator.class)
-    @Description("Actuator task scheduler health indicator bean")
+    @Description("Actuator task scheduler health indicator configuration bean")
     public TaskSchedulerHealthIndicator taskSchedulerHealthIndicator(final ThreadPoolTaskScheduler taskScheduler) {
         return new TaskSchedulerHealthIndicator(taskScheduler);
     }
 
     @Bean
     @ConditionalOnClass(StatefulHealthIndicator.class)
-    @Description("Actuator stateful health indicator bean")
+    @Description("Actuator stateful health indicator configuration bean")
     public StatefulHealthIndicator statefulHealthIndicator() {
         return new StatefulHealthIndicator();
     }

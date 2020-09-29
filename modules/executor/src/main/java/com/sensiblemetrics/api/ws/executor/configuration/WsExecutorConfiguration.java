@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.executor.configuration;
 
-import com.sensiblemetrics.api.ws.executor.handler.DefaultAsyncUncaughtExceptionHandler;
-import com.sensiblemetrics.api.ws.executor.handler.DefaultRejectedExecutionHandler;
-import com.sensiblemetrics.api.ws.executor.handler.DefaultTimeoutCallableProcessingInterceptor;
+import com.sensiblemetrics.api.ws.executor.handler.DelegatedAsyncUncaughtExceptionHandler;
+import com.sensiblemetrics.api.ws.executor.handler.DelegatedRejectedExecutionHandler;
+import com.sensiblemetrics.api.ws.executor.handler.DelegatedTimeoutCallableProcessingInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -25,17 +25,17 @@ import java.util.concurrent.RejectedExecutionHandler;
 @Import(TaskExecutionAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "spring.task.execution", value = "enabled", havingValue = "true", matchIfMissing = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Executor configuration")
+@Description("SensibleMetrics Web Service Executor configuration")
 public abstract class WsExecutorConfiguration {
     /**
      * Default thread pool task executor bean naming convention
      */
-    public static final String THREAD_POOL_TASK_EXECUTOR_BEAN_NAME = "threadPoolTaskExecutor";
+    public static final String TASK_EXECUTOR_BUILDER_BEAN_NAME = "taskExecutorBuilder";
 
     @Configuration
     @RequiredArgsConstructor
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Commons Web Service Task Executor configuration")
+    @Description("SensibleMetrics Web Service Task Executor configuration")
     public static class WsTaskExecutorConfiguration implements AsyncConfigurer {
         /**
          * Default async task executor bean naming convention
@@ -68,10 +68,10 @@ public abstract class WsExecutorConfiguration {
         }
     }
 
-    @Bean(name = THREAD_POOL_TASK_EXECUTOR_BEAN_NAME, destroyMethod = "shutdown")
+    @Bean(destroyMethod = "shutdown")
     @ConditionalOnMissingBean
-    @DependsOn("taskExecutorBuilder")
-    @Description("Default thread pool task executor configuration bean")
+    @DependsOn(TASK_EXECUTOR_BUILDER_BEAN_NAME)
+    @Description("Thread pool task executor configuration bean")
     public ThreadPoolTaskExecutor threadPoolTaskExecutor(final TaskExecutorBuilder taskExecutorBuilder,
                                                          final RejectedExecutionHandler rejectedExecutionHandler) {
         final ThreadPoolTaskExecutor taskExecutor = taskExecutorBuilder.build();
@@ -84,26 +84,26 @@ public abstract class WsExecutorConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(DefaultTimeoutCallableProcessingInterceptor.class)
-    @Description("Default callable processing interceptor bean")
+    @ConditionalOnClass(DelegatedTimeoutCallableProcessingInterceptor.class)
+    @Description("Callable processing interceptor configuration bean")
     public CallableProcessingInterceptor callableProcessingInterceptor() {
-        return new DefaultTimeoutCallableProcessingInterceptor();
+        return new DelegatedTimeoutCallableProcessingInterceptor();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(DefaultRejectedExecutionHandler.class)
-    @Description("Default rejected execution handler bean")
+    @ConditionalOnClass(DelegatedRejectedExecutionHandler.class)
+    @Description("Rejected execution handler configuration bean")
     public RejectedExecutionHandler rejectedExecutionHandler() {
-        return new DefaultRejectedExecutionHandler();
+        return new DelegatedRejectedExecutionHandler();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(DefaultAsyncUncaughtExceptionHandler.class)
+    @ConditionalOnClass(DelegatedAsyncUncaughtExceptionHandler.class)
     @Description("Default asynchronous uncaught exception handler bean")
     public AsyncUncaughtExceptionHandler asyncUncaughtExceptionHandler() {
-        return new DefaultAsyncUncaughtExceptionHandler();
+        return new DelegatedAsyncUncaughtExceptionHandler();
     }
 }
 

@@ -23,7 +23,7 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Accessors(chain = true)
 @ConfigurationProperties(prefix = WsGracefulShutdownProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Graceful Shutdown configuration properties")
+@Description("SensibleMetrics Web Service Graceful Shutdown configuration properties")
 public class WsGracefulShutdownProperty {
     /**
      * Default graceful shutdown property prefix

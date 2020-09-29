@@ -1,14 +1,14 @@
-package com.sensiblemetrics.api.ws.security.configuration;
+package com.sensiblemetrics.api.ws.security.handler;
 
 import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyDetector;
 import org.springframework.util.Assert;
 
 import java.util.Optional;
 
-class CustomEncryptablePropertyDetector implements EncryptablePropertyDetector {
+public class DelegatedEncryptablePropertyDetector implements EncryptablePropertyDetector {
     private final String prefix;
 
-    CustomEncryptablePropertyDetector(final String prefix) {
+    public DelegatedEncryptablePropertyDetector(final String prefix) {
         Assert.notNull(prefix, "Property prefix should not be null");
         this.prefix = prefix;
     }

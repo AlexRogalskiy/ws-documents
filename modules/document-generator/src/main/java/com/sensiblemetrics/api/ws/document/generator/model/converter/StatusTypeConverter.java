@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Converter(autoApply = true)
 public class StatusTypeConverter implements AttributeConverter<StatusType, String> {
+
     @Override
     public String convertToDatabaseColumn(final StatusType statusType) {
         return Optional.ofNullable(statusType).map(Enum::name).orElse(null);

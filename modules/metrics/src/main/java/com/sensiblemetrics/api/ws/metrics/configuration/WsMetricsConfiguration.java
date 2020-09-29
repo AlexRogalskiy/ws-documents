@@ -18,6 +18,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.actuate.metrics.web.servlet.WebMvcTagsContributor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
@@ -33,10 +34,7 @@ import java.util.stream.Stream;
 
 @Configuration
 @EnableAspectJAutoProxy
-@Import({
-        WsMetricsConfigurerAdapter.class,
-        WsMetricsHealthConfiguration.class
-})
+@Import({WsMetricsConfigurerAdapter.class, WsMetricsHealthStatusExporterConfiguration.class})
 @ConditionalOnProperty(prefix = WsMetricsProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsMetricsProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
@@ -46,7 +44,7 @@ public abstract class WsMetricsConfiguration {
      * Default metrics bean naming conventions
      */
     public static final String MEMORY_METRICS_METER_BINDER_BEAN_NAME = "processMemoryMetrics";
-    public static final String THREAD_METER_BINDER_BEAN_NAME = "processThreadMetrics";
+    public static final String PROCESS_THREAD_METER_BINDER_BEAN_NAME = "processThreadMetrics";
     public static final String METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME = "metricsCommonTagsCustomizer";
     public static final String METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME = "namingConventionCustomizer";
     public static final String METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME = "webMvcTagsContributor";
@@ -58,13 +56,15 @@ public abstract class WsMetricsConfiguration {
     public static final String METER_REGISTRY_EXCLUDE_FILTER_BEAN_NAME = "excludeMeterFilter";
 
     @Bean(MEMORY_METRICS_METER_BINDER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = MEMORY_METRICS_METER_BINDER_BEAN_NAME)
     @ConditionalOnClass(ProcessMemoryMetrics.class)
     @Description("Process memory metrics configuration bean")
     public MeterBinder processMemoryMetrics() {
         return new ProcessMemoryMetrics();
     }
 
-    @Bean(THREAD_METER_BINDER_BEAN_NAME)
+    @Bean(PROCESS_THREAD_METER_BINDER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = PROCESS_THREAD_METER_BINDER_BEAN_NAME)
     @ConditionalOnClass(ProcessThreadMetrics.class)
     @Description("Process thread metrics configuration bean")
     public MeterBinder processThreadMetrics() {
@@ -72,12 +72,14 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_NAMING_CONVENTION_CUSTOMIZER_BEAN_NAME)
     @Description("Metrics naming convention customizer bean")
     public MeterRegistryCustomizer<MeterRegistry> metricsNamingConventionCustomizer(final WsMetricsProperty metricsProperty) {
         return registry -> registry.config().namingConvention(metricsProperty.getNamingConvention());
     }
 
     @Bean(METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_COMMON_TAGS_CUSTOMIZER_BEAN_NAME)
     @Description("Metrics common tags customizer bean")
     public MeterRegistryCustomizer<MeterRegistry> metricsCommonTagsCustomizer(final WsMetricsProperty metricsProperty) {
         return registry -> OptionalConsumer.of(metricsProperty.getDefaults().getTags())
@@ -86,18 +88,21 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
     @Description("Metrics Web MVC tags contributor bean")
     public WebMvcTagsContributor webMvcTagsContributor(final WsMetricsProperty metricsProperty) {
         return new CustomWebMvcTagsContributor(metricsProperty);
     }
 
     @Bean(METER_REGISTRY_TIMED_ASPECT_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_TIMED_ASPECT_BEAN_NAME)
     @Description("Metrics timed aspect bean")
     public TimedAspect timedAspect(final MeterRegistry registry) {
         return new TimedAspect(registry);
     }
 
     @Bean(METER_REGISTRY_MONITORING_TIME_ASPECT_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_MONITORING_TIME_ASPECT_BEAN_NAME)
     @Description("Metrics monitoring time aspect bean")
     @ConditionalOnProperty(prefix = WsMetricsProperty.Handlers.MONITORING_TIME_PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     public MonitoringTimeAspect monitoringTimeAspect(final MeterRegistry registry) {
@@ -105,6 +110,7 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_TRACKING_TIME_ASPECT_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_TRACKING_TIME_ASPECT_BEAN_NAME)
     @Description("Tracking time aspect bean")
     @ConditionalOnProperty(prefix = WsMetricsProperty.Handlers.TRACKING_TIME_PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     public TrackingTimeAspect trackingTimeAspect() {
@@ -112,6 +118,7 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_INCLUDE_FILTER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_INCLUDE_FILTER_BEAN_NAME)
     @Description("Actuator include meter filter configuration bean")
     public MeterFilter includeMeterFilter(final WsMetricsConfigurerAdapter configurerAdapter,
                                           final WsMetricsProperty metricsProperty) {
@@ -119,6 +126,7 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_EXCLUDE_FILTER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = METER_REGISTRY_EXCLUDE_FILTER_BEAN_NAME)
     @Description("Actuator exclude meter filter configuration bean")
     public MeterFilter excludeMeterFilter(final WsMetricsConfigurerAdapter configurerAdapter,
                                           final WsMetricsProperty metricsProperty) {
@@ -126,7 +134,8 @@ public abstract class WsMetricsConfiguration {
     }
 
     @Bean(METER_REGISTRY_DATASOURCE_METER_PROBE_BEAN_NAME)
-    @Description("Actuator datasource status probe bean")
+    @ConditionalOnMissingBean(name = METER_REGISTRY_DATASOURCE_METER_PROBE_BEAN_NAME)
+    @Description("Actuator datasource status probe configuration bean")
     @ConditionalOnProperty(prefix = WsMetricsProperty.MeterProperty.METER_PROPERTY_PREFIX, name = "datasource")
     public Function<DataSource, DataSourceStatusMeterBinder> dataSourceStatusProbe(final WsMetricsProperty metricsProperty) {
         return dataSource -> {

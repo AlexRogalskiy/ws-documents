@@ -1,4 +1,3 @@
-
 package com.sensiblemetrics.api.ws.logger.handler;
 
 import com.sensiblemetrics.api.ws.logger.property.WsLoggingProperty;
@@ -27,15 +26,15 @@ public class LogHeadersToMdcFilter extends OncePerRequestFilter {
     private final String pattern;
 
     /**
-     * Default {@link LogHeadersToMdcFilter} constructor by input {@link WsLoggingProperty}
+     * Default {@link LogHeadersToMdcFilter} constructor by input {@link WsLoggingProperty.HeadersHandler}
      *
-     * @param loggingProperty - initial input {@link WsLoggingProperty}
+     * @param headersHandler - initial input {@link WsLoggingProperty.HeadersHandler}
      */
-    public LogHeadersToMdcFilter(final WsLoggingProperty loggingProperty) {
-        Assert.notNull(loggingProperty, "Logging property should not be null");
+    public LogHeadersToMdcFilter(final WsLoggingProperty.HeadersHandler headersHandler) {
+        Assert.notNull(headersHandler, "Headers handler property should not be null");
 
-        this.headerNames = loggingProperty.getHeaders().getNames();
-        this.pattern = loggingProperty.getHeaders().getPattern();
+        this.headerNames = headersHandler.getNames();
+        this.pattern = headersHandler.getPattern();
     }
 
     /**

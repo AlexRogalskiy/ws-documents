@@ -14,7 +14,7 @@ import java.util.function.Function;
  * Default {@link TimeoutCallableProcessingInterceptor} implementation
  */
 @Slf4j
-public class DefaultTimeoutCallableProcessingInterceptor extends TimeoutCallableProcessingInterceptor {
+public class DelegatedTimeoutCallableProcessingInterceptor extends TimeoutCallableProcessingInterceptor {
     /**
      * {@inheritDoc}
      *

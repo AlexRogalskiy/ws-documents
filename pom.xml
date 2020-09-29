@@ -78,6 +78,7 @@
     <modules>
         <module>modules/all</module>
         <module>modules/actuator</module>
+        <module>modules/admin</module>
         <module>modules/caching</module>
         <module>modules/commons</module>
         <module>modules/document-generator</module>
@@ -231,6 +232,7 @@
         <modernizer.version>2.1.0</modernizer.version>
         <plexus-utils.version>3.3.0</plexus-utils.version>
 
+        <vavr.version>0.10.3</vavr.version>
         <slf4j-api.version>1.7.30</slf4j-api.version>
 
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
@@ -251,6 +253,7 @@
         <url>
             git://github.com/AlexRogalskiy/ws-documents
         </url>
+        <tag>HEAD</tag>
     </scm>
 
     <dependencyManagement>
@@ -471,6 +474,13 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-api.version}</version>
+        </dependency>
+
+        <!-- Vavr library dependencies -->
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
         </dependency>
 
         <!-- Wsdl4j library dependencies -->

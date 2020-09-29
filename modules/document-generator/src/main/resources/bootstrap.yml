@@ -4,6 +4,28 @@ spring:
   application:
     name: "Document-Generator-WebService"
   cloud:
+    config:
+      enabled: false
+    kubernetes:
+      discovery:
+        enabled: true
+      config:
+        enabled: true
+        sources:
+          - name: common-config
+          - name: ${spring.application.name}
+      secrets:
+        enabled: true
+        name: ${spring.application.name}
+---
+spring:
+  profiles: compose
+  application:
+    name: "Document-Generator-WebService"
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8888
     kubernetes:
       discovery:
         enabled: true

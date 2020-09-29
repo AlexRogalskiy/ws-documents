@@ -1,4 +1,4 @@
-# SensibleMetrics Web Service Logger test configuration
+# SensibleMetrics WebDocs Web Service Logger test configuration
 ---
 spring:
   messages:
@@ -22,5 +22,5 @@ webdocs:
       names: Accept,Content-Type,Content-Length
       pattern: ".*"
     handlers:
-      reporting-data:
+      reporting:
         enabled: true

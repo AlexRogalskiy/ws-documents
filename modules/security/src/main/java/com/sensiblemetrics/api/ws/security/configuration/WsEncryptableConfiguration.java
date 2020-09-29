@@ -1,5 +1,8 @@
 package com.sensiblemetrics.api.ws.security.configuration;
 
+import com.sensiblemetrics.api.ws.security.handler.DelegatedEncryptablePropertyDetector;
+import com.sensiblemetrics.api.ws.security.handler.DelegatedEncryptablePropertyFilter;
+import com.sensiblemetrics.api.ws.security.handler.DelegatedEncryptablePropertyResolver;
 import com.sensiblemetrics.api.ws.security.property.WsEncryptableProperty;
 import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyDetector;
 import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyFilter;
@@ -47,28 +50,29 @@ public abstract class WsEncryptableConfiguration {
     @Bean(ENCRYPTABLE_PROPERTY_DETECTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = ENCRYPTABLE_PROPERTY_DETECTOR_BEAN_NAME)
     @ConditionalOnBean(WsEncryptableProperty.class)
-    @ConditionalOnClass(CustomEncryptablePropertyDetector.class)
+    @ConditionalOnClass(DelegatedEncryptablePropertyDetector.class)
     @Description("Security encryptable property detector bean")
     public EncryptablePropertyDetector encryptablePropertyDetector(final WsEncryptableProperty property) {
-        return new CustomEncryptablePropertyDetector(property.getEncryptedPrefix());
+        return new DelegatedEncryptablePropertyDetector(property.getEncryptedPrefix());
     }
 
     @Bean(ENCRYPTABLE_PROPERTY_RESOLVER_BEAN_NAME)
     @ConditionalOnMissingBean(name = ENCRYPTABLE_PROPERTY_RESOLVER_BEAN_NAME)
-    @ConditionalOnBean(SimpleStringPBEConfig.class)
-    @ConditionalOnClass(CustomEncryptablePropertyResolver.class)
+    @ConditionalOnBean({WsEncryptableProperty.class, SimpleStringPBEConfig.class})
+    @ConditionalOnClass(DelegatedEncryptablePropertyResolver.class)
     @Description("Security encryptable property resolver bean")
-    public EncryptablePropertyResolver encryptablePropertyResolver(final SimpleStringPBEConfig config) {
-        return new CustomEncryptablePropertyResolver(config);
+    public EncryptablePropertyResolver encryptablePropertyResolver(final WsEncryptableProperty property,
+                                                                   final SimpleStringPBEConfig config) {
+        return new DelegatedEncryptablePropertyResolver(property.getEncryptedPrefix(), config);
     }
 
     @Bean(ENCRYPTABLE_PROPERTY_FILTER_BEAN_NAME)
     @ConditionalOnMissingBean(name = ENCRYPTABLE_PROPERTY_FILTER_BEAN_NAME)
     @ConditionalOnBean(WsEncryptableProperty.class)
-    @ConditionalOnClass(CustomEncryptablePropertyFilter.class)
+    @ConditionalOnClass(DelegatedEncryptablePropertyFilter.class)
     @Description("Security encryptable property filter bean")
     public EncryptablePropertyFilter encryptablePropertyFilter(final WsEncryptableProperty property) {
-        return new CustomEncryptablePropertyFilter(property.getEncryptedMarker());
+        return new DelegatedEncryptablePropertyFilter(property.getEncryptedMarker());
     }
 
     @Bean(JASYPT_STRING_ENCRYPTOR_CONFIGURATION_BEAN_NAME)
@@ -76,10 +80,6 @@ public abstract class WsEncryptableConfiguration {
     @ConditionalOnBean(WsEncryptableProperty.class)
     @Description("Default String Encryptor configuration bean")
     public SimpleStringPBEConfig stringEncryptorConfig(final WsEncryptableProperty property) {
-        return this.getConfig(property);
-    }
-
-    private SimpleStringPBEConfig getConfig(final WsEncryptableProperty property) {
         final SimpleStringPBEConfig config = new SimpleStringPBEConfig();
         config.setPasswordCharArray("password".toCharArray());
         config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");

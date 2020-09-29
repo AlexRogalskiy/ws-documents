@@ -27,7 +27,7 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Accessors(chain = true)
 @ConfigurationProperties(prefix = WsApiStatusProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Api status configuration properties")
+@Description("SensibleMetrics Web Service Api Status configuration properties")
 public class WsApiStatusProperty {
     /**
      * Default api status property prefix

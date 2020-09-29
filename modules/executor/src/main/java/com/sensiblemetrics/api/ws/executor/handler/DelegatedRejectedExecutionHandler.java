@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * Default rejected execution handler
  */
 @Slf4j
-public class DefaultRejectedExecutionHandler implements RejectedExecutionHandler {
+public class DelegatedRejectedExecutionHandler implements RejectedExecutionHandler {
     /**
      * {@inheritDoc}
      *

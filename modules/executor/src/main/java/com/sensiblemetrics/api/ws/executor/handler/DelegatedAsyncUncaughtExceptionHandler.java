@@ -13,7 +13,7 @@ import static java.lang.String.format;
  * {@link AsyncUncaughtExceptionHandler} implementation
  */
 @Slf4j
-public class DefaultAsyncUncaughtExceptionHandler implements AsyncUncaughtExceptionHandler {
+public class DelegatedAsyncUncaughtExceptionHandler implements AsyncUncaughtExceptionHandler {
     /**
      * {@inheritDoc}
      *

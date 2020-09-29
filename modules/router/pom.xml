@@ -14,7 +14,7 @@
     <description>WebDocs Router API</description>
     <artifactId>webdocs-router</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/router</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/router</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>

@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Aspect
-@ConditionalOnProperty(prefix = WsLoggingProperty.Handlers.REPORTING_DATA_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = WsLoggingProperty.Handlers.REPORTING_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @Description("Web Service Reporting data aspect configuration")
 public class ReportingDataAspect {
 

@@ -2,10 +2,7 @@ version: 2
 
 update_configs:
   - package_manager: "java:maven"
-    directory: "/modules/commons"
-    update_schedule: "daily"
-  - package_manager: "java:maven"
-    directory: "/modules/document-generator"
+    directory: "/"
     update_schedule: "daily"
 
 updates:

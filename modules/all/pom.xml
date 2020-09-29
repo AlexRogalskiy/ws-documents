@@ -14,7 +14,7 @@
     <description>WebDocs All Bundle</description>
     <artifactId>all</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/all</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/all</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>
@@ -26,6 +26,12 @@
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
             <artifactId>webdocs-actuator</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-admin</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>

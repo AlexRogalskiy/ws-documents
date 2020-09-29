@@ -18,7 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableConfigurationProperties(WsActuatorSecurityProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Commons Web Service Actuator Security configuration")
+@Description("SensibleMetrics Web Service Actuator Security configuration")
 public abstract class WsActuatorSecurityConfiguration {
 
     /**
@@ -28,8 +28,8 @@ public abstract class WsActuatorSecurityConfiguration {
     @RequiredArgsConstructor
     @ConditionalOnProperty(prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Role-based actuator web security configurer adapter")
-    public static class RoleBasedActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Description("Authentication Actuator Web Security configuration adapter")
+    public static class AuthActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final WsActuatorSecurityProperty property;
 
         /**
@@ -39,18 +39,18 @@ public abstract class WsActuatorSecurityConfiguration {
          */
         @Override
         protected void configure(final HttpSecurity http) {
-            this.property.getEndpoints().forEach(
-                    (key, value) -> {
-                        try {
-                            http
-                                    .requestMatcher(EndpointRequest.to(value.getNames().toArray(new String[0])))
-                                    .authorizeRequests(requests -> requests.anyRequest().hasAnyRole(value.getRoles().toArray(new String[0])));
-                            log.info("Adding security for actuator path: {} with roles: {}", value.getNames(), value.getRoles());
-                        } catch (Exception e) {
-                            throw new SecurityConfigurationException(e);
-                        }
-                    }
-            );
+            this.property.getEndpoints()
+                    .forEach((key, value) -> {
+                                try {
+                                    http.requestMatcher(EndpointRequest.to(value.getNamesAsArray()))
+                                            .authorizeRequests(requests -> requests.anyRequest().hasAnyRole(value.getRolesAsArray()));
+                                    log.info("Adding security for actuator path: {} with roles: {}", value.getNames(), value.getRoles());
+                                } catch (Exception e) {
+                                    log.error("Cannot process actuator endpoints configuration, message: {}", e.getMessage());
+                                    throw new SecurityConfigurationException(e);
+                                }
+                            }
+                    );
         }
     }
 
@@ -60,8 +60,8 @@ public abstract class WsActuatorSecurityConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "false", matchIfMissing = true)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Empty actuator web security configurer adapter")
-    public static class EmptyActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Description("NoAuthentication Actuator Web Security configuration adapter")
+    public static class NoAuthActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         /**
          * {@inheritDoc}
          *

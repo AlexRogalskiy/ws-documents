@@ -137,8 +137,21 @@ Choose one of the modules and add to your `pom.xml`
 </dependency>
 ```
 
+Bundle with all WebDocs dependencies:
+
+- [**WebDocs All**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/all)  
+  `webdocs-all` - Library to work with WebDocs API.
+
+WebDocs module dependencies:
+
 - [**WebDocs Actuator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/actuator)  
   `webdocs-actuator` - Library to work with Actuator API.
+
+- [**WebDocs Admin**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/admin)  
+  `webdocs-admin` - Library to work with Admin API.
+
+- [**WebDocs Caching**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/caching)  
+  `webdocs-caching` - Library to work with Caching API.
 
 - [**WebDocs Commons**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/commons)  
   `webdocs-commons` - Library with utilities for common use cases.
