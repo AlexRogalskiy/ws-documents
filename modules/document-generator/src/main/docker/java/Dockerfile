@@ -20,7 +20,7 @@ ARG JAR_FILE
 
 # Add the application's jar to the container
 ADD ${JAR_FILE} /opt/app/com.sensiblemetrics.api.ws.document.generator.jar
-ADD entrypoint.sh /opt/app/entrypoint.sh
+ADD ./entrypoint.sh /opt/app/entrypoint.sh
 
 # Set workdir inside container
 WORKDIR /opt/app
