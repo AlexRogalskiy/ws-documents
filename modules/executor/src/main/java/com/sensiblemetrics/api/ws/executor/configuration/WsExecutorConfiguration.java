@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.executor.configuration;
 
-import com.sensiblemetrics.api.ws.executor.handler.DefaultAsyncUncaughtExceptionHandler;
-import com.sensiblemetrics.api.ws.executor.handler.DefaultRejectedExecutionHandler;
-import com.sensiblemetrics.api.ws.executor.handler.DefaultTimeoutCallableProcessingInterceptor;
+import com.sensiblemetrics.api.ws.executor.handler.DelegatedAsyncUncaughtExceptionHandler;
+import com.sensiblemetrics.api.ws.executor.handler.DelegatedRejectedExecutionHandler;
+import com.sensiblemetrics.api.ws.executor.handler.DelegatedTimeoutCallableProcessingInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -84,26 +84,26 @@ public abstract class WsExecutorConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(DefaultTimeoutCallableProcessingInterceptor.class)
+    @ConditionalOnClass(DelegatedTimeoutCallableProcessingInterceptor.class)
     @Description("Callable processing interceptor configuration bean")
     public CallableProcessingInterceptor callableProcessingInterceptor() {
-        return new DefaultTimeoutCallableProcessingInterceptor();
+        return new DelegatedTimeoutCallableProcessingInterceptor();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(DefaultRejectedExecutionHandler.class)
+    @ConditionalOnClass(DelegatedRejectedExecutionHandler.class)
     @Description("Rejected execution handler configuration bean")
     public RejectedExecutionHandler rejectedExecutionHandler() {
-        return new DefaultRejectedExecutionHandler();
+        return new DelegatedRejectedExecutionHandler();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(DefaultAsyncUncaughtExceptionHandler.class)
+    @ConditionalOnClass(DelegatedAsyncUncaughtExceptionHandler.class)
     @Description("Default asynchronous uncaught exception handler bean")
     public AsyncUncaughtExceptionHandler asyncUncaughtExceptionHandler() {
-        return new DefaultAsyncUncaughtExceptionHandler();
+        return new DelegatedAsyncUncaughtExceptionHandler();
     }
 }
 

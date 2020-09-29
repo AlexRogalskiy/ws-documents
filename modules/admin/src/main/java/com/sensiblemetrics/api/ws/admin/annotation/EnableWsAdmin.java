@@ -15,7 +15,7 @@ import java.lang.annotation.*;
 @EnableDiscoveryClient
 @EnableAdminServer
 @Import(WsAdminConfiguration.class)
-public @interface EnableWsAdminStatus {
+public @interface EnableWsAdmin {
     /**
      * Returns {@code boolean} flag, whether to autoregister client on startup
      *

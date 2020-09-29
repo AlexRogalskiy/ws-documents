@@ -4,10 +4,10 @@ import com.ulisesbocchio.jasyptspringboot.EncryptablePropertyFilter;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
 
-public class CustomEncryptablePropertyFilter implements EncryptablePropertyFilter {
+public class DelegatedEncryptablePropertyFilter implements EncryptablePropertyFilter {
     private final String prefix;
 
-    public CustomEncryptablePropertyFilter(final String prefix) {
+    public DelegatedEncryptablePropertyFilter(final String prefix) {
         Assert.notNull(prefix, "Property prefix should not be null");
         this.prefix = prefix;
     }

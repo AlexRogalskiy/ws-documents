@@ -3,7 +3,7 @@ package com.sensiblemetrics.api.ws.actuator.indicator;
 import com.google.common.collect.ImmutableMap;
 import com.sensiblemetrics.api.ws.actuator.enumeration.ApplicationStateType;
 import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusProperty;
-import com.sensiblemetrics.api.ws.actuator.property.WsInfoApiStatusProperty;
+import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusInfoProperty;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.boot.actuate.health.HealthEndpoint;
@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.sensiblemetrics.api.ws.actuator.property.WsInfoApiStatusProperty.InfoMetrics.LOGBACK_EVENTS_METRIC;
-import static com.sensiblemetrics.api.ws.actuator.property.WsInfoApiStatusProperty.InfoMetrics.PROCESS_UPTIME_METRIC;
+import static com.sensiblemetrics.api.ws.actuator.property.WsApiStatusInfoProperty.InfoMetrics.LOGBACK_EVENTS_METRIC;
+import static com.sensiblemetrics.api.ws.actuator.property.WsApiStatusInfoProperty.InfoMetrics.PROCESS_UPTIME_METRIC;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
@@ -40,7 +40,7 @@ public class WsApiStatusInfoContributor implements InfoContributor {
      */
     private final MetricsEndpoint metricsEndpoint;
     private final HealthEndpoint healthEndpoint;
-    private final WsInfoApiStatusProperty infoServiceProperty;
+    private final WsApiStatusInfoProperty infoServiceProperty;
     private final WsApiStatusProperty apiStatusProperty;
 
     @Override

@@ -5,10 +5,10 @@ import org.springframework.util.Assert;
 
 import java.util.Optional;
 
-public class CustomEncryptablePropertyDetector implements EncryptablePropertyDetector {
+public class DelegatedEncryptablePropertyDetector implements EncryptablePropertyDetector {
     private final String prefix;
 
-    public CustomEncryptablePropertyDetector(final String prefix) {
+    public DelegatedEncryptablePropertyDetector(final String prefix) {
         Assert.notNull(prefix, "Property prefix should not be null");
         this.prefix = prefix;
     }

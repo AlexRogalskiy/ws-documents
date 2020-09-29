@@ -6,7 +6,7 @@ import com.sensiblemetrics.api.ws.actuator.indicator.TaskSchedulerHealthIndicato
 import com.sensiblemetrics.api.ws.actuator.indicator.WsApiStatusInfoContributor;
 import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusProperty;
 import com.sensiblemetrics.api.ws.actuator.property.WsGracefulShutdownProperty;
-import com.sensiblemetrics.api.ws.actuator.property.WsInfoApiStatusProperty;
+import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusInfoProperty;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -21,7 +21,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @EnableConfigurationProperties({
         WsGracefulShutdownProperty.class,
         WsApiStatusProperty.class,
-        WsInfoApiStatusProperty.class
+        WsApiStatusInfoProperty.class
 })
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Api Status configuration")

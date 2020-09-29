@@ -21,10 +21,10 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WsInfoApiStatusProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = WsApiStatusInfoProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Info Api Status configuration properties")
-public class WsInfoApiStatusProperty {
+public class WsApiStatusInfoProperty {
     /**
      * Default info api status property prefix
      */
@@ -36,7 +36,7 @@ public class WsInfoApiStatusProperty {
     @Valid
     @NestedConfigurationProperty
     @NotNull(message = "{property.api-status.node.info.settings.notNull}")
-    private WsInfoApiStatusProperty.InfoSettings settings = new InfoSettings();
+    private WsApiStatusInfoProperty.InfoSettings settings = new InfoSettings();
 
     /**
      * Info parameter names
@@ -44,7 +44,7 @@ public class WsInfoApiStatusProperty {
     @Valid
     @NestedConfigurationProperty
     @NotNull(message = "{property.api-status.node.info.parameter-names.notNull}")
-    private WsInfoApiStatusProperty.InfoParameterNames parameterNames = new InfoParameterNames();
+    private WsApiStatusInfoProperty.InfoParameterNames parameterNames = new InfoParameterNames();
 
     /**
      * Info metrics
@@ -52,7 +52,7 @@ public class WsInfoApiStatusProperty {
     @Valid
     @NestedConfigurationProperty
     @NotNull(message = "{property.api-status.node.info.metrics.notNull}")
-    private WsInfoApiStatusProperty.InfoMetrics metrics = new InfoMetrics();
+    private WsApiStatusInfoProperty.InfoMetrics metrics = new InfoMetrics();
 
     @Data
     @Validated
