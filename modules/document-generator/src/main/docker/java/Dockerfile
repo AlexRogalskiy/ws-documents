@@ -25,7 +25,7 @@ ADD modules/document-generator/src/main/docker/java/entrypoint.sh /opt/app/entry
 # Set workdir inside container
 WORKDIR /opt/app
 
-RUN bash -c 'touch /com.sensiblemetrics.api.ws.document.generator.jar'
+RUN bash -c 'touch ./com.sensiblemetrics.api.ws.document.generator.jar'
 
 # Expose service default port
 EXPOSE 8888
