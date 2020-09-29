@@ -14,19 +14,23 @@ import org.springframework.context.annotation.Role;
 
 @Configuration
 @EnableConfigurationProperties(WsCachingProperty.class)
-@ConditionalOnProperty(prefix = WsCachingProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    prefix = WsCachingProperty.PROPERTY_PREFIX,
+    name = "enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Caching configuration")
 public abstract class WsCachingConfiguration {
-    /**
-     * Default caching bean naming convention
-     */
-    public static final String CONCURRENT_CACHE_MANAGER_CUSTOMIZER_BEAN_NAME = "concurrentCacheManagerCustomizer";
+  /** Default caching bean naming convention */
+  public static final String CONCURRENT_CACHE_MANAGER_CUSTOMIZER_BEAN_NAME =
+      "concurrentCacheManagerCustomizer";
 
-    @Bean(CONCURRENT_CACHE_MANAGER_CUSTOMIZER_BEAN_NAME)
-    @ConditionalOnMissingBean(name = CONCURRENT_CACHE_MANAGER_CUSTOMIZER_BEAN_NAME)
-    @Description("Concurrent cache manager customizer bean")
-    public <T extends ConcurrentMapCacheManager> CacheManagerCustomizer<T> concurrentCacheManagerCustomizer() {
-        return cacheManager -> cacheManager.setAllowNullValues(false);
-    }
+  @Bean(CONCURRENT_CACHE_MANAGER_CUSTOMIZER_BEAN_NAME)
+  @ConditionalOnMissingBean(name = CONCURRENT_CACHE_MANAGER_CUSTOMIZER_BEAN_NAME)
+  @Description("Concurrent cache manager customizer bean")
+  public <T extends ConcurrentMapCacheManager>
+      CacheManagerCustomizer<T> concurrentCacheManagerCustomizer() {
+    return cacheManager -> cacheManager.setAllowNullValues(false);
+  }
 }

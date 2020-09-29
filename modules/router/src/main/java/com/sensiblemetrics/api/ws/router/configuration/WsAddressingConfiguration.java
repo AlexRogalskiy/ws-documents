@@ -20,67 +20,78 @@ import java.util.List;
 
 @Configuration
 @Import(WsEndpointConfigurerAdapter.class)
-@ConditionalOnProperty(prefix = WsAddressingProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    prefix = WsAddressingProperty.PROPERTY_PREFIX,
+    name = "enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @EnableConfigurationProperties(WsAddressingProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Router Addressing configuration")
 public abstract class WsAddressingConfiguration {
 
-    @Configuration
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Commons Web Service Registration configuration")
-    public static class WsRegistrationConfiguration extends WsConfigurerAdapter {
-        /**
-         * Default bean naming conventions
-         */
-        public static final String MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME = "messageDispatcherServletCustomizer";
-        public static final String CONTEXT_MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME = "applicationContextMessageDispatcherServletCustomizer";
-        public static final String ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME = "endpointConfigurationProvider";
+  @Configuration
+  @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+  @Description("SensibleMetrics Commons Web Service Registration configuration")
+  public static class WsRegistrationConfiguration extends WsConfigurerAdapter {
+    /** Default bean naming conventions */
+    public static final String MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME =
+        "messageDispatcherServletCustomizer";
 
-        @Bean
-        @ConditionalOnMissingBean
-        @Description("Default message dispatcher servlet registration bean")
-        public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(final WsAddressingProperty property,
-                                                                                          final ObjectProvider<List<MessageDispatcherServletCustomizer>> customizerList) {
-            final MessageDispatcherServlet dispatcherServlet = new MessageDispatcherServlet();
-            customizerList.ifAvailable(customizers -> customizers.forEach(c -> c.customize(dispatcherServlet)));
-            return new ServletRegistrationBean<>(dispatcherServlet, property.getUrlMappingsAsArray());
-        }
-
-        @Bean(MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
-        @ConditionalOnMissingBean(name = MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
-        @Description("Default message dispatcher servlet customizer bean")
-        public MessageDispatcherServletCustomizer messageDispatcherServletCustomizer(final WsAddressingProperty property) {
-            return dispatcherServlet -> {
-                dispatcherServlet.setTransformWsdlLocations(property.isTransformWsdlLocations());
-                dispatcherServlet.setEnableLoggingRequestDetails(property.isEnableLoggingRequests());
-                dispatcherServlet.setTransformSchemaLocations(property.isTransformSchemaLocations());
-                dispatcherServlet.setNamespace(property.getNamespace());
-            };
-        }
-
-        @Bean(CONTEXT_MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
-        @ConditionalOnMissingBean(name = CONTEXT_MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
-        @Description("Application context message dispatcher servlet customizer bean")
-        public MessageDispatcherServletCustomizer applicationContextMessageDispatcherServletCustomizer(final ApplicationContext applicationContext) {
-            return dispatcherServlet -> dispatcherServlet.setApplicationContext(applicationContext);
-        }
-
-        @Bean(ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME)
-        @ConditionalOnMissingBean(name = ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME)
-        @Description("Default WS-endpoint factory bean")
-        public EndpointConfigurationProvider endpointConfigurationProvider(final WsAddressingProperty property) {
-            return name -> property.getEndpoints().get(name);
-        }
-    }
+    public static final String CONTEXT_MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME =
+        "applicationContextMessageDispatcherServletCustomizer";
+    public static final String ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME =
+        "endpointConfigurationProvider";
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnClass(DefaultConversionService.class)
-    @Description("Default conversion service bean")
-    public ConversionService conversionService(final List<Converter<?, ?>> converters) {
-        final DefaultConversionService defaultConversionService = new DefaultConversionService();
-        converters.forEach(defaultConversionService::addConverter);
-        return defaultConversionService;
+    @Description("Default message dispatcher servlet registration bean")
+    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(
+        final WsAddressingProperty property,
+        final ObjectProvider<List<MessageDispatcherServletCustomizer>> customizerList) {
+      final MessageDispatcherServlet dispatcherServlet = new MessageDispatcherServlet();
+      customizerList.ifAvailable(
+          customizers -> customizers.forEach(c -> c.customize(dispatcherServlet)));
+      return new ServletRegistrationBean<>(dispatcherServlet, property.getUrlMappingsAsArray());
     }
+
+    @Bean(MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
+    @Description("Default message dispatcher servlet customizer bean")
+    public MessageDispatcherServletCustomizer messageDispatcherServletCustomizer(
+        final WsAddressingProperty property) {
+      return dispatcherServlet -> {
+        dispatcherServlet.setTransformWsdlLocations(property.isTransformWsdlLocations());
+        dispatcherServlet.setEnableLoggingRequestDetails(property.isEnableLoggingRequests());
+        dispatcherServlet.setTransformSchemaLocations(property.isTransformSchemaLocations());
+        dispatcherServlet.setNamespace(property.getNamespace());
+      };
+    }
+
+    @Bean(CONTEXT_MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = CONTEXT_MESSAGE_DISPATCHER_SERVLET_CUSTOMIZER_BEAN_NAME)
+    @Description("Application context message dispatcher servlet customizer bean")
+    public MessageDispatcherServletCustomizer applicationContextMessageDispatcherServletCustomizer(
+        final ApplicationContext applicationContext) {
+      return dispatcherServlet -> dispatcherServlet.setApplicationContext(applicationContext);
+    }
+
+    @Bean(ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = ENDPOINT_CONFIGURATION_PROVIDER_BEAN_NAME)
+    @Description("Default WS-endpoint factory bean")
+    public EndpointConfigurationProvider endpointConfigurationProvider(
+        final WsAddressingProperty property) {
+      return name -> property.getEndpoints().get(name);
+    }
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  @ConditionalOnClass(DefaultConversionService.class)
+  @Description("Default conversion service bean")
+  public ConversionService conversionService(final List<Converter<?, ?>> converters) {
+    final DefaultConversionService defaultConversionService = new DefaultConversionService();
+    converters.forEach(defaultConversionService::addConverter);
+    return defaultConversionService;
+  }
 }

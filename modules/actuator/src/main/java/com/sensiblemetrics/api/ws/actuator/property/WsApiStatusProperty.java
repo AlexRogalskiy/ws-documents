@@ -29,103 +29,87 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Api Status configuration properties")
 public class WsApiStatusProperty {
-    /**
-     * Default api status property prefix
-     */
-    public static final String PROPERTY_PREFIX = DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "api-status";
+  /** Default api status property prefix */
+  public static final String PROPERTY_PREFIX =
+      DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "api-status";
 
-    /**
-     * API status info parameters
-     */
-    @Valid
-    @NestedConfigurationProperty
-    @NotNull(message = "{property.api-status.node.notNull}")
-    private InfoParameters node = new InfoParameters();
+  /** API status info parameters */
+  @Valid
+  @NestedConfigurationProperty
+  @NotNull(message = "{property.api-status.node.notNull}")
+  private InfoParameters node = new InfoParameters();
 
-    /**
-     * API status build parameters
-     */
-    @Valid
-    @NestedConfigurationProperty
-    @NotNull(message = "{property.api-status.build.notNull}")
-    private BuildParameters build = new BuildParameters();
+  /** API status build parameters */
+  @Valid
+  @NestedConfigurationProperty
+  @NotNull(message = "{property.api-status.build.notNull}")
+  private BuildParameters build = new BuildParameters();
 
-    /**
-     * Enable/disable api status configuration ({@code true} by default)
-     */
-    private boolean enabled = true;
+  /** Enable/disable api status configuration ({@code true} by default) */
+  private boolean enabled = true;
 
-    @Data
-    @Validated
-    @Accessors(chain = true)
-    public static class InfoParameters {
-        /**
-         * Default info name parameter
-         */
-        @NotBlank(message = "{property.api-status.node.name.notBlank}")
-        private String name;
-    }
+  @Data
+  @Validated
+  @Accessors(chain = true)
+  public static class InfoParameters {
+    /** Default info name parameter */
+    @NotBlank(message = "{property.api-status.node.name.notBlank}")
+    private String name;
+  }
 
-    @Data
-    @Validated
-    @Accessors(chain = true)
-    public static class BuildParameters {
-        /**
-         * Default groupId artifact parameter
-         */
-        @NotBlank(message = "{property.api-status.build.group-id.notBlank}")
-        private String groupId;
+  @Data
+  @Validated
+  @Accessors(chain = true)
+  public static class BuildParameters {
+    /** Default groupId artifact parameter */
+    @NotBlank(message = "{property.api-status.build.group-id.notBlank}")
+    private String groupId;
 
-        /**
-         * Default build artifact parameter
-         */
-        @NotBlank(message = "{property.api-status.build.artifact-id.notBlank}")
-        private String artifactId;
+    /** Default build artifact parameter */
+    @NotBlank(message = "{property.api-status.build.artifact-id.notBlank}")
+    private String artifactId;
 
-        /**
-         * Default build version parameter
-         */
-        @NotBlank(message = "{property.api-status.build.version.notBlank}")
-        private String version;
+    /** Default build version parameter */
+    @NotBlank(message = "{property.api-status.build.version.notBlank}")
+    private String version;
 
-        /**
-         * Default build name parameter
-         */
-        @NotBlank(message = "{property.api-status.build.name.notBlank}")
-        private String name;
+    /** Default build name parameter */
+    @NotBlank(message = "{property.api-status.build.name.notBlank}")
+    private String name;
 
-        /**
-         * Default build timestamp parameter
-         */
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", locale = "ENGLISH")
-        @DateTimeFormat(pattern = "dd/MM/yyyy")
-        @NotBlank(message = "{property.api-status.build.timestamp.notBlank}")
-        private String timestamp;
-    }
+    /** Default build timestamp parameter */
+    @JsonFormat(
+        shape = JsonFormat.Shape.STRING,
+        pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        locale = "ENGLISH")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @NotBlank(message = "{property.api-status.build.timestamp.notBlank}")
+    private String timestamp;
+  }
 
-    /**
-     * Returns IPPattern {@link InetAddress} by current host value
-     *
-     * @return IPPattern {@link InetAddress}
-     */
-    @Nullable
-    public byte[] getIpAddress() {
-        return Optional.ofNullable(this.node)
-                .map(InfoParameters::getName)
-                .map(ServiceUtils::getIpAddress)
-                .orElse(null);
-    }
+  /**
+   * Returns IPPattern {@link InetAddress} by current host value
+   *
+   * @return IPPattern {@link InetAddress}
+   */
+  @Nullable
+  public byte[] getIpAddress() {
+    return Optional.ofNullable(this.node)
+        .map(InfoParameters::getName)
+        .map(ServiceUtils::getIpAddress)
+        .orElse(null);
+  }
 
-    /**
-     * Returns {@link InetAddress} by current host value
-     *
-     * @return {@link InetAddress}
-     */
-    @Nullable
-    public InetAddress getHost() {
-        return Optional.ofNullable(this.node)
-                .map(InfoParameters::getName)
-                .map(ServiceUtils::getHost)
-                .orElse(null);
-    }
+  /**
+   * Returns {@link InetAddress} by current host value
+   *
+   * @return {@link InetAddress}
+   */
+  @Nullable
+  public InetAddress getHost() {
+    return Optional.ofNullable(this.node)
+        .map(InfoParameters::getName)
+        .map(ServiceUtils::getHost)
+        .orElse(null);
+  }
 }

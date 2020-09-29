@@ -27,74 +27,74 @@ import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties({
-        WsDocumentTemplateProperty.class,
-        WsDocumentTemplateFormatProperty.class,
-        WsDocumentStorageProperty.class
+  WsDocumentTemplateProperty.class,
+  WsDocumentTemplateFormatProperty.class,
+  WsDocumentStorageProperty.class
 })
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Document Generator Service configuration")
 public class WsDocumentServiceConfiguration {
 
-    @Bean
-    @Description("Default model mapper configuration bean")
-    public ModelMapper modelMapper(final List<Converter<?, ?>> converters,
-                                   final List<PropertyMap<?, ?>> propertyMaps) {
-        final ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
-                .setMethodAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC)
-                .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR)
-                .setSourceNamingConvention(NamingConventions.JAVABEANS_ACCESSOR)
-                .setMatchingStrategy(MatchingStrategies.STRICT)
-                .setSourceNameTokenizer(NameTokenizers.CAMEL_CASE)
-                .setDestinationNameTokenizer(NameTokenizers.CAMEL_CASE)
-                .setAmbiguityIgnored(true)
-                .setSkipNullEnabled(true)
-                .setFieldMatchingEnabled(true)
-                .setFullTypeMatchingRequired(true)
-                .setImplicitMappingEnabled(true);
-        converters.forEach(modelMapper::addConverter);
-        propertyMaps.forEach(modelMapper::addMappings);
-        return modelMapper;
+  @Bean
+  @Description("Default model mapper configuration bean")
+  public ModelMapper modelMapper(
+      final List<Converter<?, ?>> converters, final List<PropertyMap<?, ?>> propertyMaps) {
+    final ModelMapper modelMapper = new ModelMapper();
+    modelMapper
+        .getConfiguration()
+        .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+        .setMethodAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PUBLIC)
+        .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR)
+        .setSourceNamingConvention(NamingConventions.JAVABEANS_ACCESSOR)
+        .setMatchingStrategy(MatchingStrategies.STRICT)
+        .setSourceNameTokenizer(NameTokenizers.CAMEL_CASE)
+        .setDestinationNameTokenizer(NameTokenizers.CAMEL_CASE)
+        .setAmbiguityIgnored(true)
+        .setSkipNullEnabled(true)
+        .setFieldMatchingEnabled(true)
+        .setFullTypeMatchingRequired(true)
+        .setImplicitMappingEnabled(true);
+    converters.forEach(modelMapper::addConverter);
+    propertyMaps.forEach(modelMapper::addMappings);
+    return modelMapper;
+  }
+
+  @Configuration
+  @RequiredArgsConstructor
+  @EnableConfigurationProperties(WsAddressingProperty.class)
+  @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+  @Description("SensibleMetrics Web Service Document configuration")
+  public static class WsDocumentConfiguration {
+    /** Default document definition bean naming conventions */
+    public static final String DOCUMENT_WSDL_DEFINITION_BEAN_NAME = "documents";
+
+    public static final String DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME = "documentWsXsdSchemaBean";
+    public static final String DOCUMENT_WS_ENDPOINT_BEAN_NAME = "documentWsEndpointBean";
+    /** Default document property key */
+    public static final String DOCUMENT_WS_ENDPOINT_KEY = "document";
+
+    private final WsEndpointConfigurerAdapter endpointConfigurerAdapter;
+    private final EndpointConfigurationProvider endpointConfigurationProvider;
+
+    @Bean(name = DOCUMENT_WSDL_DEFINITION_BEAN_NAME)
+    @Description("Default document WSDL definition configuration bean")
+    public DefaultWsdl11Definition defaultWsdl11Definition(
+        @Qualifier(DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME) final XsdSchema xsdSchema,
+        @Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsAddressingProperty.WsEndpoint endpoint) {
+      return this.endpointConfigurerAdapter.createWsdl11Definition(xsdSchema, endpoint);
     }
 
-    @Configuration
-    @RequiredArgsConstructor
-    @EnableConfigurationProperties(WsAddressingProperty.class)
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SensibleMetrics Web Service Document configuration")
-    public static class WsDocumentConfiguration {
-        /**
-         * Default document definition bean naming conventions
-         */
-        public static final String DOCUMENT_WSDL_DEFINITION_BEAN_NAME = "documents";
-        public static final String DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME = "documentWsXsdSchemaBean";
-        public static final String DOCUMENT_WS_ENDPOINT_BEAN_NAME = "documentWsEndpointBean";
-        /**
-         * Default document property key
-         */
-        public static final String DOCUMENT_WS_ENDPOINT_KEY = "document";
-
-        private final WsEndpointConfigurerAdapter endpointConfigurerAdapter;
-        private final EndpointConfigurationProvider endpointConfigurationProvider;
-
-        @Bean(name = DOCUMENT_WSDL_DEFINITION_BEAN_NAME)
-        @Description("Default document WSDL definition configuration bean")
-        public DefaultWsdl11Definition defaultWsdl11Definition(@Qualifier(DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME) final XsdSchema xsdSchema,
-                                                               @Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsAddressingProperty.WsEndpoint endpoint) {
-            return this.endpointConfigurerAdapter.createWsdl11Definition(xsdSchema, endpoint);
-        }
-
-        @Bean(name = DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME)
-        @Description("Default document XSD-schema configuration bean")
-        public XsdSchema documentSchema(@Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsAddressingProperty.WsEndpoint endpoint) {
-            return this.endpointConfigurerAdapter.createSimpleXsdSchema(endpoint);
-        }
-
-        @Bean(name = DOCUMENT_WS_ENDPOINT_BEAN_NAME)
-        @Description("Default document WS-endpoint property configuration bean")
-        public WsAddressingProperty.WsEndpoint documentWsEndpoint() {
-            return this.endpointConfigurationProvider.getOrThrow(DOCUMENT_WS_ENDPOINT_KEY);
-        }
+    @Bean(name = DOCUMENT_WS_XSD_SCHEMA_BEAN_NAME)
+    @Description("Default document XSD-schema configuration bean")
+    public XsdSchema documentSchema(
+        @Qualifier(DOCUMENT_WS_ENDPOINT_BEAN_NAME) final WsAddressingProperty.WsEndpoint endpoint) {
+      return this.endpointConfigurerAdapter.createSimpleXsdSchema(endpoint);
     }
+
+    @Bean(name = DOCUMENT_WS_ENDPOINT_BEAN_NAME)
+    @Description("Default document WS-endpoint property configuration bean")
+    public WsAddressingProperty.WsEndpoint documentWsEndpoint() {
+      return this.endpointConfigurationProvider.getOrThrow(DOCUMENT_WS_ENDPOINT_KEY);
+    }
+  }
 }

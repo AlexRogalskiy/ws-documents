@@ -13,5 +13,4 @@ import java.lang.annotation.*;
 @Target(ElementType.ANNOTATION_TYPE)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @DisplayNameGeneration(DisplayNameGenerator.Standard.class)
-public @interface EnableBootstrapTest {
-}
+public @interface EnableBootstrapTest {}

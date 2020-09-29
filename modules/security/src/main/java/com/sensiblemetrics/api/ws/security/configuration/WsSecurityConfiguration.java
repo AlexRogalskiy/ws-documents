@@ -12,23 +12,29 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableConfigurationProperties(WsSecurityProperty.class)
-@ConditionalOnProperty(prefix = WsSecurityProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    prefix = WsSecurityProperty.PROPERTY_PREFIX,
+    name = "enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Commons Web Service Security configuration")
 public abstract class WsSecurityConfiguration {
 
-    /**
-     * SSL {@link WebSecurityConfigurerAdapter} implementation
-     */
-    @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(prefix = WsSecurityProperty.SSL_PROPERTY_PREFIX, value = "enabled", havingValue = "false", matchIfMissing = true)
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("SSL Web Security configuration adapter")
-    public static class SslWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+  /** SSL {@link WebSecurityConfigurerAdapter} implementation */
+  @Configuration(proxyBeanMethods = false)
+  @ConditionalOnProperty(
+      prefix = WsSecurityProperty.SSL_PROPERTY_PREFIX,
+      value = "enabled",
+      havingValue = "false",
+      matchIfMissing = true)
+  @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+  @Description("SSL Web Security configuration adapter")
+  public static class SslWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-        @Override
-        protected void configure(final HttpSecurity http) throws Exception {
-            http.requiresChannel().anyRequest().requiresSecure();
-        }
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception {
+      http.requiresChannel().anyRequest().requiresSecure();
     }
+  }
 }

@@ -23,60 +23,76 @@ import static com.sensiblemetrics.api.ws.actuator.property.WsApiStatusInfoProper
 import static com.sensiblemetrics.api.ws.actuator.property.WsApiStatusInfoProperty.InfoMetrics.PROCESS_UPTIME_METRIC;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-/**
- * {@link InfoContributor} service implementation
- */
+/** {@link InfoContributor} service implementation */
 @Service
 @RequiredArgsConstructor
 @Description("SensibleMetrics Commons Web Service Api Status info configuration service")
 public class WsApiStatusInfoContributor implements InfoContributor {
-    /**
-     * Default {@link List} collection of {@link String} level tags
-     */
-    public static final List<String> LOGBACK_ERROR_LEVEL_TAG = Collections.singletonList("level:error");
+  /** Default {@link List} collection of {@link String} level tags */
+  public static final List<String> LOGBACK_ERROR_LEVEL_TAG =
+      Collections.singletonList("level:error");
 
-    /**
-     * {@link MetricsEndpoint} instance
-     */
-    private final MetricsEndpoint metricsEndpoint;
-    private final HealthEndpoint healthEndpoint;
-    private final WsApiStatusInfoProperty infoServiceProperty;
-    private final WsApiStatusProperty apiStatusProperty;
+  /** {@link MetricsEndpoint} instance */
+  private final MetricsEndpoint metricsEndpoint;
 
-    @Override
-    public void contribute(final Info.Builder builder) {
-        builder.withDetails(this.getInfoDetails());
-    }
+  private final HealthEndpoint healthEndpoint;
+  private final WsApiStatusInfoProperty infoServiceProperty;
+  private final WsApiStatusProperty apiStatusProperty;
 
-    private Map<String, Object> getInfoDetails() {
-        return ImmutableMap.<String, Object>builder()
-                .put(this.infoServiceProperty.getParameterNames().getServerName(), this.apiStatusProperty.getNode().getName())
-                .put(this.infoServiceProperty.getParameterNames().getBuildNumberName(), this.apiStatusProperty.getBuild().getVersion())
-                .put(this.infoServiceProperty.getParameterNames().getServerUptimeName(), this.getUptimeMetric())
-                .put(this.infoServiceProperty.getParameterNames().getStateName(), this.getApplicationStateMetric())
-                .put(this.infoServiceProperty.getParameterNames().getStartedStatusName(), this.getApplicationStartedStatusMetric())
-                .put(this.infoServiceProperty.getParameterNames().getErrorsCounterName(), this.getErrorCounterMetric())
-                .put(this.infoServiceProperty.getParameterNames().getErrorDescriptionName(), EMPTY)
-                .build();
-    }
+  @Override
+  public void contribute(final Info.Builder builder) {
+    builder.withDetails(this.getInfoDetails());
+  }
 
-    private String getUptimeMetric() {
-        final MetricsEndpoint.MetricResponse uptimeMetricResponse = this.metricsEndpoint.metric(PROCESS_UPTIME_METRIC, null);
-        final long uptimeMilliseconds = (long) (uptimeMetricResponse.getMeasurements().get(0).getValue() * 1000);
-        return DurationFormatUtils.formatDuration(uptimeMilliseconds, this.infoServiceProperty.getSettings().getDurationFormat());
-    }
+  private Map<String, Object> getInfoDetails() {
+    return ImmutableMap.<String, Object>builder()
+        .put(
+            this.infoServiceProperty.getParameterNames().getServerName(),
+            this.apiStatusProperty.getNode().getName())
+        .put(
+            this.infoServiceProperty.getParameterNames().getBuildNumberName(),
+            this.apiStatusProperty.getBuild().getVersion())
+        .put(
+            this.infoServiceProperty.getParameterNames().getServerUptimeName(),
+            this.getUptimeMetric())
+        .put(
+            this.infoServiceProperty.getParameterNames().getStateName(),
+            this.getApplicationStateMetric())
+        .put(
+            this.infoServiceProperty.getParameterNames().getStartedStatusName(),
+            this.getApplicationStartedStatusMetric())
+        .put(
+            this.infoServiceProperty.getParameterNames().getErrorsCounterName(),
+            this.getErrorCounterMetric())
+        .put(this.infoServiceProperty.getParameterNames().getErrorDescriptionName(), EMPTY)
+        .build();
+  }
 
-    private boolean getApplicationStartedStatusMetric() {
-        final MetricsEndpoint.MetricResponse uptimeMetric = this.metricsEndpoint.metric(PROCESS_UPTIME_METRIC, null);
-        return uptimeMetric.getMeasurements().get(0).getValue().longValue() > 0;
-    }
+  private String getUptimeMetric() {
+    final MetricsEndpoint.MetricResponse uptimeMetricResponse =
+        this.metricsEndpoint.metric(PROCESS_UPTIME_METRIC, null);
+    final long uptimeMilliseconds =
+        (long) (uptimeMetricResponse.getMeasurements().get(0).getValue() * 1000);
+    return DurationFormatUtils.formatDuration(
+        uptimeMilliseconds, this.infoServiceProperty.getSettings().getDurationFormat());
+  }
 
-    private long getErrorCounterMetric() {
-        final MetricsEndpoint.MetricResponse errorMetric = this.metricsEndpoint.metric(LOGBACK_EVENTS_METRIC, LOGBACK_ERROR_LEVEL_TAG);
-        return errorMetric.getMeasurements().get(0).getValue().longValue();
-    }
+  private boolean getApplicationStartedStatusMetric() {
+    final MetricsEndpoint.MetricResponse uptimeMetric =
+        this.metricsEndpoint.metric(PROCESS_UPTIME_METRIC, null);
+    return uptimeMetric.getMeasurements().get(0).getValue().longValue() > 0;
+  }
 
-    private com.sensiblemetrics.api.ws.actuator.enumeration.ApplicationStateType getApplicationStateMetric() {
-        return Objects.equals(this.healthEndpoint.health().getStatus(), Status.UP) ? com.sensiblemetrics.api.ws.actuator.enumeration.ApplicationStateType.OK : ApplicationStateType.DOWN;
-    }
+  private long getErrorCounterMetric() {
+    final MetricsEndpoint.MetricResponse errorMetric =
+        this.metricsEndpoint.metric(LOGBACK_EVENTS_METRIC, LOGBACK_ERROR_LEVEL_TAG);
+    return errorMetric.getMeasurements().get(0).getValue().longValue();
+  }
+
+  private com.sensiblemetrics.api.ws.actuator.enumeration.ApplicationStateType
+      getApplicationStateMetric() {
+    return Objects.equals(this.healthEndpoint.health().getStatus(), Status.UP)
+        ? com.sensiblemetrics.api.ws.actuator.enumeration.ApplicationStateType.OK
+        : ApplicationStateType.DOWN;
+  }
 }

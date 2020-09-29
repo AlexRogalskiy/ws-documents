@@ -23,68 +23,60 @@ import static com.sensiblemetrics.api.ws.commons.utils.ServiceUtils.streamOf;
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(
+    prefix = WsActuatorSecurityProperty.PROPERTY_PREFIX,
+    ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Actuator Security configuration properties")
 public class WsActuatorSecurityProperty {
-    /**
-     * Default actuator security property prefix
-     */
-    public static final String PROPERTY_PREFIX = DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "actuator.security";
+  /** Default actuator security property prefix */
+  public static final String PROPERTY_PREFIX =
+      DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "actuator.security";
 
-    /**
-     * Default {@link Map} collection of {@link ActuatorEndpoint}s
-     */
+  /** Default {@link Map} collection of {@link ActuatorEndpoint}s */
+  @Valid
+  @NullOrNotEmpty(message = "{property.actuator.security.endpoints.nullOrNotEmpty}")
+  private Map<@NotBlank String, @NotNull ActuatorEndpoint> endpoints;
+
+  /** Actuator security endpoint configuration properties */
+  @Data
+  @Builder
+  @Validated
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class ActuatorEndpoint {
     @Valid
-    @NullOrNotEmpty(message = "{property.actuator.security.endpoints.nullOrNotEmpty}")
-    private Map<@NotBlank String, @NotNull ActuatorEndpoint> endpoints;
+    @Singular
+    @NotEmpty(message = "{property.actuator.security.endpoint.names.notEmpty}")
+    private List<@NotBlank String> names;
+
+    @Valid
+    @Singular
+    @NotEmpty(message = "{property.actuator.security.endpoint.roles.notEmpty}")
+    private List<@NotBlank String> roles;
+
+    /** Enable security endpoint ({@code true} by default) */
+    @Builder.Default private boolean enabled = true;
 
     /**
-     * Actuator security endpoint configuration properties
+     * Return {@link String} array of names
+     *
+     * @return {@link String} array of names
      */
-    @Data
-    @Builder
-    @Validated
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ActuatorEndpoint {
-        @Valid
-        @Singular
-        @NotEmpty(message = "{property.actuator.security.endpoint.names.notEmpty}")
-        private List<@NotBlank String> names;
-
-        @Valid
-        @Singular
-        @NotEmpty(message = "{property.actuator.security.endpoint.roles.notEmpty}")
-        private List<@NotBlank String> roles;
-
-        /**
-         * Enable security endpoint ({@code true} by default)
-         */
-        @Builder.Default
-        private boolean enabled = true;
-
-        /**
-         * Return {@link String} array of names
-         *
-         * @return {@link String} array of names
-         */
-        public String[] getNamesAsArray() {
-            return streamOf(this.names).toArray(String[]::new);
-        }
-
-        /**
-         * Return {@link String} array of roles
-         *
-         * @return {@link String} array of roles
-         */
-        public String[] getRolesAsArray() {
-            return streamOf(this.roles).toArray(String[]::new);
-        }
+    public String[] getNamesAsArray() {
+      return streamOf(this.names).toArray(String[]::new);
     }
 
     /**
-     * Enable/disable actuator security configuration ({@code true} by default)
+     * Return {@link String} array of roles
+     *
+     * @return {@link String} array of roles
      */
-    private boolean enabled = true;
+    public String[] getRolesAsArray() {
+      return streamOf(this.roles).toArray(String[]::new);
+    }
+  }
+
+  /** Enable/disable actuator security configuration ({@code true} by default) */
+  private boolean enabled = true;
 }

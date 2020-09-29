@@ -12,5 +12,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @ConditionalOnBean(WsAddressingConfiguration.class)
 @TypeQualifierDefault(ElementType.TYPE)
-public @interface ConditionalOnWsAddressingEnabled {
-}
+public @interface ConditionalOnWsAddressingEnabled {}

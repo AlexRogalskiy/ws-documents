@@ -9,22 +9,21 @@ import java.util.Arrays;
 
 import static java.lang.String.format;
 
-/**
- * {@link AsyncUncaughtExceptionHandler} implementation
- */
+/** {@link AsyncUncaughtExceptionHandler} implementation */
 @Slf4j
 public class DelegatedAsyncUncaughtExceptionHandler implements AsyncUncaughtExceptionHandler {
-    /**
-     * {@inheritDoc}
-     *
-     * @see AsyncUncaughtExceptionHandler
-     */
-    @Override
-    public void handleUncaughtException(final Throwable throwable, final Method method, @NonNull final Object... obj) {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(format("Exception message={%s}", throwable.getMessage()));
-        sb.append(format("Method name={%s}", method.getName()));
-        Arrays.stream(obj).forEach(param -> sb.append(format("Param={%s}", param)));
-        log.info(sb.toString());
-    }
+  /**
+   * {@inheritDoc}
+   *
+   * @see AsyncUncaughtExceptionHandler
+   */
+  @Override
+  public void handleUncaughtException(
+      final Throwable throwable, final Method method, @NonNull final Object... obj) {
+    final StringBuilder sb = new StringBuilder();
+    sb.append(format("Exception message={%s}", throwable.getMessage()));
+    sb.append(format("Method name={%s}", method.getName()));
+    Arrays.stream(obj).forEach(param -> sb.append(format("Param={%s}", param)));
+    log.info(sb.toString());
+  }
 }

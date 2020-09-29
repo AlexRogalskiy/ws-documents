@@ -10,5 +10,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Import(WsLoggingConfiguration.class)
-public @interface EnableWsLogging {
-}
+public @interface EnableWsLogging {}

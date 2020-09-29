@@ -20,19 +20,20 @@ import java.lang.annotation.*;
 @AutoConfigureTestDatabase
 @AutoConfigureTestEntityManager
 public @interface EnableDataJpaTest {
-    /**
-     * Default {@link AutoConfigureTestDatabase.Replace} value
-     *
-     * @return {@link AutoConfigureTestDatabase.Replace} value
-     */
-    @AliasFor(annotation = AutoConfigureTestDatabase.class, attribute = "replace")
-    AutoConfigureTestDatabase.Replace databaseReplace() default AutoConfigureTestDatabase.Replace.NONE;
+  /**
+   * Default {@link AutoConfigureTestDatabase.Replace} value
+   *
+   * @return {@link AutoConfigureTestDatabase.Replace} value
+   */
+  @AliasFor(annotation = AutoConfigureTestDatabase.class, attribute = "replace")
+  AutoConfigureTestDatabase.Replace databaseReplace() default
+      AutoConfigureTestDatabase.Replace.NONE;
 
-    /**
-     * Default {@link EmbeddedDatabaseConnection} provider
-     *
-     * @return {@link EmbeddedDatabaseConnection} provider
-     */
-    @AliasFor(annotation = AutoConfigureTestDatabase.class, attribute = "connection")
-    EmbeddedDatabaseConnection databaseProvider() default EmbeddedDatabaseConnection.H2;
+  /**
+   * Default {@link EmbeddedDatabaseConnection} provider
+   *
+   * @return {@link EmbeddedDatabaseConnection} provider
+   */
+  @AliasFor(annotation = AutoConfigureTestDatabase.class, attribute = "connection")
+  EmbeddedDatabaseConnection databaseProvider() default EmbeddedDatabaseConnection.H2;
 }

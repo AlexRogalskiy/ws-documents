@@ -16,36 +16,30 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WsDocumentStorageProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(
+    prefix = WsDocumentStorageProperty.PROPERTY_PREFIX,
+    ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics Document Generator Web Service Document Storage configuration properties")
+@Description(
+    "SensibleMetrics Document Generator Web Service Document Storage configuration properties")
 public class WsDocumentStorageProperty {
-    /**
-     * Default document storage property prefix
-     */
-    public static final String PROPERTY_PREFIX = DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "storage";
+  /** Default document storage property prefix */
+  public static final String PROPERTY_PREFIX =
+      DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "storage";
 
-    /**
-     * Default archive base path
-     */
-    @NotBlank(message = "{property.storage.base-path.notBlank}")
-    private String basePath;
+  /** Default archive base path */
+  @NotBlank(message = "{property.storage.base-path.notBlank}")
+  private String basePath;
 
-    /**
-     * Default file name prefix
-     */
-    @NotBlank(message = "{property.storage.file-name-prefix.notBlank}")
-    private String fileNamePrefix = "document-";
+  /** Default file name prefix */
+  @NotBlank(message = "{property.storage.file-name-prefix.notBlank}")
+  private String fileNamePrefix = "document-";
 
-    /**
-     * Default file extension
-     */
-    @NotBlank(message = "{property.storage.file-extension.notBlank}")
-    private String fileExtension = "docx";
+  /** Default file extension */
+  @NotBlank(message = "{property.storage.file-extension.notBlank}")
+  private String fileExtension = "docx";
 
-    /**
-     * Default posix file permissions
-     */
-    @NotBlank(message = "{property.storage.posix-file-permissions.notBlank}")
-    private String posixFilePermissions = "rwxrwxrwx";
+  /** Default posix file permissions */
+  @NotBlank(message = "{property.storage.posix-file-permissions.notBlank}")
+  private String posixFilePermissions = "rwxrwxrwx";
 }

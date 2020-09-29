@@ -12,5 +12,4 @@ import java.lang.annotation.*;
 @Inherited
 @EnableWs
 @Import(WsAddressingConfiguration.class)
-public @interface EnableWsAddressing {
-}
+public @interface EnableWsAddressing {}

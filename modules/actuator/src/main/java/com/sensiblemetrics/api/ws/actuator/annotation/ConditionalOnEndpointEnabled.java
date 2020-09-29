@@ -6,16 +6,13 @@ import java.lang.annotation.*;
 
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({
-        ElementType.TYPE,
-        ElementType.METHOD
-})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Conditional(OnPropertyEnabledEndpointElementCondition.class)
 public @interface ConditionalOnEndpointEnabled {
-    /**
-     * Returns {@link String} value
-     *
-     * @return {@link String} value
-     */
-    String value();
+  /**
+   * Returns {@link String} value
+   *
+   * @return {@link String} value
+   */
+  String value();
 }

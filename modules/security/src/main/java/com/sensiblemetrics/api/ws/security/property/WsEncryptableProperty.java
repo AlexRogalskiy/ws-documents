@@ -19,25 +19,18 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Commons Web Service Security Encryptable configuration properties")
 public class WsEncryptableProperty {
-    /**
-     * Default encryptable property prefix
-     */
-    public static final String PROPERTY_PREFIX = WsSecurityProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "property";
+  /** Default encryptable property prefix */
+  public static final String PROPERTY_PREFIX =
+      WsSecurityProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "property";
 
-    /**
-     * Default encryption prefix
-     */
-    @NotBlank(message = "{property.security.property.encrypted-prefix.notBlank}")
-    private String encryptedPrefix = "ENC@";
+  /** Default encryption prefix */
+  @NotBlank(message = "{property.security.property.encrypted-prefix.notBlank}")
+  private String encryptedPrefix = "ENC@";
 
-    /**
-     * Default encryption marker
-     */
-    @NotBlank(message = "{property.security.property.encrypted-marker.notBlank}")
-    private String encryptedMarker = "encrypted.";
+  /** Default encryption marker */
+  @NotBlank(message = "{property.security.property.encrypted-marker.notBlank}")
+  private String encryptedMarker = "encrypted.";
 
-    /**
-     * Enable/disable encryptable configuration ({@code true} by default)
-     */
-    private boolean enabled = true;
+  /** Enable/disable encryptable configuration ({@code true} by default) */
+  private boolean enabled = true;
 }

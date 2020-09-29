@@ -49,141 +49,144 @@ import static org.springframework.util.StringUtils.arrayToDelimitedString;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Document Generator DataSource configuration")
 public class WsDocumentDataSourceConfiguration {
-    /**
-     * Default bean naming conventions
-     */
-    public static final String DEFAULT_DATASOURCE_BEAN = "dataSource";
-    public static final String DEFAULT_TRANSACTION_MANAGER_BEAN = "transactionManager";
-    public static final String DEFAULT_ENTITY_MANAGER_FACTORY_BEAN = "entityManagerFactory";
+  /** Default bean naming conventions */
+  public static final String DEFAULT_DATASOURCE_BEAN = "dataSource";
 
-    /**
-     * Default packages to scan
-     */
-    private static final String[] DEFAULT_PACKAGES_TO_SCAN = {"com.sensiblemetrics.api.ws.document.generator.model.entity"};
+  public static final String DEFAULT_TRANSACTION_MANAGER_BEAN = "transactionManager";
+  public static final String DEFAULT_ENTITY_MANAGER_FACTORY_BEAN = "entityManagerFactory";
 
-    /**
-     * Default persistence unit name
-     */
-    private static final String DEFAULT_PERSISTENCE_UNIT_NAME = "local";
-    /**
-     * Default domain name prefix
-     */
-    private static final String DEFAULT_DOMAIN_NAME_PREFIX = "domain_";
+  /** Default packages to scan */
+  private static final String[] DEFAULT_PACKAGES_TO_SCAN = {
+    "com.sensiblemetrics.api.ws.document.generator.model.entity"
+  };
 
-    /**
-     * Returns {@link JpaVendorAdapter}
-     *
-     * @return {@link JpaVendorAdapter}
-     */
-    @Bean
-    @ConditionalOnMissingBean(value = JpaVendorAdapter.class)
-    @Description("DataSource hibernate JPA vendor bean")
-    public JpaVendorAdapter jpaVendorAdapter() {
-        return new HibernateJpaVendorAdapter();
-    }
+  /** Default persistence unit name */
+  private static final String DEFAULT_PERSISTENCE_UNIT_NAME = "local";
+  /** Default domain name prefix */
+  private static final String DEFAULT_DOMAIN_NAME_PREFIX = "domain_";
 
-    /**
-     * Returns {@link JpaDialect}
-     *
-     * @return {@link JpaDialect}
-     */
-    @Bean
-    @ConditionalOnMissingBean(value = JpaDialect.class)
-    @Description("DataSource JPA dialect bean")
-    public JpaDialect jpaDialect() {
-        return new HibernateJpaDialect();
-    }
+  /**
+   * Returns {@link JpaVendorAdapter}
+   *
+   * @return {@link JpaVendorAdapter}
+   */
+  @Bean
+  @ConditionalOnMissingBean(value = JpaVendorAdapter.class)
+  @Description("DataSource hibernate JPA vendor bean")
+  public JpaVendorAdapter jpaVendorAdapter() {
+    return new HibernateJpaVendorAdapter();
+  }
 
-    /**
-     * Returns {@link PersistenceExceptionTranslationPostProcessor}
-     *
-     * @return {@link PersistenceExceptionTranslationPostProcessor}
-     */
-    @Bean
-    @ConditionalOnMissingBean(value = PersistenceExceptionTranslationPostProcessor.class)
-    @Description("DataSource persistence exception translation post processor bean")
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
+  /**
+   * Returns {@link JpaDialect}
+   *
+   * @return {@link JpaDialect}
+   */
+  @Bean
+  @ConditionalOnMissingBean(value = JpaDialect.class)
+  @Description("DataSource JPA dialect bean")
+  public JpaDialect jpaDialect() {
+    return new HibernateJpaDialect();
+  }
 
-    /**
-     * Returns {@link PersistenceUnitManager} by input {@link DataSource} to configure by
-     *
-     * @param dataSource - initial input {@link DataSource} to configure by
-     * @return {@link PersistenceUnitManager}
-     */
-    @Bean
-    @ConditionalOnMissingBean(value = PersistenceUnitManager.class)
-    @Description("DataSource persistence unit manager bean")
-    public PersistenceUnitManager persistenceUnitManager(@Qualifier(DEFAULT_DATASOURCE_BEAN) final DataSource dataSource) {
-        final DefaultPersistenceUnitManager manager = new DefaultPersistenceUnitManager();
-        manager.setDefaultDataSource(dataSource);
-        manager.setPackagesToScan(DEFAULT_PACKAGES_TO_SCAN);
-        manager.setDefaultPersistenceUnitName(DEFAULT_PERSISTENCE_UNIT_NAME);
-        return manager;
-    }
+  /**
+   * Returns {@link PersistenceExceptionTranslationPostProcessor}
+   *
+   * @return {@link PersistenceExceptionTranslationPostProcessor}
+   */
+  @Bean
+  @ConditionalOnMissingBean(value = PersistenceExceptionTranslationPostProcessor.class)
+  @Description("DataSource persistence exception translation post processor bean")
+  public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+    return new PersistenceExceptionTranslationPostProcessor();
+  }
 
-    @Bean(DEFAULT_TRANSACTION_MANAGER_BEAN)
-    @Description("DataSource Jpa transaction manager bean")
-    public PlatformTransactionManager transactionManager(@Qualifier(DEFAULT_ENTITY_MANAGER_FACTORY_BEAN) final EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
+  /**
+   * Returns {@link PersistenceUnitManager} by input {@link DataSource} to configure by
+   *
+   * @param dataSource - initial input {@link DataSource} to configure by
+   * @return {@link PersistenceUnitManager}
+   */
+  @Bean
+  @ConditionalOnMissingBean(value = PersistenceUnitManager.class)
+  @Description("DataSource persistence unit manager bean")
+  public PersistenceUnitManager persistenceUnitManager(
+      @Qualifier(DEFAULT_DATASOURCE_BEAN) final DataSource dataSource) {
+    final DefaultPersistenceUnitManager manager = new DefaultPersistenceUnitManager();
+    manager.setDefaultDataSource(dataSource);
+    manager.setPackagesToScan(DEFAULT_PACKAGES_TO_SCAN);
+    manager.setDefaultPersistenceUnitName(DEFAULT_PERSISTENCE_UNIT_NAME);
+    return manager;
+  }
 
-    /**
-     * Returns {@link BeanPostProcessor}
-     *
-     * @return {@link BeanPostProcessor}
-     */
-    @Bean
-    @Description("DataSource persistence annotation post processor bean")
-    public BeanPostProcessor postProcessor() {
-        final PersistenceAnnotationBeanPostProcessor postProcessor = new PersistenceAnnotationBeanPostProcessor();
-        postProcessor.setDefaultPersistenceUnitName(DEFAULT_PERSISTENCE_UNIT_NAME);
-        return postProcessor;
-    }
+  @Bean(DEFAULT_TRANSACTION_MANAGER_BEAN)
+  @Description("DataSource Jpa transaction manager bean")
+  public PlatformTransactionManager transactionManager(
+      @Qualifier(DEFAULT_ENTITY_MANAGER_FACTORY_BEAN)
+          final EntityManagerFactory entityManagerFactory) {
+    return new JpaTransactionManager(entityManagerFactory);
+  }
 
-    /**
-     * Returns second level cache {@link HibernatePropertiesCustomizer}
-     *
-     * @param cacheManager initial input {@link JCacheCacheManager} instance
-     * @return second level cache {@link HibernatePropertiesCustomizer}
-     */
-    @Bean
-    @ConditionalOnBean(JCacheCacheManager.class)
-    @Description("DataSource hibernate second level cache customizer bean")
-    public HibernatePropertiesCustomizer hibernateSecondLevelCacheCustomizer(final JCacheCacheManager cacheManager) {
-        return properties -> properties.put(ConfigSettings.CACHE_MANAGER, cacheManager.getCacheManager());
-    }
+  /**
+   * Returns {@link BeanPostProcessor}
+   *
+   * @return {@link BeanPostProcessor}
+   */
+  @Bean
+  @Description("DataSource persistence annotation post processor bean")
+  public BeanPostProcessor postProcessor() {
+    final PersistenceAnnotationBeanPostProcessor postProcessor =
+        new PersistenceAnnotationBeanPostProcessor();
+    postProcessor.setDefaultPersistenceUnitName(DEFAULT_PERSISTENCE_UNIT_NAME);
+    return postProcessor;
+  }
 
-    /**
-     * Returns {@link ParentAwareNamingStrategy} configuration
-     *
-     * @return {@link ParentAwareNamingStrategy} configuration
-     */
-    @Bean
-    @ConditionalOnMissingBean(value = ObjectNamingStrategy.class, search = SearchStrategy.CURRENT)
-    @Description("DataSource object naming strategy bean")
-    public ParentAwareNamingStrategy objectNamingStrategy() {
-        final ParentAwareNamingStrategy namingStrategy = new ParentAwareNamingStrategy(new AnnotationJmxAttributeSource());
-        namingStrategy.setDefaultDomain(join(DEFAULT_DOMAIN_NAME_PREFIX, UUID.randomUUID().toString()));
-        return namingStrategy;
-    }
+  /**
+   * Returns second level cache {@link HibernatePropertiesCustomizer}
+   *
+   * @param cacheManager initial input {@link JCacheCacheManager} instance
+   * @return second level cache {@link HibernatePropertiesCustomizer}
+   */
+  @Bean
+  @ConditionalOnBean(JCacheCacheManager.class)
+  @Description("DataSource hibernate second level cache customizer bean")
+  public HibernatePropertiesCustomizer hibernateSecondLevelCacheCustomizer(
+      final JCacheCacheManager cacheManager) {
+    return properties ->
+        properties.put(ConfigSettings.CACHE_MANAGER, cacheManager.getCacheManager());
+  }
 
-    @Bean(DEFAULT_ENTITY_MANAGER_FACTORY_BEAN)
-    @Description("DataSource entity manager factory bean")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(final EntityManagerFactoryBuilder builder,
-                                                                       final JpaProperties jpaProperties,
-                                                                       @Qualifier(DEFAULT_DATASOURCE_BEAN) final DataSource dataSource) {
-        log.info(
-                "DB [{}] <Default> with JPA properties: \n\n{}\n",
-                jpaProperties.getDatabase(),
-                arrayToDelimitedString(jpaProperties.getProperties().entrySet().toArray(), System.lineSeparator())
-        );
-        return builder
-                .dataSource(dataSource)
-                .properties(jpaProperties.getProperties())
-                .packages(DEFAULT_PACKAGES_TO_SCAN)
-                .persistenceUnit(DEFAULT_PERSISTENCE_UNIT_NAME)
-                .build();
-    }
+  /**
+   * Returns {@link ParentAwareNamingStrategy} configuration
+   *
+   * @return {@link ParentAwareNamingStrategy} configuration
+   */
+  @Bean
+  @ConditionalOnMissingBean(value = ObjectNamingStrategy.class, search = SearchStrategy.CURRENT)
+  @Description("DataSource object naming strategy bean")
+  public ParentAwareNamingStrategy objectNamingStrategy() {
+    final ParentAwareNamingStrategy namingStrategy =
+        new ParentAwareNamingStrategy(new AnnotationJmxAttributeSource());
+    namingStrategy.setDefaultDomain(join(DEFAULT_DOMAIN_NAME_PREFIX, UUID.randomUUID().toString()));
+    return namingStrategy;
+  }
+
+  @Bean(DEFAULT_ENTITY_MANAGER_FACTORY_BEAN)
+  @Description("DataSource entity manager factory bean")
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+      final EntityManagerFactoryBuilder builder,
+      final JpaProperties jpaProperties,
+      @Qualifier(DEFAULT_DATASOURCE_BEAN) final DataSource dataSource) {
+    log.info(
+        "DB [{}] <Default> with JPA properties: \n\n{}\n",
+        jpaProperties.getDatabase(),
+        arrayToDelimitedString(
+            jpaProperties.getProperties().entrySet().toArray(), System.lineSeparator()));
+    return builder
+        .dataSource(dataSource)
+        .properties(jpaProperties.getProperties())
+        .packages(DEFAULT_PACKAGES_TO_SCAN)
+        .persistenceUnit(DEFAULT_PERSISTENCE_UNIT_NAME)
+        .build();
+  }
 }

@@ -30,105 +30,74 @@ import static org.springframework.util.StringUtils.toStringArray;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics Web Service Addressing configuration properties")
 public class WsAddressingProperty {
-    /**
-     * Default addressing property prefix
-     */
-    public static final String PROPERTY_PREFIX = DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "addressing";
+  /** Default addressing property prefix */
+  public static final String PROPERTY_PREFIX =
+      DEFAULT_PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "addressing";
 
-    /**
-     * Default url mappings
-     */
-    private static final List<String> DEFAULT_URL_MAPPINGS = Collections.singletonList("/ws/*");
+  /** Default url mappings */
+  private static final List<String> DEFAULT_URL_MAPPINGS = Collections.singletonList("/ws/*");
 
-    /**
-     * Enable/disable logging requests ({@code true} by default)
-     */
-    private boolean enableLoggingRequests = true;
+  /** Enable/disable logging requests ({@code true} by default) */
+  private boolean enableLoggingRequests = true;
 
-    /**
-     * Enable/disable transformation of WSDL locations ({@code true} by default)
-     */
-    private boolean transformWsdlLocations = true;
+  /** Enable/disable transformation of WSDL locations ({@code true} by default) */
+  private boolean transformWsdlLocations = true;
 
-    /**
-     * Enable/disable transformation of schema locations ({@code true} by default)
-     */
-    private boolean transformSchemaLocations = true;
+  /** Enable/disable transformation of schema locations ({@code true} by default) */
+  private boolean transformSchemaLocations = true;
 
-    /**
-     * Default namespace
-     */
-    @NullOrNotBlank(message = "{property.addressing.namespace.nullOrNotBlank}")
-    private String namespace;
+  /** Default namespace */
+  @NullOrNotBlank(message = "{property.addressing.namespace.nullOrNotBlank}")
+  private String namespace;
 
-    /**
-     * Default url mappings
-     */
-    @Valid
-    @NullOrNotEmpty(message = "{property.addressing.url-mappings.nullOrNotEmpty}")
-    private List<@NotBlank String> urlMappings = DEFAULT_URL_MAPPINGS;
+  /** Default url mappings */
+  @Valid
+  @NullOrNotEmpty(message = "{property.addressing.url-mappings.nullOrNotEmpty}")
+  private List<@NotBlank String> urlMappings = DEFAULT_URL_MAPPINGS;
 
-    /**
-     * Default endpoint entries
-     */
-    @Valid
-    @NotEmpty(message = "{property.addressing.endpoints.notEmpty}")
-    private Map<@NotBlank String, @NotNull WsEndpoint> endpoints;
+  /** Default endpoint entries */
+  @Valid
+  @NotEmpty(message = "{property.addressing.endpoints.notEmpty}")
+  private Map<@NotBlank String, @NotNull WsEndpoint> endpoints;
 
-    /**
-     * Web service endpoint info configuration
-     */
-    @Data
-    @Validated
-    @Accessors(chain = true)
-    public static class WsEndpoint {
-        /**
-         * Default endpoint port type name
-         */
-        @NullOrNotBlank(message = "{property.addressing.endpoints.port-type-name.nullOrNotBlank}")
-        private String portTypeName;
+  /** Web service endpoint info configuration */
+  @Data
+  @Validated
+  @Accessors(chain = true)
+  public static class WsEndpoint {
+    /** Default endpoint port type name */
+    @NullOrNotBlank(message = "{property.addressing.endpoints.port-type-name.nullOrNotBlank}")
+    private String portTypeName;
 
-        /**
-         * Default endpoint service name
-         */
-        @NullOrNotBlank(message = "{property.addressing.endpoints.service-name.nullOrNotBlank}")
-        private String serviceName;
+    /** Default endpoint service name */
+    @NullOrNotBlank(message = "{property.addressing.endpoints.service-name.nullOrNotBlank}")
+    private String serviceName;
 
-        /**
-         * Default endpoint location uri
-         */
-        @NotNull(message = "{property.addressing.endpoints.location-uri.notNull}")
-        private String locationUri;
+    /** Default endpoint location uri */
+    @NotNull(message = "{property.addressing.endpoints.location-uri.notNull}")
+    private String locationUri;
 
-        /**
-         * Default endpoint target namespace
-         */
-        @NotNull(message = "{property.addressing.endpoints.target-namespace.notNull}")
-        private String targetNamespace;
+    /** Default endpoint target namespace */
+    @NotNull(message = "{property.addressing.endpoints.target-namespace.notNull}")
+    private String targetNamespace;
 
-        /**
-         * Default endpoint resource pattern
-         */
-        @ResourcePathPattern(message = "{property.addressing.endpoints.resource-pattern.pattern}")
-        private String resourcePattern;
+    /** Default endpoint resource pattern */
+    @ResourcePathPattern(message = "{property.addressing.endpoints.resource-pattern.pattern}")
+    private String resourcePattern;
 
-        /**
-         * Enable/disable web service endpoint configuration ({@code true} by default)
-         */
-        private boolean enabled = true;
-    }
-
-    /**
-     * Returns {@link String} array of url mappings
-     *
-     * @return {@link String} array of url mappings
-     */
-    public String[] getUrlMappingsAsArray() {
-        return toStringArray(this.urlMappings);
-    }
-
-    /**
-     * Enable/disable endpoints configuration ({@code true} by default)
-     */
+    /** Enable/disable web service endpoint configuration ({@code true} by default) */
     private boolean enabled = true;
+  }
+
+  /**
+   * Returns {@link String} array of url mappings
+   *
+   * @return {@link String} array of url mappings
+   */
+  public String[] getUrlMappingsAsArray() {
+    return toStringArray(this.urlMappings);
+  }
+
+  /** Enable/disable endpoints configuration ({@code true} by default) */
+  private boolean enabled = true;
 }

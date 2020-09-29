@@ -10,5 +10,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Import(LogApplicationEventListener.class)
-public @interface EnableWsEventLogging {
-}
+public @interface EnableWsEventLogging {}

@@ -7,5 +7,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @EnableBootstrapTest
-public @interface SimpleTest {
-}
+public @interface SimpleTest {}

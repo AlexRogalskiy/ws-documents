@@ -7,8 +7,8 @@ import java.util.Properties;
 
 public class DelegatedCacheEventListenerLoggerFactory extends CacheEventListenerFactory {
 
-    @Override
-    public CacheEventListener createCacheEventListener(final Properties properties) {
-        return new DelegatedEhCacheEventListenerAdapter();
-    }
+  @Override
+  public CacheEventListener createCacheEventListener(final Properties properties) {
+    return new DelegatedEhCacheEventListenerAdapter();
+  }
 }

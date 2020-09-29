@@ -28,7 +28,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 public class ApplicationBootstrap {
 
-    public static void main(final String[] args) {
-        SpringApplication.run(ApplicationBootstrap.class, args);
-    }
+  public static void main(final String[] args) {
+    SpringApplication.run(ApplicationBootstrap.class, args);
+  }
 }

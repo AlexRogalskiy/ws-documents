@@ -5,9 +5,6 @@ import com.sensiblemetrics.api.ws.metrics.annotation.MonitoredRepository;
 
 import java.util.UUID;
 
-/**
- * {@link DocumentEntity} {@link BaseRepository} declaration
- */
+/** {@link DocumentEntity} {@link BaseRepository} declaration */
 @MonitoredRepository
-public interface DocumentRepository extends BaseRepository<DocumentEntity, UUID> {
-}
+public interface DocumentRepository extends BaseRepository<DocumentEntity, UUID> {}

@@ -8,8 +8,8 @@ import javax.annotation.meta.TypeQualifierDefault;
 import java.lang.annotation.*;
 
 /**
- * Conditional annotation that can be placed on {@link Configuration auto-configuration} classes in order to activate them only if {@link
- * WsAdminConfiguration} is enabled.
+ * Conditional annotation that can be placed on {@link Configuration auto-configuration} classes in
+ * order to activate them only if {@link WsAdminConfiguration} is enabled.
  */
 @Documented
 @Inherited
@@ -17,5 +17,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @ConditionalOnBean(WsAdminConfiguration.class)
 @TypeQualifierDefault(ElementType.TYPE)
-public @interface ConditionalOnWsAdminEnabled {
-}
+public @interface ConditionalOnWsAdminEnabled {}
