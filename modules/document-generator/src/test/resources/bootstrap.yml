@@ -5,13 +5,14 @@ spring:
     name: "Document-Generator-WebService"
   cloud:
     kubernetes:
+      enabled: false
       discovery:
-        enabled: true
+        enabled: false
       config:
-        enabled: true
+        enabled: false
         sources:
           - name: common-config
           - name: ${spring.application.name}
       secrets:
-        enabled: true
+        enabled: false
         name: ${spring.application.name}
