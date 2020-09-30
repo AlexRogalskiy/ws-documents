@@ -1,0 +1,68 @@
+# SensibleMetrics WebDocs configuration
+webdocs:
+  metrics:
+    defaults:
+      description: WebDocs Document-Generator Service
+      tags:
+        - key: scope
+          value: ${spring.profiles.active:local}
+    meters:
+      datasource:
+        name: webdocs.datasource
+        description: DataSource status
+    handlers:
+      tracking-time:
+        enabled: true
+      monitoring-time:
+        enabled: true
+    patterns:
+      exclude:
+        - tomcat.*
+
+  api-status:
+    node:
+      name: ${java.rmi.server.hostname:localhost}
+    # build properties from maven
+    build:
+      groupId: '@project.groupId@'
+      artifactId: '@project.artifactId@'
+      version: '@project.version@'
+      name: '@project.name@'
+      timestamp: '@maven.build.timestamp@'
+
+  info:
+    # application info
+    app:
+      name: '@project.name@'
+      description: '@project.description@'
+      url: '@project.url@'
+      encoding: '@project.build.sourceEncoding@'
+    # environment variables
+    env:
+      java:
+        source: @java.version@
+        target: @java.version@
+        vendor: ${java.specification.vendor}
+        vm-name: ${java.vm.name}
+        runtime-version: ${java.runtime.version}
+
+  logging:
+    headers:
+      names: Accept,Content-Type,Content-Length
+      pattern: ".*"
+    handlers:
+      reporting:
+        enabled: true
+
+  actuator:
+    security:
+      endpoints:
+        health:
+          names: health
+          roles: ROLE_USER
+        status:
+          names: status
+          roles: ROLE_USER
+        threaddump:
+          names: threaddump
+          roles: ROLE_ADMIN

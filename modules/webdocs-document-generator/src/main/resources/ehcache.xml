@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd"
+         name="CacheModel"
+         monitoring="autodetect"
+         dynamicConfig="true"
+         updateCheck="true">
+
+    <diskStore path="${java.io.tmpdir}/.ehcache"/>
+
+    <defaultCache
+            maxEntriesLocalHeap="1000"
+            maxElementsInMemory="10000"
+            maxEntriesLocalDisk="10000000"
+            timeToIdleSeconds="3000"
+            timeToLiveSeconds="6000"
+            maxElementsOnDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            diskSpoolBufferSizeMB="200"
+            memoryStoreEvictionPolicy="LRU"
+            statistics="true">
+        <persistence strategy="localTempSwap"/>
+    </defaultCache>
+
+    <cache
+            name="documentCache"
+            maxEntriesLocalHeap="1000"
+            maxElementsInMemory="500"
+            diskSpoolBufferSizeMB="50"
+            timeToIdleSeconds="900"
+            timeToLiveSeconds="900"
+            overflowToDisk="false"
+            memoryStoreEvictionPolicy="LFU">
+        <cacheEventListenerFactory
+                class="com.sensiblemetrics.api.ws.webdocs.document.generator.cache.DelegatedCacheEventListenerLoggerFactory"/>
+    </cache>
+</ehcache>

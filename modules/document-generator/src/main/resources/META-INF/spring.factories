@@ -1,3 +1,0 @@
-org.springframework.boot.diagnostics.FailureAnalyzer=com.sensiblemetrics.api.ws.commons.handler.DefaultFailureAnalyzer
-org.springframework.boot.diagnostics.FailureAnalysisReporter=com.sensiblemetrics.api.ws.commons.handler.DefaultFailureAnalysisReporter
-org.springframework.boot.env.EnvironmentPostProcessor=com.sensiblemetrics.api.ws.commons.handler.PropertySourceEnvironmentPostProcessor

@@ -38,7 +38,7 @@ apps:
   webdocs:
     extensions:
       - gnome-3-28
-    command: java $JAVA_OPTS -jar ./modules/document-generator/.build/bin/com.sensiblemetrics.api.ws.document.generator/repackage/com.sensiblemetrics.api.ws-document-generator-0.1.0-SNAPSHOT-exec.jar
+    command: java $JAVA_OPTS -jar ./modules/webdocs-document-generator/.build/bin/com.sensiblemetrics.api.ws.webdocs.document.generator/repackage/com.sensiblemetrics.api.ws-document-generator-0.1.0-SNAPSHOT-exec.jar
     environment:
       JAVA_OPTS: -Xms1024m -Xmx1024m
       JAVA_HOME: $SNAP/usr/lib/jvm/java-11-openjdk-amd64

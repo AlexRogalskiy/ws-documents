@@ -26,7 +26,7 @@ rem java web service application options
 set JAVA_OPTS=-Xms1024m -Xmx1024m
 
 rem java web service application options
-set JAVA_COMMAND=-jar ./modules/document-generator/.build/bin/com.sensiblemetrics.api.ws.document.generator/repackage/com.sensiblemetrics.api.ws-document-generator-0.1.0-SNAPSHOT-exec.jar
+set JAVA_COMMAND=-jar ./modules/webdocs-document-generator/.build/bin/com.sensiblemetrics.api.ws.webdocs.document.generator/repackage/com.sensiblemetrics.api.ws-document-generator-0.1.0-SNAPSHOT-exec.jar
 
 rem java web service startup
 start %JAVA% %JAVA_OPTS% %JAVA_COMMAND% 1>log.txt 2>err.txt

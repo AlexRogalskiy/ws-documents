@@ -22,7 +22,7 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          docker build . --file modules/document-generator/src/main/docker/java/Dockerfile --tag localbuild/testimage:latest
+          docker build . --file modules/webdocs-document-generator/src/main/docker/java/Dockerfile --tag localbuild/testimage:latest
 
       - name: Run the local Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
         uses: anchore/scan-action@v2.0.0

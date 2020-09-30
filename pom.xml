@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sensiblemetrics.api.ws</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>webdocs-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>com.sensiblemetrics.api.ws</name>
-    <description>WS Documents Parent POM</description>
+    <description>WebDocs Parent POM</description>
     <url>https://github.com/AlexRogalskiy/ws-documents/</url>
     <inceptionYear>2020</inceptionYear>
 
@@ -37,6 +37,7 @@
             <organizationUrl>https://www.sensible-metrics.com/</organizationUrl>
             <roles>
                 <role>developer</role>
+                <role>architect</role>
             </roles>
             <timezone>+3</timezone>
             <properties>
@@ -61,7 +62,7 @@
                 <sendOnSuccess>false</sendOnSuccess>
                 <sendOnWarning>false</sendOnWarning>
                 <configuration>
-                    <address>gitHub-actions@sensiblemetrics.io</address>
+                    <address>gitHub-actions@sensiblemetrics.com</address>
                 </configuration>
             </notifier>
         </notifiers>
@@ -76,17 +77,17 @@
     </distributionManagement>
 
     <modules>
-        <module>modules/all</module>
-        <module>modules/actuator</module>
-        <module>modules/admin</module>
-        <module>modules/caching</module>
-        <module>modules/commons</module>
-        <module>modules/document-generator</module>
-        <module>modules/executor</module>
-        <module>modules/logger</module>
-        <module>modules/metrics</module>
-        <module>modules/router</module>
-        <module>modules/security</module>
+        <module>modules/webdocs-all</module>
+        <module>modules/webdocs-actuator</module>
+        <module>modules/webdocs-admin</module>
+        <module>modules/webdocs-caching</module>
+        <module>modules/webdocs-commons</module>
+        <module>modules/webdocs-document-generator</module>
+        <module>modules/webdocs-executor</module>
+        <module>modules/webdocs-logger</module>
+        <module>modules/webdocs-metrics</module>
+        <module>modules/webdocs-router</module>
+        <module>modules/webdocs-security</module>
     </modules>
 
     <properties>
@@ -293,11 +294,6 @@
         <!-- Spring Boot library dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
@@ -315,6 +311,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -337,6 +337,11 @@
                     <artifactId>jaxb-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -2008,7 +2013,8 @@
                                 <verbose>false</verbose>
                                 <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                                 <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                                <generateGitPropertiesFilename>target/generated-sources/versions/version.properties
+                                <generateGitPropertiesFilename>
+                                    ${project.build.directory}/generated-sources/versions/version.properties
                                 </generateGitPropertiesFilename>
                                 <gitDescribe>
                                     <skip>false</skip>
@@ -2019,13 +2025,8 @@
                                 <skipPoms>false</skipPoms>
                                 <runOnlyOnce>true</runOnlyOnce>
                                 <failOnNoGitDirectory>false</failOnNoGitDirectory>
-                                <verbose>false</verbose>
                                 <prefix>git</prefix>
-                                <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                                <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
-                                </generateGitPropertiesFilename>
-                                <dateFormat>yyyy-MM-dd'T'HH:mm:ss.SSSZ</dateFormat>
-                                <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                                <dateFormat>${maven.build.timestamp.format}</dateFormat>
                                 <includeOnlyProperties>
                                     <includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
                                     <includeOnlyProperty>^git.commit.id.describe$</includeOnlyProperty>
@@ -2566,7 +2567,8 @@
                                     </goals>
                                     <configuration>
                                         <target>
-                                            <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}.zip">
+                                            <zip
+                                                destfile="${project.build.directory}/${project.artifactId}-${project.version}.zip">
                                                 <zipfileset dir="${project.build.directory}/generated-docs"
                                                             prefix="reference/htmlsingle">
                                                     <include name="index.html"/>
@@ -2593,9 +2595,30 @@
                                         <artifacts>
                                             <artifact>
                                                 <file>
+                                                    ${project.build.directory}/${project.artifactId}-${project.version}.jar
+                                                </file>
+                                                <type>jar</type>
+                                            </artifact>
+                                            <artifact>
+                                                <file>
+                                                    ${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar
+                                                </file>
+                                                <type>jar</type>
+                                                <classifier>javadoc</classifier>
+                                            </artifact>
+                                            <artifact>
+                                                <file>
+                                                    ${project.build.directory}/${project.artifactId}-${project.version}-sources.jar
+                                                </file>
+                                                <type>jar</type>
+                                                <classifier>sources</classifier>
+                                            </artifact>
+                                            <artifact>
+                                                <file>
                                                     ${project.build.directory}/${project.artifactId}-${project.version}.zip
                                                 </file>
                                                 <type>zip;zip.type=docs;zip.deployed=false</type>
+                                                <classifier>zip</classifier>
                                             </artifact>
                                         </artifacts>
                                     </configuration>
@@ -2628,7 +2651,7 @@
                             <tarLongFileMode>posix</tarLongFileMode>
                             <finalName>${project.groupId}-${project.artifactId}-${project.version}</finalName>
                             <descriptors>
-                                <descriptor>${project.basedir}/assembly/package.xml</descriptor>
+                                <descriptor>./assembly/package.xml</descriptor>
                             </descriptors>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -2697,10 +2720,13 @@
                 <jdk>(,8]</jdk>
             </activation>
             <properties>
-                <compilerArgs>-XDignore.symbol.file
+                <compilerArgs>
+                    -XDignore.symbol.file
                     -Xlint:all
                 </compilerArgs>
                 <java.version>8</java.version>
+
+                <asm.version>9.0</asm.version>
             </properties>
             <build>
                 <plugins>
@@ -2732,7 +2758,7 @@
                             <dependency>
                                 <groupId>org.ow2.asm</groupId>
                                 <artifactId>asm</artifactId>
-                                <version>9.0</version>
+                                <version>${asm.version}</version>
                             </dependency>
                         </dependencies>
                         <executions>
@@ -2759,18 +2785,23 @@
                 <jdk>[11,)</jdk>
             </activation>
             <properties>
-                <compilerArgs>-XX:-OmitStackTraceInFastThrow
+                <compilerArgs>
+                    -XX:-OmitStackTraceInFastThrow
                     --illegal-access=permit
                     --enable-preview
                 </compilerArgs>
                 <java.version>11</java.version>
+
+                <asm.version>9.0</asm.version>
             </properties>
+
             <dependencies>
                 <dependency>
                     <groupId>org.glassfish.jaxb</groupId>
                     <artifactId>jaxb-runtime</artifactId>
                 </dependency>
             </dependencies>
+
             <build>
                 <plugins>
                     <plugin>
@@ -2807,7 +2838,7 @@
                             <dependency>
                                 <groupId>org.ow2.asm</groupId>
                                 <artifactId>asm</artifactId>
-                                <version>9.0</version>
+                                <version>${asm.version}</version>
                             </dependency>
                         </dependencies>
                         <executions>

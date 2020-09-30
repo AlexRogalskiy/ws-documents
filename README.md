@@ -99,7 +99,7 @@ java -jar com.sensiblemetrics.api.ws-document-generator-0.1.0-SNAPSHOT-exec.jar
 where
 
 ```text
-project.build.directory=modules/document-generator/.build/bin/com.sensiblemetrics.api.ws.document.generator
+project.build.directory=modules/webdocs-document-generator/.build/bin/com.sensiblemetrics.api.ws.webdocs.document.generator
 ```
 
 or simply run:
@@ -142,7 +142,7 @@ Choose one of the modules and add to your `pom.xml`
 
 Bundle with all WebDocs dependencies:
 
-- [**WebDocs All**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/all)  
+- [**WebDocs All**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-all)  
   `webdocs-all` - Library to work with WebDocs API.
 
 WebDocs module dependencies:
@@ -150,31 +150,31 @@ WebDocs module dependencies:
 - [**WebDocs Actuator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/actuator)  
   `webdocs-actuator` - Library to work with Actuator API.
 
-- [**WebDocs Admin**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/admin)  
+- [**WebDocs Admin**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-admin)  
   `webdocs-admin` - Library to work with Admin API.
 
-- [**WebDocs Caching**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/caching)  
+- [**WebDocs Caching**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-caching)  
   `webdocs-caching` - Library to work with Caching API.
 
-- [**WebDocs Commons**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/commons)  
+- [**WebDocs Commons**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-commons)  
   `webdocs-commons` - Library with utilities for common use cases.
 
-- [**WebDocs Document-Generator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/document-generator)  
+- [**WebDocs Document-Generator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-document-generator)  
   `webdocs-document-generator` - Library to work with Document-Generator API.
 
-- [**WebDocs Executor**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/executor)  
+- [**WebDocs Executor**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-executor)  
   `webdocs-executor` - Library to work with Executor API.
 
-- [**WebDocs Logger**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/logger)  
+- [**WebDocs Logger**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-logger)  
   `webdocs-logger` - Library to work with Logger API.
 
-- [**WebDocs Metrics**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/metrics)  
+- [**WebDocs Metrics**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-metrics)  
   `webdocs-metrics` - Library to work with Metrics API.
 
-- [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/router)  
+- [**WebDocs Router**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-router)  
   `webdocs-router` - Library to work with Router API.
 
-- [**WebDocs Security**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/security)  
+- [**WebDocs Security**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/webdocs-security)  
   `webdocs-security` - Library to work with Security API.
 
 ## Version Store

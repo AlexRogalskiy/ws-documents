@@ -60,7 +60,7 @@ jobs:
             README.md
           body: |
             Changes in this Release
-            - Updates on Document-Generator MicroService API
+            - Updates on WebDocs MicroService API
           draft: true
           prerelease: false
 
@@ -124,7 +124,7 @@ jobs:
             README.md
           body: |
             Changes in this Release
-            - Updates on Document-Generator MicroService API
+            - Updates on WebDocs MicroService API
           draft: true
           prerelease: false
 

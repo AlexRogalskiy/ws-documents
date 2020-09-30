@@ -30,11 +30,11 @@ jobs:
           sudo mv "/tmp/ko" "/usr/local/bin/"
           sudo chmod +x "/usr/local/bin/ko"
 
-      - name: Build the ws-documents
+      - name: Build the WebDocs
         run: |
           export KO_DOCKER_REPO=registry.hub.docker.com/alexanderr/ws-documents
           export IMAGE_TAG=latest
-          cd modules/document-generator
+          cd modules/webdocs-document-generator
           skaffold build -p remote  | tee /tmp/build-log.txt
 
       - name: Upload artifact
