@@ -28,10 +28,14 @@ class ErrorTemplateTypeTest {
   private static final Stream<Arguments> errorTemplateTypeValues =
       Stream.of(
           Arguments.of(
-              ErrorTemplateType.SERVICE_UNAVAILABLE, createTypeMatcher("error-0030", "error.service.unavailable")),
+              ErrorTemplateType.SERVICE_UNAVAILABLE,
+              createTypeMatcher("error-0030", "error.service.unavailable")),
           Arguments.of(
-              ErrorTemplateType.SERVICE_OPERATION_ERROR, createTypeMatcher("error-0040", "error.operation.invalid")),
-          Arguments.of(ErrorTemplateType.BAD_REQUEST, createTypeMatcher("error-0050", "error.request.invalid")),
+              ErrorTemplateType.SERVICE_OPERATION_ERROR,
+              createTypeMatcher("error-0040", "error.operation.invalid")),
+          Arguments.of(
+              ErrorTemplateType.BAD_REQUEST,
+              createTypeMatcher("error-0050", "error.request.invalid")),
           Arguments.of(
               ErrorTemplateType.DOCUMENT_PROCESSING_ERROR,
               createTypeMatcher("error-0060", "error.document.processing.invalid")),
@@ -65,7 +69,8 @@ class ErrorTemplateTypeTest {
         Arguments.of(ErrorTemplateType.BAD_REQUEST, equalTo("error-0050")),
         Arguments.of(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR, equalTo("error-0060")),
         Arguments.of(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION, equalTo("error-0070")),
-        Arguments.of(ErrorTemplateType.INVALID_ENDPOINT_SECURITY_CONFIGURATION, equalTo("error-0080")));
+        Arguments.of(
+            ErrorTemplateType.INVALID_ENDPOINT_SECURITY_CONFIGURATION, equalTo("error-0080")));
   }
 
   @ParameterizedTest
@@ -81,8 +86,11 @@ class ErrorTemplateTypeTest {
         Arguments.of("SERVICE_UNAVAILABLE", equalTo(ErrorTemplateType.SERVICE_UNAVAILABLE)),
         Arguments.of("SERVICE_OPERATION_ERROR", equalTo(ErrorTemplateType.SERVICE_OPERATION_ERROR)),
         Arguments.of("BAD_REQUEST", equalTo(ErrorTemplateType.BAD_REQUEST)),
-        Arguments.of("DOCUMENT_PROCESSING_ERROR", equalTo(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR)),
-        Arguments.of("INVALID_ENDPOINT_CONFIGURATION", equalTo(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION)),
+        Arguments.of(
+            "DOCUMENT_PROCESSING_ERROR", equalTo(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR)),
+        Arguments.of(
+            "INVALID_ENDPOINT_CONFIGURATION",
+            equalTo(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION)),
         Arguments.of(
             "INVALID_ENDPOINT_SECURITY_CONFIGURATION",
             equalTo(ErrorTemplateType.INVALID_ENDPOINT_SECURITY_CONFIGURATION)));
@@ -101,8 +109,11 @@ class ErrorTemplateTypeTest {
         Arguments.of("SERVICE_UNAVAILABLE", equalTo(ErrorTemplateType.SERVICE_UNAVAILABLE)),
         Arguments.of("SERVICE_OPERATION_ERROR", equalTo(ErrorTemplateType.SERVICE_OPERATION_ERROR)),
         Arguments.of("BAD_REQUEST", equalTo(ErrorTemplateType.BAD_REQUEST)),
-        Arguments.of("DOCUMENT_PROCESSING_ERROR", equalTo(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR)),
-        Arguments.of("INVALID_ENDPOINT_CONFIGURATION", equalTo(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION)),
+        Arguments.of(
+            "DOCUMENT_PROCESSING_ERROR", equalTo(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR)),
+        Arguments.of(
+            "INVALID_ENDPOINT_CONFIGURATION",
+            equalTo(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION)),
         Arguments.of(
             "INVALID_ENDPOINT_SECURITY_CONFIGURATION",
             equalTo(ErrorTemplateType.INVALID_ENDPOINT_SECURITY_CONFIGURATION)));
@@ -123,7 +134,8 @@ class ErrorTemplateTypeTest {
         Arguments.of("error-0050", equalTo(ErrorTemplateType.BAD_REQUEST)),
         Arguments.of("error-0060", equalTo(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR)),
         Arguments.of("error-0070", equalTo(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION)),
-        Arguments.of("error-0080", equalTo(ErrorTemplateType.INVALID_ENDPOINT_SECURITY_CONFIGURATION)));
+        Arguments.of(
+            "error-0080", equalTo(ErrorTemplateType.INVALID_ENDPOINT_SECURITY_CONFIGURATION)));
   }
 
   @Test

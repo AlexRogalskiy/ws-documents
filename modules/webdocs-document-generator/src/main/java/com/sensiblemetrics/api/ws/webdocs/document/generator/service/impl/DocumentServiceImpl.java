@@ -113,6 +113,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<DocumentEntity, UUID>
   @Override
   public DocumentEntity updateDocument(final DocumentEntity documentEntity) {
     documentEntity.setStatus(StatusType.EDITED);
-    return this.update(documentEntity.getId(), documentEntity, doc -> StatusType.isAvailable(doc.getStatus()));
+    return this.update(
+        documentEntity.getId(), documentEntity, doc -> StatusType.isAvailable(doc.getStatus()));
   }
 }

@@ -60,7 +60,8 @@ public class ServiceUnavailableException extends RuntimeException {
   @NonNull
   public static ServiceUnavailableException throwServiceUnavailable(
       @Nullable final Object... args) {
-    throw throwServiceUnavailableWith(ErrorTemplateType.SERVICE_UNAVAILABLE.getErrorMessage(), args);
+    throw throwServiceUnavailableWith(
+        ErrorTemplateType.SERVICE_UNAVAILABLE.getErrorMessage(), args);
   }
 
   /**

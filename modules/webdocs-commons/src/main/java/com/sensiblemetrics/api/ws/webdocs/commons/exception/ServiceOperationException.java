@@ -72,7 +72,8 @@ public class ServiceOperationException extends RuntimeException {
    */
   @NonNull
   public static ServiceOperationException throwInvalidOperation(@Nullable final Object... args) {
-    throw throwInvalidOperationWith(ErrorTemplateType.SERVICE_OPERATION_ERROR.getErrorMessage(), args);
+    throw throwInvalidOperationWith(
+        ErrorTemplateType.SERVICE_OPERATION_ERROR.getErrorMessage(), args);
   }
 
   /**
