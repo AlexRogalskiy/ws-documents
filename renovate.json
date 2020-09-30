@@ -1,0 +1,26 @@
+{
+  "extends": [
+    "config:base",
+    ":maintainLockFilesWeekly",
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone"
+  ],
+  "maven": {
+    "enabled": true
+  },
+  "ignoreUnstable": false,
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ],
+  "automerge": true,
+  "automergeType": "branch",
+  "major": {
+    "automerge": false
+  },
+  "rangeStrategy": "bump",
+  "labels": [
+    "java dependencies"
+  ]
+}

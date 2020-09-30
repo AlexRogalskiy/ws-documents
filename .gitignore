@@ -1,0 +1,28 @@
+#
+# Standard ignore list (do not edit manually)
+#
+.flattened-pom.xml
+
+.build
+.allure
+.storage
+packages/
+.classpath
+.project
+.settings/
+target/
+.idea/
+*.iml
+*.iws
+*.bak
+*.episode
+.DS_Store
+log/
+*.log
+*.props
+pom.xml.versionsBackup
+
+#
+# Custom ignore list
+#
+/node_modules/

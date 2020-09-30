@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache:config
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xmlns:ehcache="http://www.ehcache.org/v3"
+        xmlns:jsr107='http://www.ehcache.org/v3/jsr107'
+        xsi:schemaLocation="
+        http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd
+        http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
+
+    <ehcache:persistence directory="${java.io.tmpdir}/.cache"/>
+
+    <ehcache:thread-pools>
+        <ehcache:thread-pool alias="defaultDiskPool" min-size="1" max-size="8"/>
+        <ehcache:thread-pool alias="defaultWriteBehindPool" min-size="1" max-size="8"/>
+        <ehcache:thread-pool alias="cache2Pool" min-size="2" max-size="5"/>
+    </ehcache:thread-pools>
+
+    <ehcache:event-dispatch thread-pool="defaultEventPool"/>
+    <ehcache:write-behind thread-pool="defaultWriteBehindPool"/>
+    <ehcache:disk-store thread-pool="defaultDiskPool"/>
+
+    <ehcache:cache alias="default-cache" uses-template="default-cache-template">
+        <ehcache:key-type>java.lang.String</ehcache:key-type>
+        <ehcache:value-type>java.lang.String</ehcache:value-type>
+    </ehcache:cache>
+
+    <ehcache:cache alias="document-cache-template" uses-template="default-cache-template">
+        <ehcache:key-type copier="org.ehcache.impl.copy.SerializingCopier">java.lang.String</ehcache:key-type>
+        <ehcache:value-type copier="org.ehcache.impl.copy.SerializingCopier">
+            com.sensiblemetrics.api.ws.document.generator.cache.CacheEventEntry
+        </ehcache:value-type>
+
+        <ehcache:expiry>
+            <ehcache:ttl unit="minutes">20</ehcache:ttl>
+        </ehcache:expiry>
+    </ehcache:cache>
+
+    <ehcache:cache alias="idempotent-cache" uses-template="default-cache-template">
+        <ehcache:key-type>java.lang.String</ehcache:key-type>
+        <ehcache:value-type>java.lang.Boolean</ehcache:value-type>
+
+        <ehcache:expiry>
+            <ehcache:none/>
+        </ehcache:expiry>
+
+        <ehcache:loader-writer>
+            <ehcache:class>com.sensiblemetrics.api.ws.document.generator.cache.DelegatedCacheLoaderWriter
+            </ehcache:class>
+            <ehcache:write-behind thread-pool="cache2Pool">
+                <ehcache:batching batch-size="20">
+                    <ehcache:max-write-delay>10</ehcache:max-write-delay>
+                </ehcache:batching>
+            </ehcache:write-behind>
+        </ehcache:loader-writer>
+    </ehcache:cache>
+
+    <ehcache:cache-template name="default-cache-template">
+        <ehcache:listeners dispatcher-thread-pool="cache2Pool">
+            <ehcache:listener>
+                <ehcache:class>com.sensiblemetrics.api.ws.document.generator.cache.DelegatedCacheEventListener
+                </ehcache:class>
+                <ehcache:event-firing-mode>ASYNCHRONOUS</ehcache:event-firing-mode>
+                <ehcache:event-ordering-mode>UNORDERED</ehcache:event-ordering-mode>
+                <ehcache:events-to-fire-on>CREATED</ehcache:events-to-fire-on>
+                <ehcache:events-to-fire-on>UPDATED</ehcache:events-to-fire-on>
+                <ehcache:events-to-fire-on>EXPIRED</ehcache:events-to-fire-on>
+                <ehcache:events-to-fire-on>REMOVED</ehcache:events-to-fire-on>
+                <ehcache:events-to-fire-on>EVICTED</ehcache:events-to-fire-on>
+            </ehcache:listener>
+        </ehcache:listeners>
+
+        <ehcache:resources>
+            <ehcache:disk persistent="true" unit="MB">500</ehcache:disk>
+            <ehcache:heap unit="MB">200</ehcache:heap>
+            <ehcache:offheap unit="MB">260</ehcache:offheap>
+        </ehcache:resources>
+
+        <ehcache:disk-store-settings thread-pool="cache2Pool" writer-concurrency="4"/>
+        <jsr107:mbeans enable-management="false" enable-statistics="false"/>
+    </ehcache:cache-template>
+</ehcache:config>
+

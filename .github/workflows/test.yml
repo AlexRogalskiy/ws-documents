@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: Make Maven Wrapper executable
+        if: contains(matrix.os, 'win') == false
+        run: |
+          chmod +x ./mvnw
+
+      - name: Maven Verify
+        run: |
+          ./mvnw clean verify --errors --batch-mode --lax-checksums -P"module_java","test-jar","xsd","unit-test","integration-test","dev"
+
+      - name: Test Coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

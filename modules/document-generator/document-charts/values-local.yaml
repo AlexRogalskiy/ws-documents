@@ -1,0 +1,7 @@
+image:
+  repository: localhost:8089/ws-documents
+  pullPolicy: IfNotPresent
+
+db:
+  pvc:
+    enabled: false

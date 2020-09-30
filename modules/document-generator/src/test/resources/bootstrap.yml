@@ -1,0 +1,18 @@
+# SensibleMetrics Document Generator WebService Bootstrap test configuration
+---
+spring:
+  application:
+    name: "Document-Generator-WebService"
+  cloud:
+    kubernetes:
+      enabled: false
+      discovery:
+        enabled: false
+      config:
+        enabled: false
+        sources:
+          - name: common-config
+          - name: ${spring.application.name}
+      secrets:
+        enabled: false
+        name: ${spring.application.name}

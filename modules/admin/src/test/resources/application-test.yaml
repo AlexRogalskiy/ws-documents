@@ -1,0 +1,59 @@
+# SensibleMetrics WebDocs Web Service Admin test configuration
+---
+spring:
+  profiles:
+    active: secure
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+    # 1 hour
+    cache-duration: 3600
+  main:
+    allow-bean-definition-overriding: true
+  task:
+    execution:
+      thread-name-prefix: test
+      pool:
+        core-size: 10
+        max-size: 20
+        queue-capacity: 100000
+  boot:
+    admin:
+      ui:
+        cache.no-cache: true
+        cache-templates: false
+        external-views:
+          - label: "🚀"
+            url: http://localhost:8080/
+            order: 2000
+
+webdocs:
+  admin:
+    enabled: true
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+---
+spring:
+  profiles: insecure
+---
+spring:
+  profiles: secure
+  security:
+    user:
+      name: "user"
+      password: "password"
+
+eureka:
+  instance:
+    metadata-map:
+      user.name: "user"
+      user.password: "password"

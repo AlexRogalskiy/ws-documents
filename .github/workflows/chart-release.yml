@@ -1,0 +1,28 @@
+name: Release Charts
+
+on:
+  push:
+    branches:
+      - master
+env:
+  GITHUB_USER: ${{ github.actor }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_USER"
+          git config user.email "$GITHUB_USER@users.noreply.github.com"
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.0.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

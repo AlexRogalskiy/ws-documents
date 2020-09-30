@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db/changelog/changes/0/2020-06-20-1-create-documents-table.yaml
+  - include:
+      file: classpath:db/changelog/changes/1/2020-06-20-1-load-documents-table.yaml
+
+#databaseChangeLog:
+#  - include:
+#      errorIfMissingOrEmpty: true
+#      relativeToChangelogFile: false
+#      path: classpath:db/changelog/changes/

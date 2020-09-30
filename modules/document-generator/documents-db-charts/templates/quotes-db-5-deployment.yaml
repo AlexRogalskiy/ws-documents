@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: documents-db
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: documents-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app.kubernetes.io/name: documents-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10.4
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: documents-db-config
+            - secretRef:
+                name: documents-db-secrets
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: documents-db
+      volumes:
+      {{ if  .Values.db.pvc.enabled }}
+      - name: documents-db
+        persistentVolumeClaim:
+          claimName: documents-db-pv-claim
+      {{ else }}
+      - name: documents-db
+        emptyDir: {}
+      {{ end }}

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://api.sensiblemetrics.com/ws/document-generator-web-service"
+           targetNamespace="http://api.sensiblemetrics.com/ws/document-generator-web-service"
+           elementFormDefault="qualified">
+
+    <xs:annotation>
+        <xs:appinfo>Document operations</xs:appinfo>
+        <xs:documentation xml:lang="en">
+            Current document describes basic operations on documents (create / update / delete / fetch) and
+            corresponding
+            data structures and types
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="GetDocumentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:guid"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GetDocumentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="document" type="tns:document"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CreateDocumentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="company" type="tns:nameType"/>
+                <xs:element name="partner" type="tns:nameType"/>
+                <xs:element name="product" type="tns:nameType"/>
+                <xs:element name="amount" type="xs:unsignedInt"/>
+                <xs:element name="price" type="xs:decimal"/>
+                <xs:element name="data" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CreateDocumentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:guid"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UpdateDocumentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:guid"/>
+                <xs:element name="company" type="tns:nameType"/>
+                <xs:element name="partner" type="tns:nameType"/>
+                <xs:element name="product" type="tns:nameType"/>
+                <xs:element name="amount" type="xs:unsignedInt"/>
+                <xs:element name="price" type="xs:decimal"/>
+                <xs:element name="data" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UpdateDocumentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="document" type="tns:document"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteDocumentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:guid"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteDocumentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="document" type="tns:document"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GenerateDocumentRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:guid"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="GenerateDocumentResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="tns:guid"/>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="status" type="tns:operationStatus"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="document">
+        <xs:sequence>
+            <xs:element name="id" type="tns:guid"/>
+            <xs:element name="company" type="tns:nameType"/>
+            <xs:element name="partner" type="tns:nameType"/>
+            <xs:element name="product" type="tns:nameType"/>
+            <xs:element name="amount" type="xs:positiveInteger"/>
+            <xs:element name="price" type="xs:decimal"/>
+            <xs:element name="data" type="xs:string"/>
+            <xs:element name="status" type="tns:documentStatus"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="nameType">
+        <xs:restriction base="xs:string">
+            <xs:length value="256"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="operationStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUCCESS"/>
+            <xs:enumeration value="FAIL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="documentStatus">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CANCELLED"/>
+            <xs:enumeration value="COMPLETED"/>
+            <xs:enumeration value="NEW"/>
+            <xs:enumeration value="PROCESSING"/>
+            <xs:enumeration value="REGISTERED"/>
+            <xs:enumeration value="SUSPENDED"/>
+            <xs:enumeration value="EDITED"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,12 @@
+# SensibleMetrics WebDocs Document Generator Addressing configuration
+---
+webdocs:
+  addressing:
+    namespace: "http://api.sensiblemetrics.com/ws/"
+    endpoints:
+      document:
+        port-type-name: "DocumentPort"
+        service-name: "DocumentService"
+        location-uri: "/ws"
+        target-namespace: "http://api.sensiblemetrics.com/ws/document-generator-web-service"
+        resource-pattern: "schemas/document.xsd"
