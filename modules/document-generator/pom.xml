@@ -10,7 +10,7 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <name>com.sensiblemetrics.api.ws.document.generator</name>
+    <name>com.sensiblemetrics.api.ws.webdocs.document.generator</name>
     <description>WebDocs Document-Generator API</description>
     <artifactId>webdocs-document-generator</artifactId>
     <packaging>jar</packaging>

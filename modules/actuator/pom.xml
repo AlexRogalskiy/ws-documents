@@ -10,7 +10,7 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <name>com.sensiblemetrics.api.ws.actuator</name>
+    <name>com.sensiblemetrics.api.ws.webdocs.actuator</name>
     <description>WebDocs Actuator API</description>
     <artifactId>webdocs-actuator</artifactId>
     <packaging>jar</packaging>

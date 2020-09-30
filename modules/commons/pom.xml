@@ -10,7 +10,7 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <name>com.sensiblemetrics.api.ws.commons</name>
+    <name>com.sensiblemetrics.api.ws.webdocs.commons</name>
     <description>WebDocs Commons API</description>
     <artifactId>webdocs-commons</artifactId>
     <packaging>jar</packaging>
