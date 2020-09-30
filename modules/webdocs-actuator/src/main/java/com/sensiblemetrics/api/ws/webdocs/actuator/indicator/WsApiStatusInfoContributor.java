@@ -68,7 +68,8 @@ public class WsApiStatusInfoContributor implements InfoContributor {
 
   private String getUptimeMetric() {
     final MetricsEndpoint.MetricResponse uptimeMetricResponse =
-        this.metricsEndpoint.metric(WsApiStatusInfoProperty.InfoMetrics.PROCESS_UPTIME_METRIC, null);
+        this.metricsEndpoint.metric(
+            WsApiStatusInfoProperty.InfoMetrics.PROCESS_UPTIME_METRIC, null);
     final long uptimeMilliseconds =
         (long) (uptimeMetricResponse.getMeasurements().get(0).getValue() * 1000);
     return DurationFormatUtils.formatDuration(
@@ -77,18 +78,19 @@ public class WsApiStatusInfoContributor implements InfoContributor {
 
   private boolean getApplicationStartedStatusMetric() {
     final MetricsEndpoint.MetricResponse uptimeMetric =
-        this.metricsEndpoint.metric(WsApiStatusInfoProperty.InfoMetrics.PROCESS_UPTIME_METRIC, null);
+        this.metricsEndpoint.metric(
+            WsApiStatusInfoProperty.InfoMetrics.PROCESS_UPTIME_METRIC, null);
     return uptimeMetric.getMeasurements().get(0).getValue().longValue() > 0;
   }
 
   private long getErrorCounterMetric() {
     final MetricsEndpoint.MetricResponse errorMetric =
-        this.metricsEndpoint.metric(WsApiStatusInfoProperty.InfoMetrics.LOGBACK_EVENTS_METRIC, LOGBACK_ERROR_LEVEL_TAG);
+        this.metricsEndpoint.metric(
+            WsApiStatusInfoProperty.InfoMetrics.LOGBACK_EVENTS_METRIC, LOGBACK_ERROR_LEVEL_TAG);
     return errorMetric.getMeasurements().get(0).getValue().longValue();
   }
 
-  private ApplicationStateType
-      getApplicationStateMetric() {
+  private ApplicationStateType getApplicationStateMetric() {
     return Objects.equals(this.healthEndpoint.health().getStatus(), Status.UP)
         ? ApplicationStateType.OK
         : ApplicationStateType.DOWN;

@@ -60,7 +60,8 @@ public class EndpointConfigurationException extends RuntimeException {
    */
   @NonNull
   public static EndpointConfigurationException throwInvalidConfiguration(final Object arg) {
-    throw throwInvalidConfigurationWith(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION.getErrorMessage(), arg);
+    throw throwInvalidConfigurationWith(
+        ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION.getErrorMessage(), arg);
   }
 
   /**

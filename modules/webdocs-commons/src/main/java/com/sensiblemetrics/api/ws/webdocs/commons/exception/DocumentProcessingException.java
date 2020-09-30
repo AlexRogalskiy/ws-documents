@@ -63,7 +63,8 @@ public class DocumentProcessingException extends RuntimeException {
   @NonNull
   public static DocumentProcessingException throwDocumentProcessingError(
       @Nullable final Object... args) {
-    return throwDocumentProcessingErrorWith(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR.getErrorMessage(), args);
+    return throwDocumentProcessingErrorWith(
+        ErrorTemplateType.DOCUMENT_PROCESSING_ERROR.getErrorMessage(), args);
   }
 
   /**
