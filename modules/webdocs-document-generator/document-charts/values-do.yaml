@@ -1,8 +1,0 @@
-image:
-  repository: ws/documents
-  pullPolicy: Always
-replicaCount: 2
-
-db:
-  pvc:
-    enabled: false
