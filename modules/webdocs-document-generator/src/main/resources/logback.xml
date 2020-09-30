@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
-    <!--    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>-->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <!--    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>-->
-    <!--    <property name="LOG_DIR" value="./log/application"/>-->
-    <property name="LOG_DIR" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>
+    <!--<property name="LOG_DIR" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>-->
+    <property name="LOG_DIR" value="./log/application"/>
     <property name="LOG_ARCHIVE_DIR" value="${LOG_DIR}/archive"/>
     <property name="LOG_FILE" value="LogFile"/>
 
