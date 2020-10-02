@@ -17,6 +17,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.sensiblemetrics.api.ws.commons.enumeration.ErrorTemplateType.*;
+import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -130,7 +131,10 @@ class ErrorTemplateTypeTest {
         final String errorMessage = "No enum constant";
 
         // when
-        final IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> ErrorTemplateType.valueOf("NON_EXISTED"));
+        final IllegalArgumentException thrown = assertThrows(
+            IllegalArgumentException.class,
+            () -> ErrorTemplateType.valueOf("NON_EXISTED")
+        );
 
         // then
         assertThat(thrown.getMessage(), startsWith(errorMessage));
@@ -138,8 +142,7 @@ class ErrorTemplateTypeTest {
 
     private static CustomTypeSafeMatcher<ErrorTemplateType> createTypeMatcher(final String errorCode,
                                                                               final String errorDescription) {
-        return new CustomTypeSafeMatcher<ErrorTemplateType>("Compare error code and description message") {
-
+        return new CustomTypeSafeMatcher<ErrorTemplateType>(format("Comparing error code={%s} and description message={%s}", errorCode, errorDescription)) {
             /**
              * Subclasses should implement this. The item will already have been checked for
              * the specific type and will never be null.
@@ -155,8 +158,7 @@ class ErrorTemplateTypeTest {
     }
 
     private static Function<ErrorTemplateType, CustomTypeSafeMatcher<ErrorTemplateType>> createTypeMatcher() {
-        return value -> new CustomTypeSafeMatcher<ErrorTemplateType>("Compare error template types on a property basis") {
-
+        return value -> new CustomTypeSafeMatcher<ErrorTemplateType>(format("Comparing error template type={%s}", value)) {
             /**
              * Subclasses should implement this. The item will already have been checked for
              * the specific type and will never be null.

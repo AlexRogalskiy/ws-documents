@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.commons.enumeration;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -25,9 +26,10 @@ public enum ErrorTemplateType {
     /**
      * Default {@link String} error code
      */
+    @JsonValue
     private final String errorCode;
     /**
-     * Default {@link String} error messsage
+     * Default {@link String} error message
      */
     private final String errorMessage;
 
@@ -57,6 +59,6 @@ public enum ErrorTemplateType {
 
     @Override
     public String toString() {
-        return this.errorCode;
+        return String.format("Error: {%s}, message: {%s}", this.errorCode, this.errorMessage);
     }
 }
