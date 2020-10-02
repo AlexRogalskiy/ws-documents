@@ -62,7 +62,7 @@
                 <sendOnSuccess>false</sendOnSuccess>
                 <sendOnWarning>false</sendOnWarning>
                 <configuration>
-                    <address>gitHub-actions@sensiblemetrics.com</address>
+                    <address>github-actions@sensiblemetrics.com</address>
                 </configuration>
             </notifier>
         </notifiers>
