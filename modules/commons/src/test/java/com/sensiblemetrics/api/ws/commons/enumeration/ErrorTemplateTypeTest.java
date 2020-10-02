@@ -50,7 +50,7 @@ class ErrorTemplateTypeTest {
     void testCheckErrorTemplateTypeByName(final ErrorTemplateType enumType,
                                           final Matcher<String> matcher) {
         // then
-        assertThat(enumType.toString(), matcher);
+        assertThat(enumType.getErrorCode(), matcher);
     }
 
     private static Stream<Arguments> testCheckErrorTemplateTypeByName() {
