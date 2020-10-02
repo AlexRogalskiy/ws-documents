@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.document.generator.property;
 
-import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotBlank;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

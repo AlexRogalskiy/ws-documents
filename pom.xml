@@ -88,6 +88,7 @@
         <module>modules/metrics</module>
         <module>modules/router</module>
         <module>modules/security</module>
+        <module>modules/validation</module>
         <module>modules/tests</module>
     </modules>
 
@@ -234,15 +235,11 @@
         <modernizer.version>2.1.0</modernizer.version>
         <plexus-utils.version>3.3.0</plexus-utils.version>
 
-        <vavr.version>1.0.0-alpha-3</vavr.version>
-        <slf4j-api.version>2.0.0-alpha1</slf4j-api.version>
-
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
         <spring-cloud-kubernetes.version>1.1.6.RELEASE</spring-cloud-kubernetes.version>
         <throwing-function.version>1.5.1</throwing-function.version>
 
-        <validation-api.version>2.0.1.Final</validation-api.version>
         <wsdl4j.version>1.6.3.wso2v3</wsdl4j.version>
     </properties>
 
@@ -370,11 +367,6 @@
             <version>${logback.version}</version>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-access</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
             <artifactId>logback-json-classic</artifactId>
             <version>${logback-contrib.version}</version>
@@ -453,24 +445,6 @@
             <version>${modernizer.version}</version>
         </dependency>
 
-        <!-- Hibernate validator library dependencies -->
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml</groupId>
-                    <artifactId>classmate</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator-annotation-processor</artifactId>
-            <version>${hibernate-validator.version}</version>
-        </dependency>
-
         <!-- Lombok library dependencies -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -480,19 +454,12 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Slf4j library dependencies -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-api.version}</version>
-        </dependency>
-
-        <!-- Vavr library dependencies -->
-        <dependency>
-            <groupId>io.vavr</groupId>
-            <artifactId>vavr</artifactId>
-            <version>${vavr.version}</version>
-        </dependency>
+        <!--        &lt;!&ndash; Slf4j library dependencies &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.slf4j</groupId>-->
+        <!--            <artifactId>slf4j-api</artifactId>-->
+        <!--            <version>${slf4j-api.version}</version>-->
+        <!--        </dependency>-->
 
         <!-- Wsdl4j library dependencies -->
         <dependency>

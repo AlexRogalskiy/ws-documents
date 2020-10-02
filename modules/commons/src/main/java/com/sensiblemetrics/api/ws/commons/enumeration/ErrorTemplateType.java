@@ -14,6 +14,7 @@ import static java.util.Arrays.asList;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorTemplateType {
+    INVALID_DATA("error-0020", "error.data.invalid"),
     SERVICE_UNAVAILABLE("error-0030", "error.service.unavailable"),
     SERVICE_OPERATION_ERROR("error-0040", "error.operation.invalid"),
     BAD_REQUEST("error-0050", "error.request.invalid"),
@@ -39,9 +40,9 @@ public enum ErrorTemplateType {
     @Nullable
     public static ErrorTemplateType findByCode(final String value) {
         return Arrays.stream(values())
-                .filter(type -> type.getErrorCode().equalsIgnoreCase(value))
-                .findFirst()
-                .orElse(null);
+            .filter(type -> type.getErrorCode().equalsIgnoreCase(value))
+            .findFirst()
+            .orElse(null);
     }
 
     /**

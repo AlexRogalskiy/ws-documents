@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.document.generator.service.interfaces;
 
-import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
 import com.sensiblemetrics.api.ws.document.generator.model.domain.FileInfo;
 import com.sensiblemetrics.api.ws.document.generator.model.entity.DocumentEntity;
+import com.sensiblemetrics.api.ws.validation.constraint.validator.ConstraintGroup;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;

@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.router.property;
 
-import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotBlank;
-import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotEmpty;
-import com.sensiblemetrics.api.ws.commons.constraint.ResourcePathPattern;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotBlank;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotEmpty;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.ResourcePathPattern;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.config.BeanDefinition;

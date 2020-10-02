@@ -11,6 +11,7 @@ packages/
 .project
 .settings/
 target/
+allure-results/
 .idea/
 *.iml
 *.iws

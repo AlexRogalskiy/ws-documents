@@ -172,8 +172,6 @@ spring:
   liquibase:
     enabled: true
     drop-first: true
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration
 
 management:
   health:
@@ -250,4 +248,3 @@ management:
 jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
-    skip-property-sources: org.springframework.boot.env.RandomValuePropertySource

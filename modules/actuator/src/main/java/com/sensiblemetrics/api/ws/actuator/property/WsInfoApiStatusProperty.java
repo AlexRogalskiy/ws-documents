@@ -1,7 +1,7 @@
 package com.sensiblemetrics.api.ws.actuator.property;
 
-import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotEmpty;
 import com.sensiblemetrics.api.ws.commons.helper.MapBuilder;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotEmpty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -71,10 +71,10 @@ public class WsInfoApiStatusProperty {
          * Default {@link Map} collection of metric entries
          */
         private static final Map<String, String> DEFAULT_METRIC_ENTRIES = MapBuilder
-                .map(String.class, String.class)
-                .entry("process-uptime", PROCESS_UPTIME_METRIC)
-                .entry("logback-events", LOGBACK_EVENTS_METRIC)
-                .build();
+            .map(String.class, String.class)
+            .entry(PROCESS_UPTIME_METRIC.replace(".", "-"), PROCESS_UPTIME_METRIC)
+            .entry(LOGBACK_EVENTS_METRIC.replace(".", "-"), LOGBACK_EVENTS_METRIC)
+            .build();
 
         /**
          * Default {@link Map} collection of metrics

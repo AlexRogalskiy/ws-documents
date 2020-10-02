@@ -50,6 +50,12 @@
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-validation</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Spring Boot Admin library dependencies -->
         <dependency>
@@ -61,6 +67,16 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+        <!-- SensibleMetrics test library dependencies -->
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-commons</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

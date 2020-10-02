@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.document.generator.model.entity;
 
-import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
 import com.sensiblemetrics.api.ws.document.generator.model.constraint.ChronologicalDates;
 import com.sensiblemetrics.api.ws.document.generator.model.converter.TenantGenerator;
+import com.sensiblemetrics.api.ws.validation.constraint.validator.ConstraintGroup;
 import lombok.Data;
 import lombok.experimental.UtilityClass;
 import org.hibernate.annotations.*;
@@ -43,8 +43,8 @@ public abstract class AuditEntity<ID extends Serializable> implements Auditable<
     @PastOrPresent
     @CreationTimestamp
     @NotNull(groups = {
-            ConstraintGroup.OnUpdate.class,
-            ConstraintGroup.OnSelect.class
+        ConstraintGroup.OnUpdate.class,
+        ConstraintGroup.OnSelect.class
     }, message = "{model.entity.audit.created-date.notNull}")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = DATE_TIME_PATTERN)
     @Column(name = CREATED_FIELD_NAME, nullable = false, updatable = false)
@@ -53,8 +53,8 @@ public abstract class AuditEntity<ID extends Serializable> implements Auditable<
     @CreatedBy
     @Basic(fetch = FetchType.LAZY)
     @NotNull(groups = {
-            ConstraintGroup.OnUpdate.class,
-            ConstraintGroup.OnSelect.class
+        ConstraintGroup.OnUpdate.class,
+        ConstraintGroup.OnSelect.class
     }, message = "{model.entity.audit.created-by.notNull}")
     @Column(name = CREATED_BY_FIELD_NAME, nullable = false, updatable = false, length = 512)
     @GeneratorType(type = TenantGenerator.class, when = GenerationTime.INSERT)

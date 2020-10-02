@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Role;
 
-import static io.vavr.API.*;
-
 @Configuration
 @ConditionalOnProperty(prefix = WsMetricsProperty.Handlers.HEALTH_STATUS_EXPORTER_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
@@ -28,8 +26,8 @@ public abstract class WsMetricsHealthStatusExporterConfiguration {
     public WsMetricsHealthStatusExporterConfiguration(final MeterRegistry registry,
                                                       final HealthEndpoint healthEndpoint) {
         Gauge.builder("health", healthEndpoint, this::getStatusCode)
-                .strongReference(true)
-                .register(registry);
+            .strongReference(true)
+            .register(registry);
     }
 
     /**
@@ -39,10 +37,14 @@ public abstract class WsMetricsHealthStatusExporterConfiguration {
      * @return {@code int} health status code
      */
     private int getStatusCode(final HealthEndpoint health) {
-        return Match(health.health().getStatus()).of(
-                Case($(Status.UP), 3),
-                Case($(Status.OUT_OF_SERVICE), 2),
-                Case($(Status.DOWN), 1),
-                Case($(), 0));
+        final Status status = health.health().getStatus();
+        if (Status.UP.equals(status)) {
+            return 3;
+        } else if (Status.OUT_OF_SERVICE.equals(status)) {
+            return 2;
+        } else if (Status.DOWN.equals(status)) {
+            return 1;
+        }
+        return 0;
     }
 }

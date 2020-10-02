@@ -176,7 +176,10 @@ WebDocs module dependencies:
 
 - [**WebDocs Security**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/security)  
   `webdocs-security` - Library to work with Security API.
-  
+
+- [**WebDocs Validation**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/validation)  
+  `webdocs-validation` - Library to work with Validation API.
+
 - [**WebDocs Tests**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/tests)  
   `webdocs-tests` - Library with WebDocs tests.
   

@@ -31,12 +31,28 @@
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-validation</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Jasypt library dependencies -->
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
             <version>${spring-boot-jasypt.version}</version>
+        </dependency>
+
+        <!-- SensibleMetrics test library dependencies -->
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-commons</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

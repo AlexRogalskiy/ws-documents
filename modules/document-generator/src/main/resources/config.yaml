@@ -66,3 +66,7 @@ webdocs:
         threaddump:
           names: threaddump
           roles: ROLE_ADMIN
+
+  validation:
+    method-params:
+      enabled: true

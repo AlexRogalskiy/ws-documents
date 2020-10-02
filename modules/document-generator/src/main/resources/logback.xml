@@ -14,7 +14,7 @@
     <property name="FILE_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <property name="UDP_APPENDER_LOG_PATTERN"
-              value="%-5level --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+              value="%d{[yyyy-MM-dd HH:mm:ss]} [%thread] %-5level %logger{36} - %msg%n"/>
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
@@ -124,7 +124,7 @@
         <appender-ref ref="FILE"/>
     </logger>
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="JSON"/>

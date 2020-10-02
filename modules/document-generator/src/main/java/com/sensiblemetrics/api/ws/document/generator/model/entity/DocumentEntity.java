@@ -1,9 +1,9 @@
 package com.sensiblemetrics.api.ws.document.generator.model.entity;
 
-import com.sensiblemetrics.api.ws.commons.constraint.ConstraintGroup;
-import com.sensiblemetrics.api.ws.commons.constraint.NamePattern;
 import com.sensiblemetrics.api.ws.document.generator.enumeration.StatusType;
 import com.sensiblemetrics.api.ws.document.generator.model.converter.StatusTypeConverter;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NamePattern;
+import com.sensiblemetrics.api.ws.validation.constraint.validator.ConstraintGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -67,9 +67,9 @@ public class DocumentEntity extends BaseAuditEntity<UUID> {
 
     @Null(groups = ConstraintGroup.OnCreate.class, message = "{model.entity.document.status.null}")
     @NotNull(groups = {
-            ConstraintGroup.OnUpdate.class,
-            ConstraintGroup.OnSelect.class,
-            ConstraintGroup.OnDelete.class
+        ConstraintGroup.OnUpdate.class,
+        ConstraintGroup.OnSelect.class,
+        ConstraintGroup.OnDelete.class
     }, message = "{model.entity.document.status.notNull}")
     @Enumerated(EnumType.STRING)
     //@Type(type = "status_type_enum")

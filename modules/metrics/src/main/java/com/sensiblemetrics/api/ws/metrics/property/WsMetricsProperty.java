@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.metrics.property;
 
 import com.google.common.collect.Lists;
-import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotBlank;
-import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotEmpty;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotBlank;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotEmpty;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.NamingConvention;
 import lombok.Data;

@@ -79,13 +79,13 @@
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>webdocs-router</artifactId>
+            <artifactId>webdocs-security</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>webdocs-security</artifactId>
+            <artifactId>webdocs-validation</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>

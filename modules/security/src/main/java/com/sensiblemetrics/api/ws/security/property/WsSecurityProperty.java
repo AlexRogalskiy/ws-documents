@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.security.property;
 
-import com.sensiblemetrics.api.ws.commons.constraint.NullOrNotEmpty;
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotEmpty;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.beans.factory.config.BeanDefinition;
