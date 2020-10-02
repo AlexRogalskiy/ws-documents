@@ -22,7 +22,10 @@ jobs:
       - name: Commit update
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
+          branch: git-version-updates
+          skip_dirty_check: true
           commit_message: 'Update VERSION'
+          commit_options: '--no-verify --signoff'
           commit_user_name: WebDocs Bot
           commit_user_email: github-actions@sensiblemetrics.com
           commit_author: WebDocs Bot <github-actions@sensiblemetrics.com>
