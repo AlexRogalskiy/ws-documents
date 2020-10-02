@@ -454,13 +454,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!--        &lt;!&ndash; Slf4j library dependencies &ndash;&gt;-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.slf4j</groupId>-->
-        <!--            <artifactId>slf4j-api</artifactId>-->
-        <!--            <version>${slf4j-api.version}</version>-->
-        <!--        </dependency>-->
-
         <!-- Wsdl4j library dependencies -->
         <dependency>
             <groupId>org.wso2.wsdl4j</groupId>
