@@ -1,8 +1,12 @@
 package com.sensiblemetrics.api.ws.admin.configuration;
 
 import com.sensiblemetrics.api.ws.admin.property.WsAdminServerProperty;
+import com.sensiblemetrics.api.ws.commons.annotation.ConditionalOnMissingBean;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
+import de.codecentric.boot.admin.server.web.client.InstanceExchangeFilterFunction;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,6 +29,21 @@ import java.util.UUID;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics WebDocs Admin Server configuration")
 public abstract class WsAdminServerConfiguration {
+    /**
+     * Default configuration {@link Marker} instance
+     */
+    private static final Marker DEFAULT_CONFIGURATION_MARKER = MarkerFactory.getMarker("WsAdminServerConfiguration");
+
+    @Bean
+    @ConditionalOnMissingBean
+    @Description("Audit log configuration bean")
+    public InstanceExchangeFilterFunction auditLog() {
+        return (instance, request, next) -> next.exchange(request).doOnSubscribe((s) -> {
+            if (HttpMethod.DELETE.equals(request.method()) || HttpMethod.POST.equals(request.method())) {
+                log.info(DEFAULT_CONFIGURATION_MARKER, "{} for {} on {}", request.method(), instance.getId(), request.url());
+            }
+        });
+    }
 
     @Profile("insecure")
     @Configuration(proxyBeanMethods = false)
