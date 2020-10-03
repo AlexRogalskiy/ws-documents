@@ -9,7 +9,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
  * Task scheduler {@link AbstractHealthIndicator} implementation
  */
 @RequiredArgsConstructor
-public class TaskSchedulerHealthIndicator extends AbstractHealthIndicator {
+public class WsTaskSchedulerHealthIndicator extends AbstractHealthIndicator {
     private final ThreadPoolTaskScheduler taskScheduler;
 
     /**

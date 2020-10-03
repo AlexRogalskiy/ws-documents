@@ -27,8 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @ConditionalOnProperty(prefix = WsAdminProperty.Handlers.NOTIFICATION_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics WebDocs Admin Notifier configuration")
-public abstract class WsAdminNotificationConfiguration {
+@Description("SensibleMetrics WebDocs Admin Server notifier configuration")
+public abstract class WsAdminServerNotifierConfiguration {
     /**
      * Default admin bean naming conventions
      */

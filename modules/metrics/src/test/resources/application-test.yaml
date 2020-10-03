@@ -19,10 +19,14 @@ spring:
 webdocs:
   metrics:
     defaults:
-      description: WebDocs Generator Service
+      description: WebDocs Service
       tags:
         - key: scope
-          value: WebDocs
+          value: webdocs
+    meters:
+      datasource:
+        name: webdocs.datasource
+        description: DataSource status probe
     handlers:
       tracking-time:
         enabled: true

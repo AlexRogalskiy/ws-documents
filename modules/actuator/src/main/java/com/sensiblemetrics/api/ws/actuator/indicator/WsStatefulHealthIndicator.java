@@ -6,7 +6,7 @@ import org.springframework.boot.actuate.health.Health;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class StatefulHealthIndicator extends AbstractHealthIndicator {
+public class WsStatefulHealthIndicator extends AbstractHealthIndicator {
     private final AtomicReference<HealthState> state = new AtomicReference<>(new HealthState(HealthStateStatus.WARNING, System.currentTimeMillis()));
 
     @Override

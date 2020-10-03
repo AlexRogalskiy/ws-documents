@@ -2,7 +2,7 @@
 ---
 spring:
   application:
-    name: "Document-Generator-WebService"
+    name: "WebDocs-Document-Generator-WebService"
   cloud:
     kubernetes:
       enabled: false

@@ -53,15 +53,15 @@ public class WsAdminProperty {
          * Default handlers property prefix
          */
         public static final String PROPERTY_PREFIX = WsAdminProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "handlers";
-        public static final String NOTIFICATION_PROPERTY_PREFIX = PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "notification";
+        public static final String NOTIFICATION_PROPERTY_PREFIX = PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "notifier";
 
         /**
          * Notification handler
          */
         @Valid
         @NestedConfigurationProperty
-        @NotNull(message = "{property.admin.handlers.notification.notNull}")
-        private Handler notification = new Handler();
+        @NotNull(message = "{property.admin.handlers.notifier.notNull}")
+        private Handler notifier = new Handler();
     }
 
     /**

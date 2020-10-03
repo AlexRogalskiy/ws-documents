@@ -15,10 +15,10 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WsEncryptableProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = WsSecurityEncryptableProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics WebDocs Security Encryptable configuration properties")
-public class WsEncryptableProperty {
+public class WsSecurityEncryptableProperty {
     /**
      * Default encryptable property prefix
      */

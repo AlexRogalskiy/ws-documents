@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.logger.property;
 
+import com.sensiblemetrics.api.ws.validation.constraint.annotation.NullOrNotEmpty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.Set;
 
 import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_DELIMITER;
@@ -97,8 +97,8 @@ public class WsLoggingProperty {
          * Default headers
          */
         @Valid
-        @NotNull(message = "{property.logging.headers.names.notNull}")
-        private Set<@NotBlank String> names = Collections.emptySet();
+        @NullOrNotEmpty(message = "{property.logging.headers.names.nullOrNotEmpty}")
+        private Set<@NotBlank String> names;
 
         /**
          * Default header pattern

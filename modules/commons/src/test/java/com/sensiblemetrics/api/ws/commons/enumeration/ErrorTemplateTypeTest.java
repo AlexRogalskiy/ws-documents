@@ -30,7 +30,7 @@ class ErrorTemplateTypeTest {
     private static final Stream<Arguments> errorTemplateTypeValues = Stream.of(
         Arguments.of(INVALID_DATA, createTypeMatcher("error-0020", "error.data.invalid")),
         Arguments.of(SERVICE_UNAVAILABLE, createTypeMatcher("error-0030", "error.service.unavailable")),
-        Arguments.of(SERVICE_OPERATION_ERROR, createTypeMatcher("error-0040", "error.operation.invalid")),
+        Arguments.of(SERVICE_OPERATION_ERROR, createTypeMatcher("error-0040", "error.service.operation.invalid")),
         Arguments.of(BAD_REQUEST, createTypeMatcher("error-0050", "error.request.invalid")),
         Arguments.of(DOCUMENT_PROCESSING_ERROR, createTypeMatcher("error-0060", "error.document.processing.invalid")),
         Arguments.of(INVALID_ENDPOINT_CONFIGURATION, createTypeMatcher("error-0070", "error.endpoint.configuration.invalid")),
@@ -62,6 +62,26 @@ class ErrorTemplateTypeTest {
             Arguments.of(DOCUMENT_PROCESSING_ERROR, equalTo("error-0060")),
             Arguments.of(INVALID_ENDPOINT_CONFIGURATION, equalTo("error-0070")),
             Arguments.of(INVALID_ENDPOINT_SECURITY_CONFIGURATION, equalTo("error-0080"))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void testCheckErrorTemplateTypeByFormattedString(final ErrorTemplateType enumType,
+                                                     final Matcher<String> matcher) {
+        // then
+        assertThat(enumType.toString(), matcher);
+    }
+
+    private static Stream<Arguments> testCheckErrorTemplateTypeByFormattedString() {
+        return Stream.of(
+            Arguments.of(ErrorTemplateType.INVALID_DATA, equalTo(getFormattedString("error-0020", "error.data.invalid"))),
+            Arguments.of(ErrorTemplateType.SERVICE_UNAVAILABLE, equalTo(getFormattedString("error-0030", "error.service.unavailable"))),
+            Arguments.of(ErrorTemplateType.SERVICE_OPERATION_ERROR, equalTo(getFormattedString("error-0040", "error.service.operation.invalid"))),
+            Arguments.of(ErrorTemplateType.BAD_REQUEST, equalTo(getFormattedString("error-0050", "error.request.invalid"))),
+            Arguments.of(ErrorTemplateType.DOCUMENT_PROCESSING_ERROR, equalTo(getFormattedString("error-0060", "error.document.processing.invalid"))),
+            Arguments.of(ErrorTemplateType.INVALID_ENDPOINT_CONFIGURATION, equalTo(getFormattedString("error-0070", "error.endpoint.configuration.invalid"))),
+            Arguments.of(ErrorTemplateType.INVALID_ENDPOINT_SECURITY_CONFIGURATION, equalTo(getFormattedString("error-0080", "error.endpoint.security.configuration.invalid")))
         );
     }
 
@@ -138,6 +158,11 @@ class ErrorTemplateTypeTest {
 
         // then
         assertThat(thrown.getMessage(), startsWith(errorMessage));
+    }
+
+    private static String getFormattedString(final String errorCode,
+                                             final String errorMessage) {
+        return String.format("Error: {%s}, message: {%s}", errorCode, errorMessage);
     }
 
     private static CustomTypeSafeMatcher<ErrorTemplateType> createTypeMatcher(final String errorCode,

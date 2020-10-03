@@ -17,37 +17,37 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Slf4j
 @Configuration
-@Import(WsAdminNotificationConfiguration.class)
+@Import(WsAdminServerNotifierConfiguration.class)
 @ConditionalOnProperty(prefix = WsAdminProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsAdminProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics WebDocs Admin configuration")
-public abstract class WsAdminConfiguration {
+@Description("SensibleMetrics WebDocs Admin Server configuration")
+public abstract class WsAdminServerConfiguration {
 
     @Profile("insecure")
     @Configuration(proxyBeanMethods = false)
     @EnableConfigurationProperties(AdminServerProperties.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Authentication Admin Web Security configuration adapter")
-    public static class AuthAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Description("Authority Admin Server Web Security configuration adapter")
+    public static class AuthorityAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final String adminContextPath;
 
-        public AuthAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
+        public AuthorityAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
             this.adminContextPath = adminServerProperties.getContextPath();
         }
 
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
             http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().permitAll())
-                    .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                            .ignoringRequestMatchers(
-                                    new AntPathRequestMatcher(this.adminContextPath + "/instances",
-                                            HttpMethod.POST.toString()),
-                                    new AntPathRequestMatcher(this.adminContextPath + "/instances/*",
-                                            HttpMethod.DELETE.toString()),
-                                    new AntPathRequestMatcher(this.adminContextPath + "/actuator/**")
-                            )
-                    );
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .ignoringRequestMatchers(
+                        new AntPathRequestMatcher(this.adminContextPath + "/instances",
+                            HttpMethod.POST.toString()),
+                        new AntPathRequestMatcher(this.adminContextPath + "/instances/*",
+                            HttpMethod.DELETE.toString()),
+                        new AntPathRequestMatcher(this.adminContextPath + "/actuator/**")
+                    )
+                );
         }
     }
 
@@ -55,31 +55,31 @@ public abstract class WsAdminConfiguration {
     @Configuration(proxyBeanMethods = false)
     @EnableConfigurationProperties(AdminServerProperties.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("NoAuthentication Admin Web Security configuration adapter")
-    public static class NoAuthAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Description("NoAuthority Admin Server Web Security configuration adapter")
+    public static class NoAuthorityAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final String adminContextPath;
 
-        public NoAuthAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
+        public NoAuthorityAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
             this.adminContextPath = adminServerProperties.getContextPath();
         }
 
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
             http.authorizeRequests(authorizeRequests -> authorizeRequests
-                    .antMatchers(this.adminContextPath + "/assets/**").permitAll()
-                    .antMatchers(this.adminContextPath + "/login").permitAll().anyRequest().authenticated())
-                    .formLogin(formLogin -> formLogin.loginPage(this.adminContextPath + "/login").successHandler(this.authenticationSuccessHandler()))
-                    .logout(logout -> logout.logoutUrl(this.adminContextPath + "/logout"))
-                    .httpBasic(Customizer.withDefaults())
-                    .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                            .ignoringRequestMatchers(
-                                    new AntPathRequestMatcher(this.adminContextPath + "/instances",
-                                            HttpMethod.POST.toString()),
-                                    new AntPathRequestMatcher(this.adminContextPath + "/instances/*",
-                                            HttpMethod.DELETE.toString()),
-                                    new AntPathRequestMatcher(this.adminContextPath + "/actuator/**")
-                            )
-                    );
+                .antMatchers(this.adminContextPath + "/assets/**").permitAll()
+                .antMatchers(this.adminContextPath + "/login").permitAll().anyRequest().authenticated())
+                .formLogin(formLogin -> formLogin.loginPage(this.adminContextPath + "/login").successHandler(this.authenticationSuccessHandler()))
+                .logout(logout -> logout.logoutUrl(this.adminContextPath + "/logout"))
+                .httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .ignoringRequestMatchers(
+                        new AntPathRequestMatcher(this.adminContextPath + "/instances",
+                            HttpMethod.POST.toString()),
+                        new AntPathRequestMatcher(this.adminContextPath + "/instances/*",
+                            HttpMethod.DELETE.toString()),
+                        new AntPathRequestMatcher(this.adminContextPath + "/actuator/**")
+                    )
+                );
         }
 
         private SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {

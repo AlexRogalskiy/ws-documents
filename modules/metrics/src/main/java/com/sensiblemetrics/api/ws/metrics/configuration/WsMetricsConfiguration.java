@@ -91,7 +91,7 @@ public abstract class WsMetricsConfiguration {
     @ConditionalOnMissingBean(name = METER_REGISTRY_WEB_MVC_TAGS_CONTRIBUTOR_BEAN_NAME)
     @Description("Metrics Web MVC tags contributor bean")
     public WebMvcTagsContributor webMvcTagsContributor(final WsMetricsProperty metricsProperty) {
-        return new CustomWebMvcTagsContributor(metricsProperty);
+        return new DefaultWebMvcTagsContributor(metricsProperty);
     }
 
     @Bean(METER_REGISTRY_TIMED_ASPECT_BEAN_NAME)
@@ -148,7 +148,7 @@ public abstract class WsMetricsConfiguration {
     }
 
     @RequiredArgsConstructor
-    public static class CustomWebMvcTagsContributor implements WebMvcTagsContributor {
+    public static class DefaultWebMvcTagsContributor implements WebMvcTagsContributor {
         private final WsMetricsProperty metricsProperty;
 
         /**

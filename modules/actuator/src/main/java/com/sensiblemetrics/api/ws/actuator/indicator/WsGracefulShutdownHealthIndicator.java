@@ -21,7 +21,7 @@ import static org.springframework.boot.actuate.health.Health.up;
 @Slf4j
 @ThreadSafe
 @RequiredArgsConstructor
-public class GracefulShutdownHealthIndicator implements SmartLifecycle, HealthIndicator {
+public class WsGracefulShutdownHealthIndicator implements SmartLifecycle, HealthIndicator {
     /**
      * Default shutdown {@link Marker} instance
      */

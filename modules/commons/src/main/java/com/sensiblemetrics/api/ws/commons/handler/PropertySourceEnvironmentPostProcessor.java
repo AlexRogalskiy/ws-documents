@@ -14,6 +14,10 @@ import static java.lang.String.format;
 
 public class PropertySourceEnvironmentPostProcessor implements EnvironmentPostProcessor {
     /**
+     * Default property resource name
+     */
+    private static final String PROPERTY_SOURCE_NAME = "webdocs-resource";
+    /**
      * {@link YamlPropertySourceLoader} instance
      */
     private final YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
@@ -31,7 +35,7 @@ public class PropertySourceEnvironmentPostProcessor implements EnvironmentPostPr
             throw new IllegalArgumentException(format("Resource {%s} does not exist", path));
         }
         try {
-            return this.loader.load("webdocs-resource", path).get(0);
+            return this.loader.load(PROPERTY_SOURCE_NAME, path).get(0);
         } catch (IOException ex) {
             throw new IllegalStateException(format("Failed to load yaml configuration from {%s}", path), ex);
         }
