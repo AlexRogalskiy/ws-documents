@@ -1,8 +1,9 @@
-package com.sensiblemetrics.api.ws.validation.model;
+package com.sensiblemetrics.api.ws.validation.management;
 
 import org.springframework.validation.Validator;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
@@ -16,7 +17,8 @@ public class DefaultValidatorRegistry implements ValidatorRegistry {
 
     @Override
     public void addValidator(final Validator validator) {
-        this.validatorList.add(validator);
+        Optional.ofNullable(validator)
+            .ifPresent(this.validatorList::add);
     }
 
     @Override

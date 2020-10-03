@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.validation.model;
+package com.sensiblemetrics.api.ws.validation.management;
 
 import org.springframework.validation.Validator;
 
