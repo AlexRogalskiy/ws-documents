@@ -19,6 +19,8 @@
 ![Docker Pulls](https://img.shields.io/docker/pulls/alexanderr/ws-documents)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AlexRogalskiy_ws-documents&metric=alert_status)](https://sonarcloud.io/dashboard?id=AlexRogalskiy_ws-documents)
 
+![](./images/logo-webdocs.png)
+
 ## Summary
 
 Web service intended to provide operations on documents \(create, edit, fetch document's data and generate file in docx format by template\)

@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.admin.configuration;
 
-import com.sensiblemetrics.api.ws.admin.property.WsAdminProperty;
+import com.sensiblemetrics.api.ws.admin.property.WsAdminServerProperty;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -15,11 +15,13 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import java.util.UUID;
+
 @Slf4j
 @Configuration
 @Import(WsAdminServerNotifierConfiguration.class)
-@ConditionalOnProperty(prefix = WsAdminProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
-@EnableConfigurationProperties(WsAdminProperty.class)
+@ConditionalOnProperty(prefix = WsAdminServerProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties(WsAdminServerProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics WebDocs Admin Server configuration")
 public abstract class WsAdminServerConfiguration {
@@ -29,10 +31,10 @@ public abstract class WsAdminServerConfiguration {
     @EnableConfigurationProperties(AdminServerProperties.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Description("Authority Admin Server Web Security configuration adapter")
-    public static class AuthorityAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    public static class AuthorityAdminServerSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final String adminContextPath;
 
-        public AuthorityAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
+        public AuthorityAdminServerSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
             this.adminContextPath = adminServerProperties.getContextPath();
         }
 
@@ -56,10 +58,10 @@ public abstract class WsAdminServerConfiguration {
     @EnableConfigurationProperties(AdminServerProperties.class)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Description("NoAuthority Admin Server Web Security configuration adapter")
-    public static class NoAuthorityAdminSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    public static class NoAuthorityAdminServerSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final String adminContextPath;
 
-        public NoAuthorityAdminSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
+        public NoAuthorityAdminServerSecurityConfigurerAdapter(final AdminServerProperties adminServerProperties) {
             this.adminContextPath = adminServerProperties.getContextPath();
         }
 
@@ -79,7 +81,10 @@ public abstract class WsAdminServerConfiguration {
                             HttpMethod.DELETE.toString()),
                         new AntPathRequestMatcher(this.adminContextPath + "/actuator/**")
                     )
-                );
+                )
+                .rememberMe()
+                .key(UUID.randomUUID().toString())
+                .tokenValiditySeconds(1209600);
         }
 
         private SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {

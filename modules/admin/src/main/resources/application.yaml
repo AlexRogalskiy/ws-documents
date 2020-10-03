@@ -1,0 +1,190 @@
+# SensibleMetrics WebDocs Admin Server configuration
+---
+eureka:
+  client:
+    enabled: false
+
+server:
+  port: 8085
+  ssl:
+    key-store: modules/admin/src/main/resources/key-store.jks
+    key-store-password: ENC(pZulM4Rk5Tu1gnpQ5WzifnV4EFPN5RBhFNeImxlij/y2Zxa/Iqlp2S8QpcsqKPBM)
+    key-password: ENC(q9chaN0OEEaaUJq3FyS65PZDsSf+PUyP+ssgJzkQa23Ft+KeQ6t3YyKf5IWUVfRE)
+    key-store-type: PKCS12
+    key-alias: spring-boot-ssl-sample
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    min-response-size: 1024
+  forward-headers-strategy: FRAMEWORK
+  error:
+    path: /error
+    include-stacktrace: NEVER
+    whitelabel:
+      enabled: false
+  tomcat:
+    mbeanregistry:
+      enabled: true
+    accesslog:
+      enabled: true
+      pattern: '%t %a "%r" %s (%D ms)'
+
+spring:
+  profiles:
+    include: insecure
+  output:
+    ansi:
+      enabled: NEVER
+  main:
+    log-startup-info: true
+  application:
+    name: "WebDocs-Admin-Server-WebService"
+  messages:
+    basename: i18n/common_messages, i18n/messages
+    # 1 hour
+    cache-duration: 3600
+  aop:
+    proxy-target-class: true
+  devtools:
+    add-properties: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+    log-resolved-exception: true
+    locale-resolver: FIXED
+    async:
+      # 1 hour
+      request-timeout: 3600000
+  resources:
+    add-mappings: true
+    chain:
+      strategy:
+        content:
+          enabled: true
+  boot:
+    admin:
+      #      routes:
+      #        endpoints: env,metrics,trace,jolokia,info,configprops
+      ui:
+        cache:
+          no-cache: true
+        cache-templates: false
+        external-views:
+          - label: "🚀"
+            url: http://codecentric.de
+            order: 2000
+      discovery:
+        ignored-services: consul
+      probed-endpoints: env,metrics,trace,jolokia,info,configprops
+
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  server:
+    servlet:
+      context-path: /management
+    port: 8088
+  info:
+    build:
+      enabled: false
+    git:
+      mode: FULL
+  endpoint:
+    jolokia:
+      config:
+        debug: true
+    beans:
+      cache:
+        time-to-live: 30s
+    shutdown:
+      enabled: true
+    health:
+      show-details: ALWAYS
+      show-components: ALWAYS
+      cache:
+        time-to-live: 30s
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: [ "jolokia", "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
+      base-path: /actuator
+      path-mapping:
+        info: status
+  metrics:
+    tags:
+      region: ${spring.application.region:us-east-1}
+      type: webdocs
+    export:
+      prometheus:
+        enabled: true
+        step: 3m
+        pushgateway:
+          enabled: false
+      jmx:
+        enabled: false
+      simple:
+        enabled: true
+        mode: STEP
+    enable:
+      jvm: false
+    web:
+      server:
+        request:
+          autotime:
+            enabled: true
+      client:
+        max-uri-tags: 5
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+      slo:
+        http:
+          server:
+            requests: 20ms,50ms
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+---
+spring:
+  profiles: dev
+  boot:
+    admin:
+      client:
+        url: https://localhost:8085/
+      ui:
+        cache:
+          no-cache: true
+        cache-templates: false
+---
+spring:
+  profiles: insecure
+  boot:
+    admin:
+      client:
+        url: https://localhost:8085/
+---
+spring:
+  profiles: secure
+  security:
+    user:
+      name: ${ADMIN_USER:user}
+      password: ${ADMIN_PASSWORD:password}
+  boot:
+    admin:
+      client:
+        url: https://localhost:8085/
+        username: ${spring.security.user.name}       #These two are needed so that the client
+        password: ${spring.security.user.password}   #can register at the protected server api
+        instance:
+          metadata:
+            user:
+              name: ${spring.security.user.name}         #These two are needed so that the server
+              password: ${spring.security.user.password} #can access the protected client endpoints

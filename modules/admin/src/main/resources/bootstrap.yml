@@ -1,8 +1,8 @@
-# SensibleMetrics WebDocs Document Generator Bootstrap configuration
+# SensibleMetrics WebDocs Admin Server Bootstrap configuration
 ---
 spring:
   application:
-    name: "WebDocs-Document-Generator-WebService"
+    name: "WebDocs-Admin-Server-WebService"
   cloud:
     kubernetes:
       enabled: false
@@ -20,7 +20,7 @@ spring:
 spring:
   profiles: compose
   application:
-    name: "WebDocs-Document-Generator-WebService"
+    name: "WebDocs-Admin-Server-WebService"
   cloud:
     kubernetes:
       discovery:

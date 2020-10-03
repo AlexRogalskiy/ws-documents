@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.admin.configuration;
 
-import com.sensiblemetrics.api.ws.admin.property.WsAdminProperty;
+import com.sensiblemetrics.api.ws.admin.property.WsAdminServerProperty;
 import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;
 import de.codecentric.boot.admin.server.notify.CompositeNotifier;
 import de.codecentric.boot.admin.server.notify.LoggingNotifier;
@@ -23,11 +23,13 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
+import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAULT_PROPERTY_DELIMITER;
+
 @Configuration
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = WsAdminProperty.Handlers.NOTIFICATION_PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = WsAdminServerProperty.Handlers.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-@Description("SensibleMetrics WebDocs Admin Server notifier configuration")
+@Description("SensibleMetrics WebDocs Admin Server Notifier configuration")
 public abstract class WsAdminServerNotifierConfiguration {
     /**
      * Default admin bean naming conventions
@@ -36,32 +38,63 @@ public abstract class WsAdminServerNotifierConfiguration {
     public static final String ADMIN_FILTERING_NOTIFIER_BEAN_NAME = "filteringNotifier";
     public static final String ADMIN_REMINDING_NOTIFIER_BEAN_NAME = "remindingNotifier";
 
-    private final InstanceRepository repository;
-    private final ObjectProvider<List<Notifier>> otherNotifiers;
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnProperty(prefix = LoggingNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Description("Logging Admin Server notifier configuration")
+    public static class LoggingNotifierConfiguration {
+        /**
+         * Default property prefix
+         */
+        public static final String PROPERTY_PREFIX = WsAdminServerProperty.Handlers.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "logging-notifier";
 
-    @Bean(ADMIN_LOGGING_NOTIFIER_BEAN_NAME)
-    @ConditionalOnClass(ProcessThreadMetrics.class)
-    @Description("Admin logging notifier configuration bean")
-    public LoggingNotifier loggerNotifier() {
-        return new LoggingNotifier(this.repository);
+        @Bean(ADMIN_LOGGING_NOTIFIER_BEAN_NAME)
+        @ConditionalOnClass(ProcessThreadMetrics.class)
+        @Description("Admin logging notifier configuration bean")
+        public LoggingNotifier loggerNotifier(final InstanceRepository repository) {
+            return new LoggingNotifier(repository);
+        }
     }
 
-    @Bean(ADMIN_FILTERING_NOTIFIER_BEAN_NAME)
-    @ConditionalOnClass(ProcessThreadMetrics.class)
-    @Description("Admin filtering notifier configuration bean")
-    public FilteringNotifier filteringNotifier() {
-        final CompositeNotifier delegate = new CompositeNotifier(this.otherNotifiers.getIfAvailable(Collections::emptyList));
-        return new FilteringNotifier(delegate, this.repository);
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnProperty(prefix = FilteringNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Description("Filtering Admin Server notifier configuration")
+    public static class FilteringNotifierConfiguration {
+        /**
+         * Default property prefix
+         */
+        public static final String PROPERTY_PREFIX = WsAdminServerProperty.Handlers.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "filtering-notifier";
+
+        @Bean(ADMIN_FILTERING_NOTIFIER_BEAN_NAME)
+        @ConditionalOnClass(ProcessThreadMetrics.class)
+        @Description("Admin filtering notifier configuration bean")
+        public FilteringNotifier filteringNotifier(final ObjectProvider<List<Notifier>> otherNotifiers,
+                                                   final InstanceRepository repository) {
+            final CompositeNotifier delegate = new CompositeNotifier(otherNotifiers.getIfAvailable(Collections::emptyList));
+            return new FilteringNotifier(delegate, repository);
+        }
     }
 
+    @Configuration(proxyBeanMethods = false)
+    @ConditionalOnProperty(prefix = RemindingNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Description("Reminding Admin Server notifier configuration")
+    public static class RemindingNotifierConfiguration {
+        /**
+         * Default property prefix
+         */
+        public static final String PROPERTY_PREFIX = WsAdminServerProperty.Handlers.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "reminding-notifier";
 
-    @Bean(value = ADMIN_REMINDING_NOTIFIER_BEAN_NAME, initMethod = "start", destroyMethod = "stop")
-    @ConditionalOnBean(FilteringNotifier.class)
-    @Description("Admin reminding notifier configuration bean")
-    public RemindingNotifier remindingNotifier(final FilteringNotifier filteringNotifier) {
-        final RemindingNotifier notifier = new RemindingNotifier(filteringNotifier, this.repository);
-        notifier.setReminderPeriod(Duration.ofMinutes(10));
-        notifier.setCheckReminderInverval(Duration.ofSeconds(10));
-        return notifier;
+        @Bean(value = ADMIN_REMINDING_NOTIFIER_BEAN_NAME, initMethod = "start", destroyMethod = "stop")
+        @ConditionalOnBean(FilteringNotifier.class)
+        @Description("Admin reminding notifier configuration bean")
+        public RemindingNotifier remindingNotifier(final FilteringNotifier filteringNotifier,
+                                                   final InstanceRepository repository) {
+            final RemindingNotifier notifier = new RemindingNotifier(filteringNotifier, repository);
+            notifier.setReminderPeriod(Duration.ofMinutes(10));
+            notifier.setCheckReminderInverval(Duration.ofSeconds(10));
+            return notifier;
+        }
     }
 }

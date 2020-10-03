@@ -5,18 +5,16 @@
     <!--    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>-->
 
     <!--    <property name="LOG_DIR" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>-->
-    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.log}"/>
     <property name="LOG_DIR" value="./log/application"/>
     <property name="LOG_ARCHIVE_DIR" value="${LOG_DIR}/archive"/>
-    <!--    <property name="LOG_FILE" value="LogFile"/>-->
+    <property name="LOG_FILE" value="LogFile"/>
 
     <property name="CONSOLE_LOG_PATTERN"
               value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <property name="FILE_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <property name="UDP_APPENDER_LOG_PATTERN"
-              value="%-5level --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
-
+              value="%d{[yyyy-MM-dd HH:mm:ss]} [%thread] %-5level %logger{36} - %msg%n"/>
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
@@ -62,9 +60,9 @@
             <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.json</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
-        <!--<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
-        <!--<maxFileSize>200MB</maxFileSize>-->
-        <!--</triggeringPolicy>-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>200MB</maxFileSize>
+        </triggeringPolicy>
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <pattern>
@@ -113,11 +111,17 @@
     <logger name="org.springframework.web" level="ERROR"/>
     <logger name="org.springframework.transaction" level="ERROR"/>
 
-    <logger name="com.sensiblemetrics.api.ws.admin" level="ERROR" additivity="false">
+    <logger name="org.hibernate" level="INFO"/>
+    <logger name="org.hibernate.sql" level="INFO"/>
+    <logger name="org.hibernate.cache" level="INFO"/>
+    <logger name="org.hibernate.type" level="INFO"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="INFO"/>
+
+    <logger name="com.sensiblemetrics.api.ws.admin" level="INFO" additivity="true">
         <appender-ref ref="FILE"/>
     </logger>
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="JSON"/>

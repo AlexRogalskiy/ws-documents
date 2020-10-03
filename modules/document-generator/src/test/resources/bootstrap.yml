@@ -1,4 +1,4 @@
-# SensibleMetrics Document Generator WebService Bootstrap test configuration
+# SensibleMetrics WebDocs Document Generator Bootstrap test configuration
 ---
 spring:
   application:

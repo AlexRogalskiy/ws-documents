@@ -1,5 +1,9 @@
-# SensibleMetrics WebDocs Document Generator WebService configuration
+# SensibleMetrics WebDocs Document Generator configuration
 ---
+eureka:
+  client:
+    enabled: false
+
 server:
   port: 8089
   ssl:
@@ -33,7 +37,7 @@ spring:
   main:
     log-startup-info: true
   profiles:
-    include: document, addressing, cloud
+    include: document, addressing, cloud, insecure
   application:
     name: "WebDocs-Document-Generator-WebService"
   messages:
@@ -248,3 +252,39 @@ management:
 jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+---
+spring:
+  profiles: dev
+  boot:
+    admin:
+      client:
+        url: https://localhost:8085/
+      ui:
+        cache:
+          no-cache: true
+        cache-templates: false
+---
+spring:
+  profiles: insecure
+  boot:
+    admin:
+      client:
+        url: https://localhost:8085/
+---
+spring:
+  profiles: secure
+  security:
+    user:
+      name: ${ADMIN_USER:user}
+      password: ${ADMIN_PASSWORD:password}
+  boot:
+    admin:
+      client:
+        url: https://localhost:8085/
+        username: ${spring.security.user.name}       #These two are needed so that the client
+        password: ${spring.security.user.password}   #can register at the protected server api
+        instance:
+          metadata:
+            user:
+              name: ${spring.security.user.name}         #These two are needed so that the server
+              password: ${spring.security.user.password} #can access the protected client endpoints
