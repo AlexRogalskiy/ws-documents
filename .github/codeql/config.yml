@@ -1,0 +1,4 @@
+name: "WebDocs CodeQL Config"
+
+paths:
+  - src

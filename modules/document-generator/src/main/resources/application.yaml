@@ -1,8 +1,16 @@
 # SensibleMetrics WebDocs Document Generator configuration
 ---
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: management/actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
     enabled: false
+    registry-fetch-interval-seconds: 5
+    service-url:
+      default-zone: http://eureka:password@localhost:8761/eureka/
 
 server:
   port: 8089
@@ -252,6 +260,15 @@ management:
 jasypt:
   encryptor:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+---
+spring:
+  profiles: eureka
+
+eureka:
+  client:
+    enabled: true
+    service-url:
+      default-zone: http://eureka:password@localhost:8761/eureka/
 ---
 spring:
   profiles: dev

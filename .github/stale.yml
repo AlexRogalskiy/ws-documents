@@ -6,6 +6,8 @@ daysUntilClose: 90
 onlyLabels: []
 # Issues with these labels will never be considered stale
 exemptLabels:
+  - "blocker"
+  - "regression"
   - "high priority"
   - "good first issue"
   - "pinned"

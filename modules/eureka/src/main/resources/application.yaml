@@ -1,9 +1,9 @@
-# SensibleMetrics WebDocs Web Service Admin Server configuration
+# SensibleMetrics WebDocs Eureka Server configuration
 ---
 server:
-  port: 8085
+  port: 8080
   ssl:
-    key-store: modules/admin/src/main/resources/key-store.jks
+    key-store: modules/eureka/src/main/resources/key-store.jks
     key-store-password: ENC(pZulM4Rk5Tu1gnpQ5WzifnV4EFPN5RBhFNeImxlij/y2Zxa/Iqlp2S8QpcsqKPBM)
     key-password: ENC(q9chaN0OEEaaUJq3FyS65PZDsSf+PUyP+ssgJzkQa23Ft+KeQ6t3YyKf5IWUVfRE)
     key-store-type: PKCS12
@@ -28,14 +28,14 @@ server:
 
 spring:
   profiles:
-    include: insecure
+    include: secure
   output:
     ansi:
       enabled: NEVER
   main:
     log-startup-info: true
   application:
-    name: "WebDocs-Admin-Server-WebService"
+    name: "WebDocs-Eureka-Server-WebService"
   messages:
     basename: i18n/common_messages, i18n/messages
     # 1 hour
@@ -57,21 +57,6 @@ spring:
       strategy:
         content:
           enabled: true
-  boot:
-    admin:
-      #      routes:
-      #        endpoints: env,metrics,trace,jolokia,info,configprops
-      ui:
-        cache:
-          no-cache: true
-        cache-templates: false
-        external-views:
-          - label: "🚀"
-            url: http://codecentric.de
-            order: 2000
-      discovery:
-        ignored-services: consul
-      probed-endpoints: env,metrics,trace,jolokia,info,configprops
 
 management:
   health:
@@ -150,51 +135,37 @@ jasypt:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
 ---
 spring:
-  profiles: dev
-  boot:
-    admin:
-      client:
-        url: https://localhost:8085/
-      ui:
-        cache:
-          no-cache: true
-        cache-templates: false
----
-spring:
   profiles: insecure
-  boot:
-    admin:
-      client:
-        url: https://localhost:8085/
 
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: management/actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
-    enabled: false
+    registry-fetch-interval-seconds: 5
     service-url:
-      default-zone: http://eureka:password@localhost:8761/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
 ---
 spring:
   profiles: secure
   security:
     user:
-      name: ${ADMIN_USER:user}
-      password: ${ADMIN_PASSWORD:password}
-  boot:
-    admin:
-      client:
-        url: https://localhost:8085/
-        username: ${spring.security.user.name}       #These two are needed so that the client
-        password: ${spring.security.user.password}   #can register at the protected server api
-        instance:
-          metadata:
-            user:
-              name: ${spring.security.user.name}         #These two are needed so that the server
-              password: ${spring.security.user.password} #can access the protected client endpoints
-      discovery:
-        ignored-services: webdocs-admin
+      name: ${EUREKA_USER:user}
+      password: ${EUREKA_PASSWORD:password}
 
+# by default every Eureka Server is also an Eureka Client and requires (at least one) service URL to locate a peer.
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: management/actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+      user:
+        name: ${spring.security.user.name}
+        password: ${spring.security.user.password}
   client:
-    enabled: false
+    registry-fetch-interval-seconds: 5
     service-url:
-      default-zone: http://eureka:password@localhost:8761/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
