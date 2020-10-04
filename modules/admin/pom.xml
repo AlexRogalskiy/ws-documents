@@ -19,6 +19,10 @@
 
     <properties>
         <spring-boot-admin.version>2.2.2</spring-boot-admin.version>
+        <spring-boot-admin-client.version>2.3.0</spring-boot-admin-client.version>
+        <spring-boot-admin-server.version>2.3.0</spring-boot-admin-server.version>
+        <spring-boot-admin-server-ui.version>1.5.7</spring-boot-admin-server-ui.version>
+        <spring-cloud-eureka-client.version>2.2.5.RELEASE</spring-cloud-eureka-client.version>
 
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
@@ -67,21 +71,25 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-server</artifactId>
+            <version>${spring-boot-admin-server.version}</version>
         </dependency>
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-server-ui-login</artifactId>
+            <version>${spring-boot-admin-server-ui.version}</version>
         </dependency>
         <!--declare the admin server as a client, for self monitoring -->
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-admin-client.version}</version>
         </dependency>
 
         <!-- Spring Cloud Eureka library dependencies -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>${spring-cloud-eureka-client.version}</version>
         </dependency>
 
         <!-- SensibleMetrics test library dependencies -->

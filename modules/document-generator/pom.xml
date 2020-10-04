@@ -19,6 +19,8 @@
 
     <properties>
         <spring-boot-thin.version>1.0.25.RELEASE</spring-boot-thin.version>
+        <spring-boot-admin-client.version>2.3.0</spring-boot-admin-client.version>
+        <spring-cloud-eureka-client.version>2.2.5.RELEASE</spring-cloud-eureka-client.version>
 
         <docx4j.version>6.1.2</docx4j.version>
         <hibernate-core.version>6.0.0.Alpha6</hibernate-core.version>
@@ -100,12 +102,14 @@
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-admin-client.version}</version>
         </dependency>
 
         <!-- Spring Cloud Eureka library dependencies -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>${spring-cloud-eureka-client.version}</version>
         </dependency>
 
         <!-- Hikari connection pool library dependencies -->
