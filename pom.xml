@@ -5,7 +5,7 @@
 
     <groupId>com.sensiblemetrics.api.ws</groupId>
     <artifactId>parent</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>com.sensiblemetrics.api.ws</name>
@@ -94,6 +94,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <revision>0.1.0-SNAPSHOT</revision>
 
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss z</maven.build.timestamp.format>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
@@ -185,6 +186,7 @@
         <maven-findbugs-plugin.version>3.0.5</maven-findbugs-plugin.version>
         <maven-fizzed-plugin.version>1.0.6</maven-fizzed-plugin.version>
         <maven-flatten-plugin.version>1.2.5</maven-flatten-plugin.version>
+        <maven-spring-javaformat-plugin.version>0.0.25</maven-spring-javaformat-plugin.version>
         <maven-forbiddenapis-plugin.version>3.1</maven-forbiddenapis-plugin.version>
         <maven-git-commit-id-plugin.version>4.0.2</maven-git-commit-id-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
@@ -1489,29 +1491,36 @@
                         <artifactId>flatten-maven-plugin</artifactId>
                         <version>${maven-flatten-plugin.version}</version>
                         <inherited>true</inherited>
+                        <configuration>
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>oss</flattenMode>
+                            <embedBuildProfileDependencies>true</embedBuildProfileDependencies>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <pomElements>
+                                <properties>remove</properties>
+                                <parent>expand</parent>
+                                <distributionManagement>remove</distributionManagement>
+                                <dependencyManagement>resolve</dependencyManagement>
+                                <repositories>remove</repositories>
+                                <pluginManagement>keep</pluginManagement>
+                                <dependencies>keep</dependencies>
+                                <build>keep</build>
+                            </pomElements>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>flatten</id>
+                                <phase>process-resources</phase>
                                 <goals>
                                     <goal>flatten</goal>
                                 </goals>
-                                <phase>process-resources</phase>
-                                <configuration>
-                                    <updatePomFile>true</updatePomFile>
-                                    <flattenMode>oss</flattenMode>
-                                    <embedBuildProfileDependencies>true</embedBuildProfileDependencies>
-                                    <outputDirectory>${project.build.directory}</outputDirectory>
-                                    <pomElements>
-                                        <properties>remove</properties>
-                                        <parent>expand</parent>
-                                        <distributionManagement>remove</distributionManagement>
-                                        <dependencyManagement>resolve</dependencyManagement>
-                                        <repositories>remove</repositories>
-                                        <pluginManagement>keep</pluginManagement>
-                                        <dependencies>keep</dependencies>
-                                        <build>keep</build>
-                                    </pomElements>
-                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>flatten-clean</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
                             </execution>
                             <execution>
                                 <id>flatten.clean</id>
@@ -1519,6 +1528,21 @@
                                     <goal>clean</goal>
                                 </goals>
                                 <phase>clean</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>io.spring.javaformat</groupId>
+                        <artifactId>spring-javaformat-maven-plugin</artifactId>
+                        <version>${maven-spring-javaformat-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>validate</phase>
+                                <inherited>true</inherited>
+                                <goals>
+                                    <goal>validate</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
@@ -1627,6 +1651,7 @@
                         <version>${maven-checkstyle-plugin.version}</version>
                         <configuration>
                             <configLocation>${project.basedir}/checkstyle/checkstyle.xml</configLocation>
+                            <headerLocation>${project.basedir}/checkstyle/checkstyle-header.txt</headerLocation>
                             <suppressionsLocation>${project.basedir}/checkstyle/checkstyle-suppression.xml
                             </suppressionsLocation>
                             <failsOnError>${checkstyle.failOnError}</failsOnError>

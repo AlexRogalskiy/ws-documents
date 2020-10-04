@@ -17,7 +17,7 @@ import static java.util.Arrays.asList;
 public enum ErrorTemplateType {
     INVALID_DATA("error-0020", "error.data.invalid"),
     SERVICE_UNAVAILABLE("error-0030", "error.service.unavailable"),
-    SERVICE_OPERATION_ERROR("error-0040", "error.operation.invalid"),
+    SERVICE_OPERATION_ERROR("error-0040", "error.service.operation.invalid"),
     BAD_REQUEST("error-0050", "error.request.invalid"),
     DOCUMENT_PROCESSING_ERROR("error-0060", "error.document.processing.invalid"),
     INVALID_ENDPOINT_CONFIGURATION("error-0070", "error.endpoint.configuration.invalid"),

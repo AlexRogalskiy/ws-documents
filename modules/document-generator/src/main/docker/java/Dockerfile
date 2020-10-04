@@ -33,3 +33,4 @@ ENV TERM xterm
 
 # Run microservice process.
 ENTRYPOINT [ "./entrypoint.sh" ]
+CMD ["WebDocs Document Generator container started"]

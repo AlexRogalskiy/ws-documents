@@ -1,8 +1,8 @@
 package com.sensiblemetrics.api.ws.actuator.configuration;
 
-import com.sensiblemetrics.api.ws.actuator.indicator.GracefulShutdownHealthIndicator;
-import com.sensiblemetrics.api.ws.actuator.indicator.StatefulHealthIndicator;
-import com.sensiblemetrics.api.ws.actuator.indicator.TaskSchedulerHealthIndicator;
+import com.sensiblemetrics.api.ws.actuator.indicator.WsGracefulShutdownHealthIndicator;
+import com.sensiblemetrics.api.ws.actuator.indicator.WsStatefulHealthIndicator;
+import com.sensiblemetrics.api.ws.actuator.indicator.WsTaskSchedulerHealthIndicator;
 import com.sensiblemetrics.api.ws.actuator.indicator.WsApiStatusInfoContributor;
 import com.sensiblemetrics.api.ws.actuator.property.WsApiStatusProperty;
 import com.sensiblemetrics.api.ws.actuator.property.WsGracefulShutdownProperty;
@@ -29,25 +29,25 @@ public abstract class WsApiStatusConfiguration {
 
     @Bean
     @ConditionalOnBean(WsGracefulShutdownProperty.class)
-    @ConditionalOnClass(GracefulShutdownHealthIndicator.class)
+    @ConditionalOnClass(WsGracefulShutdownHealthIndicator.class)
     @Description("Actuator graceful shutdown health indicator configuration bean")
     @ConditionalOnProperty(prefix = WsGracefulShutdownProperty.PROPERTY_PREFIX, name = "enabled", havingValue = "true")
-    public GracefulShutdownHealthIndicator gracefulShutdownHealthIndicator(final WsGracefulShutdownProperty property) {
-        return new GracefulShutdownHealthIndicator(property);
+    public WsGracefulShutdownHealthIndicator gracefulShutdownHealthIndicator(final WsGracefulShutdownProperty property) {
+        return new WsGracefulShutdownHealthIndicator(property);
     }
 
     @Bean
     @ConditionalOnBean(ThreadPoolTaskScheduler.class)
-    @ConditionalOnClass(TaskSchedulerHealthIndicator.class)
+    @ConditionalOnClass(WsTaskSchedulerHealthIndicator.class)
     @Description("Actuator task scheduler health indicator configuration bean")
-    public TaskSchedulerHealthIndicator taskSchedulerHealthIndicator(final ThreadPoolTaskScheduler taskScheduler) {
-        return new TaskSchedulerHealthIndicator(taskScheduler);
+    public WsTaskSchedulerHealthIndicator taskSchedulerHealthIndicator(final ThreadPoolTaskScheduler taskScheduler) {
+        return new WsTaskSchedulerHealthIndicator(taskScheduler);
     }
 
     @Bean
-    @ConditionalOnClass(StatefulHealthIndicator.class)
+    @ConditionalOnClass(WsStatefulHealthIndicator.class)
     @Description("Actuator stateful health indicator configuration bean")
-    public StatefulHealthIndicator statefulHealthIndicator() {
-        return new StatefulHealthIndicator();
+    public WsStatefulHealthIndicator statefulHealthIndicator() {
+        return new WsStatefulHealthIndicator();
     }
 }

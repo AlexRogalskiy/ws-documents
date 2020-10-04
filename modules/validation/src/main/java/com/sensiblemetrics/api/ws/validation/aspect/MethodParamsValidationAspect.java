@@ -2,7 +2,7 @@ package com.sensiblemetrics.api.ws.validation.aspect;
 
 import com.sensiblemetrics.api.ws.validation.annotation.ValidateInput;
 import com.sensiblemetrics.api.ws.validation.exception.DataValidationException;
-import com.sensiblemetrics.api.ws.validation.model.ValidatorRegistry;
+import com.sensiblemetrics.api.ws.validation.management.ValidatorRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

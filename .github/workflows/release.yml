@@ -45,6 +45,31 @@ jobs:
       - name: Create checksum
         run: echo ${{ github.sha }} > checksum.txt
 
+      - name: Version number
+        id: version_number
+        run: |
+          if [ ${{ startsWith(github.ref, 'refs/tags/') }} = true ]; then
+            VERSION=$(basename ${{ github.ref }})
+          else
+            VERSION=ci-latest-$(basename ${{ github.ref }})
+            PREV_RELEASE=$(curl -s https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/$VERSION | jq -r .url)
+            # Reset ci-latest tag
+            git config --global user.email "ci@github.com"
+            git config --global user.name "Github CI"
+            # Workaround for "could not read Username for 'https://github.com': No such device or address"
+            git remote set-url origin https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
+            git tag -d $VERSION || true
+            git push origin :$VERSION || true
+            git tag -m $VERSION $VERSION
+            git push --tags
+          fi
+          echo "##[set-output name=version;]$VERSION"
+          echo "##[set-output name=prev_release;]${PREV_RELEASE/null/}"
+        env:
+          # This token is provided by Actions, you do not need to create your own token.
+          # The token is only valid for one hour.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -52,7 +77,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ steps.version_number.outputs.version }}
           release_name: ${{ github.ref }}
           files: |
             checksum.txt
@@ -62,7 +87,7 @@ jobs:
             Changes in this Release
             - Updates on WebDocs MicroService API
           draft: true
-          prerelease: false
+          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
       - name: Upload release asset
         id: upload-release-asset
@@ -74,6 +99,13 @@ jobs:
           asset_path: ./document-generator-ws.zip
           asset_name: document-generator-ws.zip
           asset_content_type: application/zip
+
+#      - name: Delete previous release
+#        run: |
+#          curl -s -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+#                -X DELETE ${{ steps.version_number.outputs.prev_release }}
+#        if: steps.version_number.outputs.prev_release != ''
+
   module_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30

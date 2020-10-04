@@ -1,8 +1,11 @@
 package com.sensiblemetrics.api.ws.validation.configuration;
 
 import com.sensiblemetrics.api.ws.validation.aspect.MethodParamsValidationAspect;
-import com.sensiblemetrics.api.ws.validation.model.DefaultValidatorRegistry;
-import com.sensiblemetrics.api.ws.validation.model.ValidatorRegistry;
+import com.sensiblemetrics.api.ws.validation.aspect.MethodValidationAspect;
+import com.sensiblemetrics.api.ws.validation.management.ThrowablePayloadValidator;
+import com.sensiblemetrics.api.ws.validation.management.ThrowableValidator;
+import com.sensiblemetrics.api.ws.validation.management.DefaultValidatorRegistry;
+import com.sensiblemetrics.api.ws.validation.management.ValidatorRegistry;
 import com.sensiblemetrics.api.ws.validation.property.WebServiceValidationProperty;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -75,5 +78,21 @@ public abstract class WebServiceValidationConfiguration {
         final MethodValidationPostProcessor processor = new MethodValidationPostProcessor();
         processor.setValidatorFactory(validatorFactory);
         return processor;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(javax.validation.Validator.class)
+    @Description("Throwable validator configuration bean")
+    public ThrowableValidator throwableValidator(final javax.validation.Validator validator) {
+        return new ThrowablePayloadValidator(validator);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(ThrowableValidator.class)
+    @Description("Method validation aspect bean")
+    public MethodValidationAspect validationAspect(final ThrowableValidator throwableValidator) {
+        return new MethodValidationAspect(throwableValidator);
     }
 }

@@ -1,4 +1,4 @@
-# SensibleMetrics WebDocs Web Service Security test configuration
+# SensibleMetrics WebDocs Security test configuration
 ---
 spring:
   messages:

@@ -1,4 +1,4 @@
-# SensibleMetrics WebDocs Web Service Admin test configuration
+# SensibleMetrics WebDocs Web Service Admin Server test configuration
 ---
 spring:
   profiles:
@@ -19,28 +19,46 @@ spring:
         queue-capacity: 100000
   boot:
     admin:
+      client:
+        url: https://localhost:8085/
+        username: "user"       #These two are needed so that the client
+        password: "password"   #can register at the protected server api
+        instance:
+          metadata:
+            user:
+              name: "user"         #These two are needed so that the server
+              password: "password" #can access the protected client endpoints
       ui:
-        cache.no-cache: true
+        cache:
+          no-cache: true
         cache-templates: false
         external-views:
           - label: "🚀"
-            url: http://localhost:8080/
+            url: https://localhost:8085/
             order: 2000
 
 webdocs:
-  admin:
+  admin-server:
     enabled: true
+    handlers:
+      enabled: true
+      logging-notifier:
+        enabled: true
+      filtering-notifier:
+        enabled: true
+      reminding-notifier:
+        enabled: true
 
 eureka:
   instance:
-    leaseRenewalIntervalInSeconds: 10
-    health-check-url-path: /actuator/health
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: management/actuator/health
     metadata-map:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
-    registryFetchIntervalSeconds: 5
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+    registry-fetch-interval-seconds: 5
+    service-url:
+      default-zone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
 ---
 spring:
   profiles: insecure
@@ -55,5 +73,6 @@ spring:
 eureka:
   instance:
     metadata-map:
-      user.name: "user"
-      user.password: "password"
+      user:
+        name: "user"
+        password: "password"

@@ -1,8 +1,8 @@
-# SensibleMetrics Document Generator WebService Bootstrap test configuration
+# SensibleMetrics WebDocs Document Generator Bootstrap test configuration
 ---
 spring:
   application:
-    name: "Document-Generator-WebService"
+    name: "WebDocs-Document-Generator-WebService"
   cloud:
     kubernetes:
       enabled: false
