@@ -1,4 +1,4 @@
-# SensibleMetrics WebDocs Eureka Server configuration
+# SensibleMetrics WebDocs Web Service Eureka Server configuration
 ---
 server:
   port: 8080
@@ -28,7 +28,7 @@ server:
 
 spring:
   profiles:
-    include: secure
+    include: insecure
   output:
     ansi:
       enabled: NEVER
@@ -146,7 +146,7 @@ eureka:
   client:
     registry-fetch-interval-seconds: 5
     service-url:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
+      default-zone: https://localhost:8761/eureka/
 ---
 spring:
   profiles: secure
@@ -168,4 +168,4 @@ eureka:
   client:
     registry-fetch-interval-seconds: 5
     service-url:
-      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
+      defaultZone: https://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/

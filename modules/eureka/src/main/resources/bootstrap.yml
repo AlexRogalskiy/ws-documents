@@ -1,4 +1,4 @@
-# SensibleMetrics WebDocs Admin Server Bootstrap configuration
+# SensibleMetrics WebDocs Eureka Server Bootstrap configuration
 ---
 spring:
   application:

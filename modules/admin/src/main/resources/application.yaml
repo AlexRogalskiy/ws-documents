@@ -1,5 +1,9 @@
 # SensibleMetrics WebDocs Web Service Admin Server configuration
 ---
+eureka:
+  client:
+    enabled: false
+
 server:
   port: 8085
   ssl:
@@ -150,6 +154,21 @@ jasypt:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
 ---
 spring:
+  profiles: eureka
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: management/actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+  client:
+    enabled: true
+    registry-fetch-interval-seconds: 5
+    service-url:
+      default-zone: https://localhost:8761/eureka/
+---
+spring:
   profiles: dev
   boot:
     admin:
@@ -166,12 +185,6 @@ spring:
     admin:
       client:
         url: https://localhost:8085/
-
-eureka:
-  client:
-    enabled: false
-    service-url:
-      default-zone: http://eureka:password@localhost:8761/eureka/
 ---
 spring:
   profiles: secure
@@ -195,6 +208,5 @@ spring:
 
 eureka:
   client:
-    enabled: false
     service-url:
-      default-zone: http://eureka:password@localhost:8761/eureka/
+      defaultZone: https://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
