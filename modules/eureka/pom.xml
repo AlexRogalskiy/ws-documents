@@ -20,7 +20,7 @@
     <properties>
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
 
-        <spring-cloud-eureka-server.version>2.2.3.RELEASE</spring-cloud-eureka-server.version>
+        <spring-cloud-eureka-server.version>2.2.5.RELEASE</spring-cloud-eureka-server.version>
     </properties>
 
     <dependencies>
