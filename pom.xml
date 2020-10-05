@@ -82,6 +82,7 @@
         <module>modules/admin</module>
         <module>modules/caching</module>
         <module>modules/commons</module>
+        <module>modules/discovery</module>
         <module>modules/document-generator</module>
         <module>modules/executor</module>
         <module>modules/eureka</module>

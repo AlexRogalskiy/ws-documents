@@ -10,16 +10,15 @@
         <relativePath>../../</relativePath>
     </parent>
 
-    <name>com.sensiblemetrics.api.ws.eureka</name>
-    <description>WebDocs Eureka API</description>
-    <artifactId>webdocs-eureka</artifactId>
+    <name>com.sensiblemetrics.api.ws.discovery</name>
+    <description>WebDocs Discovery API</description>
+    <artifactId>webdocs-discovery</artifactId>
     <packaging>jar</packaging>
-    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/eureka</url>
+    <url>https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/discovery</url>
     <inceptionYear>2020</inceptionYear>
 
     <properties>
-        <spring-boot-admin-client.version>2.3.0</spring-boot-admin-client.version>
-        <spring-cloud-eureka-server.version>2.2.5.RELEASE</spring-cloud-eureka-server.version>
+        <spring-cloud-eureka-client.version>2.2.5.RELEASE</spring-cloud-eureka-client.version>
 
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
@@ -32,31 +31,26 @@
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>webdocs-security</artifactId>
-            <version>${sensiblemetrics.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sensiblemetrics.api.ws</groupId>
-            <artifactId>webdocs-validation</artifactId>
-            <version>${sensiblemetrics.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <!-- Spring Boot Admin library dependencies -->
-        <dependency>
-            <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
-            <version>${spring-boot-admin-client.version}</version>
-        </dependency>
 
         <!-- Spring Cloud Eureka library dependencies -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-netflix-eureka-server</artifactId>
-            <version>${spring-cloud-eureka-server.version}</version>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>${spring-cloud-eureka-client.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey.contribs</groupId>
+                    <artifactId>jersey-apache-client4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Spring Boot library dependencies -->
@@ -94,19 +88,5 @@
                 <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
-                <configuration>
-                    <encoding>${project.build.outputEncoding}</encoding>
-                    <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 </project>

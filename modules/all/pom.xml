@@ -49,6 +49,12 @@
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-discovery</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
             <artifactId>webdocs-document-generator</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>

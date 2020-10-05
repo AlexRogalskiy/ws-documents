@@ -161,6 +161,9 @@ WebDocs module dependencies:
 - [**WebDocs Commons**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/commons)  
   `webdocs-commons` - Library with utilities for common use cases.
 
+- [**WebDocs Discovery**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/discovery)  
+  `webdocs-discovery` - Library to work with Discovery API.
+  
 - [**WebDocs Document-Generator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/document-generator)  
   `webdocs-document-generator` - Library to work with Document-Generator API.
 
