@@ -1,13 +1,13 @@
 package com.sensiblemetrics.api.ws.admin.configuration;
 
 import com.sensiblemetrics.api.ws.admin.property.WsAdminServerProperty;
-import com.sensiblemetrics.api.ws.commons.annotation.ConditionalOnMissingBean;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 import de.codecentric.boot.admin.server.web.client.InstanceExchangeFilterFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.*;
@@ -34,8 +34,13 @@ public abstract class WsAdminServerConfiguration {
      */
     private static final Marker DEFAULT_CONFIGURATION_MARKER = MarkerFactory.getMarker("WsAdminServerConfiguration");
 
-    @Bean
-    @ConditionalOnMissingBean
+    /**
+     * Default bean naming conventions
+     */
+    public static final String AUDIT_LOG_BEAN_NAME = "auditLog";
+
+    @Bean(AUDIT_LOG_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AUDIT_LOG_BEAN_NAME)
     @Description("Audit log configuration bean")
     public InstanceExchangeFilterFunction auditLog() {
         return (instance, request, next) -> next.exchange(request).doOnSubscribe((s) -> {

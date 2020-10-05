@@ -18,9 +18,10 @@
     <inceptionYear>2020</inceptionYear>
 
     <properties>
-        <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
-
+        <spring-boot-admin-client.version>2.3.0</spring-boot-admin-client.version>
         <spring-cloud-eureka-server.version>2.2.3.RELEASE</spring-cloud-eureka-server.version>
+
+        <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
 
     <dependencies>
@@ -42,6 +43,13 @@
             <artifactId>webdocs-security</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- Spring Boot Admin library dependencies -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-admin-client.version}</version>
         </dependency>
 
         <!-- Spring Cloud Eureka library dependencies -->
@@ -80,5 +88,19 @@
                 <directory>${project.basedir}/src/test/resources</directory>
             </testResource>
         </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.outputEncoding}</encoding>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

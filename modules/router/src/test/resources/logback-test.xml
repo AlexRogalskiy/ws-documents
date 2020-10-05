@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
-    <!--<property name="LOG_DIR" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>-->
-    <property name="LOG_DIR" value="./log/application"/>
-    <property name="LOG_ARCHIVE_DIR" value="${LOG_DIR}/archive"/>
-    <property name="LOG_FILE" value="LogFile"/>
+    <!--    <property name="LOG_PATH" value="${LOG_TEMP:-${java.io.tmpdir:-/tmp}}"/>-->
+    <!--    <springProperty name="LOG_FILE" source="logging.file.name" defaultValue="LogFile"/>-->
+    <!--    <springProperty name="LOG_PATH" source="logging.file.path" defaultValue="./.log/application"/>-->
+    <property name="LOG_ARCHIVE_DIR" value="${LOG_PATH}/archive"/>
 
     <property name="CONSOLE_LOG_PATTERN"
               value="%d %-4relative [%thread] %highlight(%-5level) %cyan(%logger{35}) - %msg%n"/>
@@ -27,7 +27,7 @@
 
     <!-- File appender configuration -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/${LOG_FILE}.log</file>
+        <file>${LOG_PATH}/${LOG_FILE}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>${LOG_ARCHIVE_DIR}/${LOG_FILE}_%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>

@@ -1,7 +1,6 @@
 package com.sensiblemetrics.api.ws.validation.aspect;
 
 import com.sensiblemetrics.api.ws.validation.annotation.ValidateInput;
-import com.sensiblemetrics.api.ws.validation.exception.DataValidationException;
 import com.sensiblemetrics.api.ws.validation.management.ValidatorRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +14,12 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
+import javax.validation.Valid;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Objects;
+
+import static com.sensiblemetrics.api.ws.validation.exception.DataValidationException.throwInvalidData;
 
 @Slf4j
 @Aspect
@@ -40,7 +42,7 @@ public class MethodParamsValidationAspect {
         final Annotation[][] paramAnnotations = ((MethodSignature) point.getSignature()).getMethod().getParameterAnnotations();
         for (int i = 0; i < paramAnnotations.length; i++) {
             for (final Annotation annotation : paramAnnotations[i]) {
-                if (annotation.annotationType() == ValidateInput.class) {
+                if (annotation.annotationType() == Valid.class) {
                     final Object arg = point.getArgs()[i];
                     if (Objects.isNull(arg)) continue;
                     this.validate(arg);
@@ -55,7 +57,7 @@ public class MethodParamsValidationAspect {
             final BindingResult errors = new BeanPropertyBindingResult(arg, arg.getClass().getSimpleName());
             validator.validate(arg, errors);
             if (errors.hasErrors()) {
-                DataValidationException.throwInvalidData(errors);
+                throwInvalidData(errors);
             }
         }
     }

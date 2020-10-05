@@ -32,6 +32,7 @@ databaseChangeLog:
             columns:
               - column:
                   constraints:
+                    primaryKey: true
                     nullable: false
                   name: id
                   type: UUID
@@ -112,6 +113,7 @@ databaseChangeLog:
             columns:
               - column:
                   constraints:
+                    primaryKey: true
                     nullable: false
                   name: id
                   type: UUID

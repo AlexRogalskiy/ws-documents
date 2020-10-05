@@ -55,6 +55,12 @@
         </dependency>
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>
+            <artifactId>webdocs-eureka</artifactId>
+            <version>${sensiblemetrics.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sensiblemetrics.api.ws</groupId>
             <artifactId>webdocs-executor</artifactId>
             <version>${sensiblemetrics.version}</version>
             <scope>compile</scope>

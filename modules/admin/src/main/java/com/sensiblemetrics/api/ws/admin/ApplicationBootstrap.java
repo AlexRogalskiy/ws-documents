@@ -6,7 +6,9 @@ import com.sensiblemetrics.api.ws.validation.annotation.EnableWsValidation;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
+@EnableEurekaClient
 @EnableWsValidation
 @EnableWsAdminServer
 @EnableWsEncryptableProperties

@@ -8,6 +8,8 @@ spring:
       enabled: false
       discovery:
         enabled: false
+      ribbon:
+        enabled: false
       config:
         enabled: false
         sources:
@@ -16,6 +18,11 @@ spring:
       secrets:
         enabled: false
         name: ${spring.application.name}
+
+logging:
+  file:
+    path: .log/application
+    name: ${spring.application.name}
 ---
 spring:
   profiles: compose
@@ -24,6 +31,8 @@ spring:
   cloud:
     kubernetes:
       discovery:
+        enabled: true
+      ribbon:
         enabled: true
       config:
         enabled: true

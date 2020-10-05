@@ -1,13 +1,14 @@
 # SensibleMetrics WebDocs Web Service Eureka Server configuration
 ---
 server:
-  port: 8080
+  port: 8761
   ssl:
     key-store: modules/eureka/src/main/resources/key-store.jks
     key-store-password: ENC(pZulM4Rk5Tu1gnpQ5WzifnV4EFPN5RBhFNeImxlij/y2Zxa/Iqlp2S8QpcsqKPBM)
     key-password: ENC(q9chaN0OEEaaUJq3FyS65PZDsSf+PUyP+ssgJzkQa23Ft+KeQ6t3YyKf5IWUVfRE)
-    key-store-type: PKCS12
+    key-store-type: JKS
     key-alias: spring-boot-ssl-sample
+    enabled: false
   http2:
     enabled: true
   compression:
@@ -64,10 +65,10 @@ management:
       enabled: true
     readinessstate:
       enabled: true
-  server:
-    servlet:
-      context-path: /management
-    port: 8088
+  #server:
+  #  servlet:
+  #    context-path: /management
+  #  port: 8088
   info:
     build:
       enabled: false
@@ -98,14 +99,21 @@ management:
         info: status
   metrics:
     tags:
-      region: ${spring.application.region:us-east-1}
-      type: webdocs
+      region: ${spring.application.region:default}
+      type: ${spring.application.region:webdocs}
+      application: ${spring.application.name}
+      environment: ${spring.profiles}
     export:
       prometheus:
-        enabled: true
+        descriptions: true
+        enabled: ${prometheus.enabled:true}
         step: 3m
         pushgateway:
-          enabled: false
+          push-rate: 1m
+          shutdown-operation: PUSH
+          base-url: ${prometheus.url:localhost:9091}
+          job: ${spring.application.name}
+          enabled: ${prometheus.push.enabled:false}
       jmx:
         enabled: false
       simple:
@@ -136,17 +144,36 @@ jasypt:
 ---
 spring:
   profiles: insecure
+  boot:
+    admin:
+      url: ${ADMIN_URI:http://localhost:8085}
+      api-path: /instances
+      client:
+        url: ${ADMIN_URI:http://localhost:8085}
 
 eureka:
   instance:
+    secure-port: ${server.port}
+    secure-port-enabled: true
     lease-renewal-interval-in-seconds: 10
-    health-check-url-path: management/actuator/health
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+    hostname: localhost
+    homePageUrl: http://${eureka.instance.hostname}:${server.port}/
+    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/admin/info
     metadata-map:
+      hostname: ${eureka.instance.hostname}
+      securePort: ${server.port}
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
     registry-fetch-interval-seconds: 5
-    service-url:
-      default-zone: https://localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://${eureka.instance.hostname}:${server.port}/eureka}
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    enableSelfPreservation: true
 ---
 spring:
   profiles: secure
@@ -154,12 +181,29 @@ spring:
     user:
       name: ${EUREKA_USER:user}
       password: ${EUREKA_PASSWORD:password}
+  boot:
+    admin:
+      url: ${ADMIN_URI:http://localhost:8085}
+      api-path: /instances
+      username: ${spring.security.user.name}       #These two are needed so that the client
+      password: ${spring.security.user.password}   #can register at the protected server api
+      client:
+        url: ${ADMIN_URI:http://localhost:8085}
+        username: ${spring.security.user.name}       #These two are needed so that the client
+        password: ${spring.security.user.password}   #can register at the protected server api
+        instance:
+          metadata:
+            user:
+              name: ${spring.security.user.name}         #These two are needed so that the server
+              password: ${spring.security.user.password} #can access the protected client endpoints
 
 # by default every Eureka Server is also an Eureka Client and requires (at least one) service URL to locate a peer.
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 10
-    health-check-url-path: management/actuator/health
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+    hostname: localhost
     metadata-map:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
       user:
@@ -167,5 +211,7 @@ eureka:
         password: ${spring.security.user.password}
   client:
     registry-fetch-interval-seconds: 5
-    service-url:
-      defaultZone: https://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka}

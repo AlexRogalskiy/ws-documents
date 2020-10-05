@@ -4,9 +4,14 @@ spring:
   application:
     name: "WebDocs-Document-Generator-WebService"
   cloud:
+    consul:
+      discovery:
+        instance-id: 1
     kubernetes:
       enabled: false
       discovery:
+        enabled: false
+      ribbon:
         enabled: false
       config:
         enabled: false
@@ -16,14 +21,24 @@ spring:
       secrets:
         enabled: false
         name: ${spring.application.name}
+
+logging:
+  file:
+    path: .log/application
+    name: ${spring.application.name}
 ---
 spring:
   profiles: compose
   application:
     name: "WebDocs-Document-Generator-WebService"
   cloud:
+    consul:
+      discovery:
+        instance-id: 1
     kubernetes:
       discovery:
+        enabled: true
+      ribbon:
         enabled: true
       config:
         enabled: true

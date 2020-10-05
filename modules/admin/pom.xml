@@ -78,6 +78,11 @@
             <artifactId>spring-boot-admin-server-ui-login</artifactId>
             <version>${spring-boot-admin-server-ui.version}</version>
         </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-server-ui</artifactId>
+            <version>${spring-boot-admin-server.version}</version>
+        </dependency>
         <!--declare the admin server as a client, for self monitoring -->
         <dependency>
             <groupId>de.codecentric</groupId>
@@ -90,6 +95,20 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
             <version>${spring-cloud-eureka-client.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-client</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jersey.contribs</groupId>
+                    <artifactId>jersey-apache-client4</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- SensibleMetrics test library dependencies -->

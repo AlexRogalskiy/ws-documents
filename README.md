@@ -164,6 +164,9 @@ WebDocs module dependencies:
 - [**WebDocs Document-Generator**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/document-generator)  
   `webdocs-document-generator` - Library to work with Document-Generator API.
 
+- [**WebDocs Eureka**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/eureka)  
+  `webdocs-eureka` - Library to work with Eureka API.
+  
 - [**WebDocs Executor**](https://github.com/AlexRogalskiy/ws-documents/tree/master/modules/executor)  
   `webdocs-executor` - Library to work with Executor API.
 

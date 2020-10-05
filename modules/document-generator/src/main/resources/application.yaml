@@ -10,8 +10,9 @@ server:
     key-store: modules/document-generator/src/main/resources/key-store.jks
     key-store-password: ENC(pZulM4Rk5Tu1gnpQ5WzifnV4EFPN5RBhFNeImxlij/y2Zxa/Iqlp2S8QpcsqKPBM)
     key-password: ENC(q9chaN0OEEaaUJq3FyS65PZDsSf+PUyP+ssgJzkQa23Ft+KeQ6t3YyKf5IWUVfRE)
-    key-store-type: PKCS12
+    key-store-type: JKS
     key-alias: spring-boot-ssl-sample
+    enabled: false
   http2:
     enabled: true
   compression:
@@ -37,7 +38,7 @@ spring:
   main:
     log-startup-info: true
   profiles:
-    include: document, addressing, cloud, insecure
+    include: addressing, document, insecure
   application:
     name: "WebDocs-Document-Generator-WebService"
   messages:
@@ -183,10 +184,10 @@ management:
       enabled: true
     readinessstate:
       enabled: true
-  server:
-    servlet:
-      context-path: /management
-    port: 8088
+  #server:
+  #  servlet:
+  #    context-path: /management
+  #  port: 8088
   info:
     build:
       enabled: false
@@ -211,20 +212,26 @@ management:
   endpoints:
     web:
       exposure:
-        include: [ "jolokia", "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings" ]
+        include: [ "jolokia", "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers", "streamsbindings", "threaddump", "httptrace", "mappings", "liquibase" ]
       base-path: /actuator
       path-mapping:
         info: status
   metrics:
     tags:
-      region: ${spring.application.region:us-east-1}
-      type: webdocs
+      region: ${spring.application.region:default}
+      type: ${spring.application.region:webdocs}
+      application: ${spring.application.name}
+      environment: ${spring.profiles}
     export:
       prometheus:
         enabled: true
         step: 3m
         pushgateway:
-          enabled: false
+          push-rate: 1m
+          shutdown-operation: PUSH
+          base-url: ${prometheus.url:localhost:9091}
+          job: ${spring.application.name}
+          enabled: ${prometheus.push.enabled:false}
       jmx:
         enabled: false
       simple:
@@ -259,21 +266,25 @@ spring:
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 10
-    health-check-url-path: management/actuator/health
+    health-check-url-path: /actuator/health
     metadata-map:
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
     enabled: true
     registry-fetch-interval-seconds: 5
-    service-url:
-      default-zone: https://localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 ---
 spring:
   profiles: dev
   boot:
     admin:
+      url: ${ADMIN_URI:http://localhost:8085}
+      api-path: /instances
       client:
-        url: https://localhost:8085/
+        url: ${ADMIN_URI:http://localhost:8085}
       ui:
         cache:
           no-cache: true
@@ -283,8 +294,10 @@ spring:
   profiles: insecure
   boot:
     admin:
+      url: ${ADMIN_URI:http://localhost:8085}
+      api-path: /instances
       client:
-        url: https://localhost:8085/
+        url: ${ADMIN_URI:http://localhost:8085}
 ---
 spring:
   profiles: secure
@@ -294,8 +307,12 @@ spring:
       password: ${ADMIN_PASSWORD:password}
   boot:
     admin:
+      url: ${ADMIN_URI:http://localhost:8085}
+      api-path: /instances
+      username: ${spring.security.user.name}       #These two are needed so that the client
+      password: ${spring.security.user.password}   #can register at the protected server api
       client:
-        url: https://localhost:8085/
+        url: ${ADMIN_URI:http://localhost:8085}
         username: ${spring.security.user.name}       #These two are needed so that the client
         password: ${spring.security.user.password}   #can register at the protected server api
         instance:
@@ -306,5 +323,9 @@ spring:
 
 eureka:
   client:
+    enabled: true
+    registry-fetch-interval-seconds: 5
+    register-with-eureka: false
+    fetch-registry: false
     service-url:
-      defaultZone: https://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka/
+      defaultZone: ${EUREKA_URI:http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka}

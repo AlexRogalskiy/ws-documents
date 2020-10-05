@@ -16,6 +16,14 @@ spring:
         max-size: 20
         queue-capacity: 100000
 
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD:}
+
+logging:
+  file:
+    name: ${spring.application.name}
+
 webdocs:
   eureka-server:
     enabled: true

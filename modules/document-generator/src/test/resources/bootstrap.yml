@@ -8,6 +8,8 @@ spring:
       enabled: false
       discovery:
         enabled: false
+      ribbon:
+        enabled: false
       config:
         enabled: false
         sources:

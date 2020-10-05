@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  webdocs-document-generator-service:
+    build: ..
+    image: alexanderr/webdocs-document-generator:0.0.1-SNAPSHOT
+
+  webdocs-eureka-service:
+    build: ..
+    image: alexanderr/webdocs-eureka:0.0.1-SNAPSHOT
+
+  webdocs-admin-service:
+    build: ..
+    image: alexanderr/webdocs-admin:0.0.1-SNAPSHOT
