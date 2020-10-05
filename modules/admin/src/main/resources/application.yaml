@@ -1,9 +1,5 @@
 # SensibleMetrics WebDocs Web Service Admin Server configuration
 ---
-eureka:
-  client:
-    enabled: false
-
 server:
   port: 8085
   ssl:
@@ -33,7 +29,7 @@ server:
 
 spring:
   profiles:
-    include: insecure
+    include: eureka-insecure, admin-insecure
   output:
     ansi:
       enabled: NEVER
@@ -42,7 +38,7 @@ spring:
   application:
     name: "WebDocs-Admin-Server-WebService"
   messages:
-    basename: i18n/common_messages, i18n/messages
+    basename: i18n/messages
     # 1 hour
     cache-duration: 3600
   aop:
@@ -72,7 +68,7 @@ spring:
         cache-templates: false
         external-views:
           - label: "🚀"
-            url: http://codecentric.de
+            url: http://sensiblemetrics.com/
             order: 2000
       discovery:
         ignored-services: consul,eureka
@@ -161,24 +157,33 @@ jasypt:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
 ---
 spring:
-  profiles: eureka
+  profiles: noeureka
+
+eureka:
+  client:
+    enabled: false
+---
+spring:
+  profiles: eureka-insecure
 
 eureka:
   instance:
-    secure-port-enabled: true
     lease-renewal-interval-in-seconds: 10
     health-check-url-path: /actuator/health
+    hostname: localhost
+    virtual-host-name: admin.local
     metadata-map:
+      hostname: ${eureka.instance.hostname}
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
-    enabled: true
-    region: default
     registry-fetch-interval-seconds: 5
     register-with-eureka: true
     fetch-registry: true
-    serviceUrl:
+    webclient:
+      enabled: true
+    service-url:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-      #default-zone: ${EUREKA_SERVER_URL:http://localhost}:${EUREKA_SERVER_PORT:8761}/eureka
+      #defaultZone: ${EUREKA_SERVER_URL:http://localhost}:${EUREKA_SERVER_PORT:8761}/eureka
 #    tls:
 #      key-store: modules/admin/src/main/resources/key-store.jks
 #      key-store-password: ENC(pZulM4Rk5Tu1gnpQ5WzifnV4EFPN5RBhFNeImxlij/y2Zxa/Iqlp2S8QpcsqKPBM)
@@ -187,7 +192,28 @@ eureka:
 #      enabled: true
 ---
 spring:
-  profiles: dev
+  profiles: eureka-secure
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: /actuator/health
+    hostname: localhost
+    virtual-host-name: admin.local
+    metadata-map:
+      hostname: ${eureka.instance.hostname}
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+  client:
+    registry-fetch-interval-seconds: 5
+    register-with-eureka: true
+    fetch-registry: true
+    webclient:
+      enabled: true
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka}
+---
+spring:
+  profiles: admin-insecure
   boot:
     admin:
       url: ${ADMIN_URI:http://localhost:8085}
@@ -198,18 +224,13 @@ spring:
         cache:
           no-cache: true
         cache-templates: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
 ---
 spring:
-  profiles: insecure
-  boot:
-    admin:
-      url: ${ADMIN_URI:http://localhost:8085}
-      api-path: /instances
-      client:
-        url: ${ADMIN_URI:http://localhost:8085}
----
-spring:
-  profiles: secure
+  profiles: admin-secure
   security:
     user:
       name: ${ADMIN_USER:user}
@@ -229,14 +250,98 @@ spring:
             user:
               name: ${spring.security.user.name}         #These two are needed so that the server
               password: ${spring.security.user.password} #can access the protected client endpoints
-      discovery:
-        ignored-services: webdocs-admin
-
-eureka:
-  client:
-    enabled: true
-    registry-fetch-interval-seconds: 5
-    register-with-eureka: false
-    fetch-registry: false
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka}
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+---
+spring:
+  profiles: admin-secure-db
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ENC(sOudcFSEBh097zRsLQAJUjCMISOY2+LClylvNrXXCms2R8GHoW9/u5hRYwTR5AnQEo9MUnnVx86zvR+AGH2R1+h0VmHAJbVa+LtYf0nO9V68XnXm10uTL8P9e9M4/Y3w+XZT38ZP64V5NIQBCaOYgabKjN4uv3RoWwZ+jIgbPeM=)
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS}
+    sql-script-encoding: UTF-8
+    initialization-mode: ALWAYS
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 25
+      idle-timeout: 30000
+      pool-name: WebDocs-Admin-Server-HikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      isolate-internal-queries: true
+      schema: admin
+      connection-test-query: SELECT 1
+      driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+      allow-pool-suspension: true
+      auto-commit: true
+      data-source-properties:
+        cache-prep-stmts: true
+        prep-stmt-cache-size: 250
+        prep-stmt-cache-sql-limit: 2048
+        use-server-prep-stmts: true
+  jpa:
+    show-sql: true
+    open-in-view: false
+    generate-ddl: false
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        ddl-auto: none
+        show-sql: true
+        format-sql: true
+        use-sql-comments: true
+        generate_statistics: false
+        enable_lazy_load_no_trans: true
+        globally_quoted_identifiers: true
+        jdbc.lob.non-contextual-creation: true
+        multi-tenant-connection-provider: true
+        bytecode.use_reflection_optimizer: false
+        validator:
+          apply_to_ddl: true
+          autoregister_listeners: true
+        transaction:
+          flush_before_completion: true
+          auto_close_session: false
+        cache:
+          use_query_cache: false
+          use_second_level_cache: false
+          use_structured_entries: false
+        jdbc:
+          fetch_size: 20
+          batch_size: 15
+          batch_versioned_data: true
+          time_zone: UTC
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: false
+  liquibase:
+    url: ${spring.datasource.url}
+    drop-first: true
+    default-schema: admin
+  security:
+    user:
+      name: ${ADMIN_USER:user}
+      password: ${ADMIN_PASSWORD:password}
+  boot:
+    admin:
+      url: ${ADMIN_URI:http://localhost:8085}
+      api-path: /instances
+      username: ${spring.security.user.name}       #These two are needed so that the client
+      password: ${spring.security.user.password}   #can register at the protected server api
+      client:
+        url: ${ADMIN_URI:http://localhost:8085}
+        username: ${spring.security.user.name}       #These two are needed so that the client
+        password: ${spring.security.user.password}   #can register at the protected server api
+        instance:
+          metadata:
+            user:
+              name: ${spring.security.user.name}         #These two are needed so that the server
+              password: ${spring.security.user.password} #can access the protected client endpoints

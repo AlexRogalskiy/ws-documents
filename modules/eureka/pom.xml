@@ -59,6 +59,12 @@
             <version>${spring-cloud-eureka-server.version}</version>
         </dependency>
 
+        <!-- Spring Boot library dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
         <!-- SensibleMetrics test library dependencies -->
         <dependency>
             <groupId>com.sensiblemetrics.api.ws</groupId>

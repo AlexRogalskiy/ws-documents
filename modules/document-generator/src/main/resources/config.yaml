@@ -1,4 +1,4 @@
-# SensibleMetrics WebDocs configuration
+# SensibleMetrics WebDocs Document Generator configuration
 webdocs:
   metrics:
     defaults:

@@ -6,4 +6,4 @@ databaseChangeLog:
   - include:
       errorIfMissingOrEmpty: true
       relativeToChangelogFile: false
-      file: classpath:db/changelog/changes/1/2020-06-20-1-load-documents-table.yaml
+      file: classpath:db/changelog/changes/1/2020-06-21-1-load-documents-table.yaml

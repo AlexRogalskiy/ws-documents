@@ -34,7 +34,7 @@ spring:
         cache-templates: false
         external-views:
           - label: "🚀"
-            url: http://localhost:8085/
+            url: http://sensiblemetrics.com/
             order: 2000
 
 jasypt:

@@ -2,6 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 1
       author: alexrogalskiy (generated)
+      description: Creating status enum type
       preConditions:
         - onFail: MARK_RAN
         - or:
@@ -19,6 +20,7 @@ databaseChangeLog:
   - changeSet:
       id: 2
       author: alexrogalskiy (generated)
+      description: Creating table documents
       preConditions:
         - onFail: MARK_RAN
         - and:
@@ -26,6 +28,7 @@ databaseChangeLog:
                 type: postgresql
             - not:
                 - tableExists:
+                    schemaName: document_generator
                     tableName: documents
       changes:
         - createTable:
@@ -99,109 +102,34 @@ databaseChangeLog:
                   name: status
                   type: VARCHAR(64)
                   defaultValue: 'NEW'
+            schemaName: document_generator
             tableName: documents
   - changeSet:
       id: 3
       author: alexrogalskiy (generated)
-      preConditions:
-        - onFail: MARK_RAN
-        - not:
-            - tableExists:
-                tableName: documents
-      changes:
-        - createTable:
-            columns:
-              - column:
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-                  name: id
-                  type: UUID
-              - column:
-                  constraints:
-                    nullable: false
-                  name: created_by
-                  type: VARCHAR(512)
-              - column:
-                  constraints:
-                    nullable: false
-                  defaultValueComputed: CURRENT_TIMESTAMP
-                  name: created
-                  type: TIMESTAMP
-              - column:
-                  constraints:
-                    nullable: true
-                  name: modified_by
-                  type: VARCHAR(512)
-              - column:
-                  constraints:
-                    nullable: true
-                  name: modified
-                  type: TIMESTAMP
-              - column:
-                  constraints:
-                    nullable: false
-                  defaultValueComputed: 0
-                  name: row_version
-                  type: BIGINT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: company
-                  type: VARCHAR(255)
-              - column:
-                  constraints:
-                    nullable: false
-                  name: partner
-                  type: VARCHAR(255)
-              - column:
-                  constraints:
-                    nullable: false
-                  name: product
-                  type: VARCHAR(255)
-              - column:
-                  constraints:
-                    nullable: false
-                  name: amount
-                  type: INT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: price
-                  type: DECIMAL
-              - column:
-                  constraints:
-                    nullable: false
-                  name: data
-                  type: TEXT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: status
-                  type: VARCHAR(32) CHECK ("status" in ('CANCELLED', 'COMPLETED', 'NEW', 'PROCESSING', 'REGISTERED', 'SUSPENDED', 'EDITED'))
-                  defaultValue: 'NEW'
-            tableName: documents
-  - changeSet:
-      id: 4
-      author: alexrogalskiy (generated)
+      description: Creating PK for table documents
       preConditions:
         - onFail: MARK_RAN
         - not:
             - primaryKeyExists:
                 primaryKeyName: documents_pkey
+                schemaName: document_generator
                 tableName: documents
       changes:
         - addPrimaryKey:
             columnNames: id
             constraintName: documents_pkey
+            schemaName: document_generator
             tableName: documents
   - changeSet:
-      id: 5
+      id: 4
       author: alexrogalskiy (generated)
+      description: Creating index for column company
       preConditions:
         - onFail: MARK_RAN
         - not:
             - indexExists:
+                schemaName: document_generator
                 indexName: company_idx
       changes:
         - createIndex:
@@ -209,14 +137,17 @@ databaseChangeLog:
               - column:
                   name: company
             indexName: company_idx
+            schemaName: document_generator
             tableName: documents
   - changeSet:
-      id: 6
+      id: 5
       author: alexrogalskiy (generated)
+      description: Creating index for column partner
       preConditions:
         - onFail: MARK_RAN
         - not:
             - indexExists:
+                schemaName: document_generator
                 indexName: partner_idx
       changes:
         - createIndex:
@@ -224,4 +155,5 @@ databaseChangeLog:
               - column:
                   name: partner
             indexName: partner_idx
+            schemaName: document_generator
             tableName: documents

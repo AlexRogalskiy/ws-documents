@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - include:
+      error-if-missing-or-empty: true
+      relative-to-changelog-file: false
+      file: classpath:db/changelog/changes/0/2020-06-20-1-create-users-table.yaml
+  - include:
+      error-if-missing-or-empty: true
+      relative-to-changelog-file: false
+      file: classpath:db/changelog/changes/0/2020-06-20-2-create-authorities-table.yaml
+  - include:
+      error-if-missing-or-empty: true
+      relative-to-changelog-file: false
+      file: classpath:db/changelog/changes/0/2020-06-20-3-create-persistent_logins-table.yaml
+  - include:
+      error-if-missing-or-empty: true
+      relative-to-changelog-file: false
+      file: classpath:db/changelog/changes/1/2020-06-21-1-load-users-table.yaml
+  - include:
+      error-if-missing-or-empty: true
+      relative-to-changelog-file: false
+      file: classpath:db/changelog/changes/1/2020-06-21-2-load-authorities-table.yaml

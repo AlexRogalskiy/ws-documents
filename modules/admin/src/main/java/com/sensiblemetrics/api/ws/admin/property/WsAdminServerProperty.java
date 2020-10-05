@@ -60,7 +60,7 @@ public class WsAdminServerProperty {
         @Valid
         @NestedConfigurationProperty
         @NotNull(message = "{property.admin.server.handlers.logging-notifier.notNull}")
-        private Handler loggingNofifier = new Handler();
+        private Handler loggingNotifier = new Handler();
 
         /**
          * Filtering notifier handler
@@ -68,7 +68,7 @@ public class WsAdminServerProperty {
         @Valid
         @NestedConfigurationProperty
         @NotNull(message = "{property.admin.server.handlers.filtering-notifier.notNull}")
-        private Handler filteringNofifier = new Handler();
+        private Handler filteringNotifier = new Handler();
 
         /**
          * Reminding notifier handler
@@ -76,7 +76,7 @@ public class WsAdminServerProperty {
         @Valid
         @NestedConfigurationProperty
         @NotNull(message = "{property.admin.server.handlers.reminding-notifier.notNull}")
-        private Handler remindingNofifier = new Handler();
+        private Handler remindingNotifier = new Handler();
 
         /**
          * Enable/disable handlers ({@code true} by default)

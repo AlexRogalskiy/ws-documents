@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: alexrogalskiy (generated)
+      description: Creating table persistent_logins
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+            - dbms:
+                type: postgresql
+            - not:
+                - tableExists:
+                    schemaName: admin
+                    tableName: persistent_logins
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  name: series
+                  type: VARCHAR(64)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_by
+                  type: VARCHAR(512)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: created
+                  type: TIMESTAMP
+              - column:
+                  constraints:
+                    nullable: true
+                  name: modified_by
+                  type: VARCHAR(512)
+              - column:
+                  constraints:
+                    nullable: true
+                  name: modified
+                  type: TIMESTAMP
+              - column:
+                  constraints:
+                    nullable: false
+                  name: username
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: token
+                  type: VARCHAR(64)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: last_used
+                  type: TIMESTAMP
+            schemaName: admin
+            tableName: persistent_logins
+  - changeSet:
+      id: 8
+      author: alexrogalskiy (generated)
+      description: Creating PK for table persistent_logins
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - primaryKeyExists:
+                primaryKeyName: persistent_logins_pkey
+                schemaName: admin
+                tableName: persistent_logins
+      changes:
+        - addPrimaryKey:
+            columnNames: series
+            constraintName: persistent_logins_pkey
+            schemaName: admin
+            tableName: persistent_logins

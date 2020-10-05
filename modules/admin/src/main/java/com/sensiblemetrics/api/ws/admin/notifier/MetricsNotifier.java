@@ -1,4 +1,4 @@
-package com.sensiblemetrics.api.ws.admin.configuration;
+package com.sensiblemetrics.api.ws.admin.notifier;
 
 import de.codecentric.boot.admin.server.domain.entities.Instance;
 import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;

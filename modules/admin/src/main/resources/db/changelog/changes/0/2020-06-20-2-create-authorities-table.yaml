@@ -1,0 +1,92 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: alexrogalskiy (generated)
+      description: Creating table authorities
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+            - dbms:
+                type: postgresql
+            - not:
+                - tableExists:
+                    schemaName: admin
+                    tableName: authorities
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_by
+                  type: VARCHAR(512)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: created
+                  type: TIMESTAMP
+              - column:
+                  constraints:
+                    nullable: true
+                  name: modified_by
+                  type: VARCHAR(512)
+              - column:
+                  constraints:
+                    nullable: true
+                  name: modified
+                  type: TIMESTAMP
+              - column:
+                  constraints:
+                    nullable: false
+                  name: authority
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: username
+                  type: VARCHAR(50)
+            schemaName: admin
+            tableName: authorities
+  - changeSet:
+      id: 5
+      author: alexrogalskiy (generated)
+      description: Creating index username+authority
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - indexExists:
+                schemaName: admin
+                indexName: username_authority_idx
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: username
+              - column:
+                  name: authority
+            indexName: username_authority_idx
+            schemaName: admin
+            tableName: authorities
+  - changeSet:
+      id: 6
+      author: alexrogalskiy (generated)
+      description: Creating FK for table users
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - foreignKeyConstraintExists:
+                foreignKeyName: fk_authorities_user
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: username
+            baseTableSchemaName: admin
+            baseTableName: authorities
+            constraintName: fk_authorities_user
+            deferrable: true
+            initiallyDeferred: true
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: username
+            referencedTableSchemaName: admin
+            referencedTableName: users

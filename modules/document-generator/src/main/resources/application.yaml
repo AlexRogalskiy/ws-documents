@@ -1,9 +1,5 @@
 # SensibleMetrics WebDocs Web Service Document Generator configuration
 ---
-eureka:
-  client:
-    enabled: false
-
 server:
   port: 8089
   ssl:
@@ -38,11 +34,11 @@ spring:
   main:
     log-startup-info: true
   profiles:
-    include: addressing, document, insecure
+    include: addressing, document, admin-insecure, eureka-insecure
   application:
     name: "WebDocs-Document-Generator-WebService"
   messages:
-    basename: i18n/common_messages, i18n/messages
+    basename: i18n/messages
     # 1 hour
     cache-duration: 3600
   cache:
@@ -81,16 +77,17 @@ spring:
     username: ${DB_USER:postgres}
     password: ${DB_PASS}
     sql-script-encoding: UTF-8
-    initialization-mode: NEVER
+    initialization-mode: ALWAYS
     hikari:
       minimum-idle: 5
       maximum-pool-size: 25
       idle-timeout: 30000
-      pool-name: WebDocs-DocumentGenerator-HikariCP
+      pool-name: WebDocs-Document-Generator-HikariCP
       max-lifetime: 1800000
       connection-timeout: 30000
       transaction-isolation: TRANSACTION_READ_COMMITTED
       isolate-internal-queries: true
+      schema: document_generator
       connection-test-query: SELECT 1
       driver-class-name: com.p6spy.engine.spy.P6SpyDriver
       allow-pool-suspension: true
@@ -175,8 +172,9 @@ spring:
       ddl-auto: none
       use-new-id-generator-mappings: false
   liquibase:
-    enabled: true
+    url: ${spring.datasource.url}
     drop-first: true
+    default-schema: document_generator
 
 management:
   health:
@@ -261,24 +259,21 @@ jasypt:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
 ---
 spring:
-  profiles: eureka
+  profiles: noeureka
 
 eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 10
-    health-check-url-path: /actuator/health
-    metadata-map:
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
-    enabled: true
-    registry-fetch-interval-seconds: 5
-    register-with-eureka: false
-    fetch-registry: false
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    enabled: false
 ---
 spring:
-  profiles: dev
+  profiles: noadmin
+  boot:
+    admin:
+      client:
+        enabled: false
+---
+spring:
+  profiles: admin-insecure
   boot:
     admin:
       url: ${ADMIN_URI:http://localhost:8085}
@@ -291,16 +286,7 @@ spring:
         cache-templates: false
 ---
 spring:
-  profiles: insecure
-  boot:
-    admin:
-      url: ${ADMIN_URI:http://localhost:8085}
-      api-path: /instances
-      client:
-        url: ${ADMIN_URI:http://localhost:8085}
----
-spring:
-  profiles: secure
+  profiles: admin-secure
   security:
     user:
       name: ${ADMIN_USER:user}
@@ -320,12 +306,39 @@ spring:
             user:
               name: ${spring.security.user.name}         #These two are needed so that the server
               password: ${spring.security.user.password} #can access the protected client endpoints
+---
+spring:
+  profiles: eureka-insecure
 
 eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
   client:
-    enabled: true
     registry-fetch-interval-seconds: 5
     register-with-eureka: false
     fetch-registry: false
+    webclient:
+      enabled: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+---
+spring:
+  profiles: eureka-secure
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+  client:
+    registry-fetch-interval-seconds: 5
+    register-with-eureka: false
+    fetch-registry: false
+    webclient:
+      enabled: true
     service-url:
       defaultZone: ${EUREKA_URI:http://${spring.security.user.name}:${spring.security.user.password}@localhost:8761/eureka}

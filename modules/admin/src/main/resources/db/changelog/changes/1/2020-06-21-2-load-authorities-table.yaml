@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: alexrogalskiy (generated)
+      description: Loading data for table authorities
+      changes:
+        - sql:
+            sql: INSERT INTO admin.authorities(username, authority, created, created_by) VALUES ('admin', 'ROLE_ADMIN', '2019-08-26 12:39:16', 'system')

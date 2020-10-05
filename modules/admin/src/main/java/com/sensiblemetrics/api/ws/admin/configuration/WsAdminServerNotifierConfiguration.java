@@ -1,5 +1,6 @@
 package com.sensiblemetrics.api.ws.admin.configuration;
 
+import com.sensiblemetrics.api.ws.admin.notifier.MetricsNotifier;
 import com.sensiblemetrics.api.ws.admin.property.WsAdminServerProperty;
 import de.codecentric.boot.admin.server.domain.entities.InstanceRepository;
 import de.codecentric.boot.admin.server.notify.CompositeNotifier;
@@ -41,7 +42,7 @@ public abstract class WsAdminServerNotifierConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = LoggingNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Admin Server logging notifier configuration")
+    @Description("WebDocs Admin Server logging notifier configuration")
     public static class LoggingNotifierConfiguration {
         /**
          * Default property prefix
@@ -59,7 +60,7 @@ public abstract class WsAdminServerNotifierConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = FilteringNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Admin Server filtering notifier configuration")
+    @Description("WebDocs Admin Server filtering notifier configuration")
     public static class FilteringNotifierConfiguration {
         /**
          * Default property prefix
@@ -79,7 +80,7 @@ public abstract class WsAdminServerNotifierConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = RemindingNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Admin Server reminding notifier configuration")
+    @Description("WebDocs Admin Server reminding notifier configuration")
     public static class RemindingNotifierConfiguration {
         /**
          * Default property prefix
@@ -100,9 +101,9 @@ public abstract class WsAdminServerNotifierConfiguration {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(prefix = RemindingNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
+    @ConditionalOnProperty(prefix = MetricsNotifierConfiguration.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Admin Server metrics notifier configuration")
+    @Description("WebDocs Admin Server metrics notifier configuration")
     public static class MetricsNotifierConfiguration {
         /**
          * Default property prefix

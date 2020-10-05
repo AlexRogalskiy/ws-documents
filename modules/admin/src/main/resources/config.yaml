@@ -1,0 +1,5 @@
+# SensibleMetrics WebDocs Admin Server configuration
+webdocs:
+  admin-server:
+    handlers:
+      enabled: true

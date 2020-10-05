@@ -1,0 +1,5 @@
+# SensibleMetrics WebDocs Eureka Server configuration
+webdocs:
+  eureka-server:
+    handlers:
+      enabled: true

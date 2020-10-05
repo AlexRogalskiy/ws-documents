@@ -1,0 +1,92 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: alexrogalskiy (generated)
+      description: Creating status enum type
+      preConditions:
+        - onFail: MARK_RAN
+        - or:
+            - dbms:
+                type: oracle
+            - dbms:
+                type: mysql
+            - dbms:
+                type: postgresql
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT count(*) FROM pg_type WHERE typname = 'status_enum'
+      changes:
+        - sql: CREATE TYPE status_enum AS ENUM ('ACTIVE', 'INACTIVE', 'SUSPENDED')
+  - changeSet:
+      id: 2
+      author: alexrogalskiy (generated)
+      description: Creating table users
+      preConditions:
+        - onFail: MARK_RAN
+        - and:
+            - dbms:
+                type: postgresql
+            - not:
+                - tableExists:
+                    schemaName: admin
+                    tableName: users
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  name: username
+                  type: VARCHAR(50)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_by
+                  type: VARCHAR(512)
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  name: created
+                  type: TIMESTAMP
+              - column:
+                  constraints:
+                    nullable: true
+                  name: modified_by
+                  type: VARCHAR(512)
+              - column:
+                  constraints:
+                    nullable: true
+                  name: modified
+                  type: TIMESTAMP
+              - column:
+                  constraints:
+                    nullable: false
+                  name: password
+                  type: VARCHAR(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: status
+                  type: VARCHAR(64)
+                  defaultValue: 'ACTIVE'
+            schemaName: admin
+            tableName: users
+  - changeSet:
+      id: 3
+      author: alexrogalskiy (generated)
+      description: Creating PK for table users
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            - primaryKeyExists:
+                primaryKeyName: users_pkey
+                schemaName: admin
+                tableName: users
+      changes:
+        - addPrimaryKey:
+            columnNames: username
+            constraintName: users_pkey
+            schemaName: admin
+            tableName: users

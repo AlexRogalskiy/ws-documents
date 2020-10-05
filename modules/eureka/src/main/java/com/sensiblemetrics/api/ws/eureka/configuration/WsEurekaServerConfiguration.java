@@ -2,18 +2,18 @@ package com.sensiblemetrics.api.ws.eureka.configuration;
 
 import com.sensiblemetrics.api.ws.eureka.property.WsEurekaServerProperty;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Role;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@Slf4j
 @Configuration
+@ConditionalOnProperty(prefix = WsEurekaServerProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(WsEurekaServerProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics WebDocs Eureka Server configuration")
@@ -22,12 +22,12 @@ public abstract class WsEurekaServerConfiguration {
     /**
      * Actuator {@link WebSecurityConfigurerAdapter} implementation
      */
+    @Profile("eureka-secure")
     @Configuration(proxyBeanMethods = false)
     @RequiredArgsConstructor
-    @ConditionalOnProperty(prefix = WsEurekaServerProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("Authentication Actuator Web Security configuration adapter")
-    public static class AuthActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Description("WebDocs Authentication Actuator Web Security configuration adapter")
+    public static class AuthorityActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         private final WsEurekaServerProperty property;
 
         /**
@@ -37,8 +37,10 @@ public abstract class WsEurekaServerConfiguration {
          */
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
-            http.csrf().disable()
+            http.csrf().ignoringAntMatchers("/eureka/**")
+                .and()
                 .authorizeRequests()
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -60,11 +62,11 @@ public abstract class WsEurekaServerConfiguration {
     /**
      * Actuator empty {@link WebSecurityConfigurerAdapter} implementation
      */
+    @Profile("eureka-insecure")
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(prefix = WsEurekaServerProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "false", matchIfMissing = true)
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Description("NoAuthentication Actuator Web Security configuration adapter")
-    public static class NoAuthActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Description("WebDocs No-Authentication Actuator Web Security configuration adapter")
+    public static class NoAuthorityActuatorSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         /**
          * {@inheritDoc}
          *
@@ -72,7 +74,10 @@ public abstract class WsEurekaServerConfiguration {
          */
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
-            http.authorizeRequests().anyRequest().permitAll();
+            http.csrf().ignoringAntMatchers("/eureka/**")
+                .and()
+                .authorizeRequests()
+                .anyRequest().permitAll();
         }
     }
 }

@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: alexrogalskiy (generated)
+      description: Loading data for table users
+      changes:
+        - sql:
+            sql: INSERT INTO admin.users(username, password, status, created, created_by) VALUES ('admin', '$2a$10$hbxecwitQQ.dDT4JOFzQAulNySFwEpaFLw38jda6Td.Y/cOiRzDFu', 'ACTIVE', '2019-08-26 12:39:16', 'system')

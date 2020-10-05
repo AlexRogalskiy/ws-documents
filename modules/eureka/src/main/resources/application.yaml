@@ -29,7 +29,7 @@ server:
 
 spring:
   profiles:
-    include: insecure
+    include: admin-insecure, eureka-insecure
   output:
     ansi:
       enabled: NEVER
@@ -38,7 +38,7 @@ spring:
   application:
     name: "WebDocs-Eureka-Server-WebService"
   messages:
-    basename: i18n/common_messages, i18n/messages
+    basename: i18n/messages
     # 1 hour
     cache-duration: 3600
   aop:
@@ -143,40 +143,23 @@ jasypt:
     password: ${JASYPT_ENCRYPTOR_PASSWORD:}
 ---
 spring:
-  profiles: insecure
+  profiles: noadmin
+  boot:
+    admin:
+      client:
+        enabled: false
+---
+spring:
+  profiles: admin-insecure
   boot:
     admin:
       url: ${ADMIN_URI:http://localhost:8085}
       api-path: /instances
       client:
         url: ${ADMIN_URI:http://localhost:8085}
-
-eureka:
-  instance:
-    secure-port: ${server.port}
-    secure-port-enabled: true
-    lease-renewal-interval-in-seconds: 10
-    health-check-url-path: /actuator/health
-    prefer-ip-address: true
-    hostname: localhost
-    homePageUrl: http://${eureka.instance.hostname}:${server.port}/
-    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/admin/info
-    metadata-map:
-      hostname: ${eureka.instance.hostname}
-      securePort: ${server.port}
-      startup: ${random.int}    #needed to trigger info and endpoint update after restart
-  client:
-    registry-fetch-interval-seconds: 5
-    register-with-eureka: false
-    fetch-registry: false
-    serviceUrl:
-      defaultZone: ${EUREKA_URI:http://${eureka.instance.hostname}:${server.port}/eureka}
-  server:
-    waitTimeInMsWhenSyncEmpty: 0
-    enableSelfPreservation: true
 ---
 spring:
-  profiles: secure
+  profiles: admin-secure
   security:
     user:
       name: ${EUREKA_USER:user}
@@ -196,15 +179,47 @@ spring:
             user:
               name: ${spring.security.user.name}         #These two are needed so that the server
               password: ${spring.security.user.password} #can access the protected client endpoints
+---
+spring:
+  profiles: eureka-insecure
 
-# by default every Eureka Server is also an Eureka Client and requires (at least one) service URL to locate a peer.
 eureka:
   instance:
     lease-renewal-interval-in-seconds: 10
     health-check-url-path: /actuator/health
-    prefer-ip-address: true
     hostname: localhost
+    homePageUrl: http://${eureka.instance.hostname}:${server.port}/
+    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/admin/info
     metadata-map:
+      hostname: ${eureka.instance.hostname}
+      startup: ${random.int}    #needed to trigger info and endpoint update after restart
+  client:
+    registry-fetch-interval-seconds: 5
+    register-with-eureka: false
+    fetch-registry: false
+    webclient:
+      enabled: true
+    service-url:
+      defaultZone: ${EUREKA_URI:http://${eureka.instance.hostname}:${server.port}/eureka}
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+    enable-self-preservation: true
+---
+spring:
+  profiles: eureka-secure
+
+eureka:
+  instance:
+    secure-port: ${server.port}
+    secure-port-enabled: true
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: /actuator/health
+    hostname: localhost
+    homePageUrl: http://${eureka.instance.hostname}:${server.port}/
+    statusPageUrl: http://${eureka.instance.hostname}:${server.port}/admin/info
+    metadata-map:
+      hostname: ${eureka.instance.hostname}
+      securePort: ${server.port}
       startup: ${random.int}    #needed to trigger info and endpoint update after restart
       user:
         name: ${spring.security.user.name}
@@ -213,5 +228,10 @@ eureka:
     registry-fetch-interval-seconds: 5
     register-with-eureka: false
     fetch-registry: false
-    serviceUrl:
+    webclient:
+      enabled: true
+    service-url:
       defaultZone: ${EUREKA_URI:http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka}
+  server:
+    wait-time-in-ms-when-sync-empty: 0
+    enable-self-preservation: true
