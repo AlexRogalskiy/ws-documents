@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DocumentGenerator-Server" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="webdocs-document-generator" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.sensiblemetrics.api.ws.document.generator.ApplicationBootstrap" />
+    <option name="VM_PARAMETERS" value="-Dcom.sun.security.enableAIAcaIssuers=true" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="ALTERNATIVE_JRE_PATH" value="Java-11" />
+    <envs>
+      <env name="JASYPT_ENCRYPTOR_PASSWORD" value="the_password" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
