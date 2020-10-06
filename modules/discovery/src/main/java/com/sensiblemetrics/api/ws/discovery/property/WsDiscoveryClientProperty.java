@@ -14,10 +14,10 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WebServiceDiscoveryClientProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = WsDiscoveryClientProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics WebDocs Discovery Client configuration properties")
-public class WebServiceDiscoveryClientProperty {
+public class WsDiscoveryClientProperty {
     /**
      * Default discovery client property prefix
      */

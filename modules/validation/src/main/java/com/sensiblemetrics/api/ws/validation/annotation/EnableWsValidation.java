@@ -1,6 +1,6 @@
 package com.sensiblemetrics.api.ws.validation.annotation;
 
-import com.sensiblemetrics.api.ws.validation.configuration.WebServiceValidationConfiguration;
+import com.sensiblemetrics.api.ws.validation.configuration.WsValidationConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -9,6 +9,6 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@Import(WebServiceValidationConfiguration.class)
+@Import(WsValidationConfiguration.class)
 public @interface EnableWsValidation {
 }

@@ -18,10 +18,10 @@ import static com.sensiblemetrics.api.ws.commons.property.PropertySettings.DEFAU
 @Data
 @Validated
 @Accessors(chain = true)
-@ConfigurationProperties(prefix = WebServiceValidationProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
+@ConfigurationProperties(prefix = WsValidationProperty.PROPERTY_PREFIX, ignoreInvalidFields = true)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics WebDocs Validation configuration properties")
-public class WebServiceValidationProperty {
+public class WsValidationProperty {
     /**
      * Default validation property prefix
      */
@@ -45,7 +45,7 @@ public class WebServiceValidationProperty {
         /**
          * Default handlers property prefix
          */
-        public static final String PROPERTY_PREFIX = WebServiceValidationProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "handlers";
+        public static final String PROPERTY_PREFIX = WsValidationProperty.PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "handlers";
         public static final String METHOD_PARAMS_PROPERTY_PREFIX = PROPERTY_PREFIX + DEFAULT_PROPERTY_DELIMITER + "method-params";
 
         /**

@@ -6,7 +6,7 @@ import com.sensiblemetrics.api.ws.validation.management.ThrowablePayloadValidato
 import com.sensiblemetrics.api.ws.validation.management.ThrowableValidator;
 import com.sensiblemetrics.api.ws.validation.management.DefaultValidatorRegistry;
 import com.sensiblemetrics.api.ws.validation.management.ValidatorRegistry;
-import com.sensiblemetrics.api.ws.validation.property.WebServiceValidationProperty;
+import com.sensiblemetrics.api.ws.validation.property.WsValidationProperty;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -26,15 +26,15 @@ import javax.validation.ValidatorFactory;
 
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ConditionalOnProperty(prefix = WebServiceValidationProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
-@EnableConfigurationProperties(WebServiceValidationProperty.class)
+@ConditionalOnProperty(prefix = WsValidationProperty.PROPERTY_PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties(WsValidationProperty.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Description("SensibleMetrics WebService Validation configuration")
-public abstract class WebServiceValidationConfiguration {
+public abstract class WsValidationConfiguration {
 
     @Bean
     @ConditionalOnBean(ValidatorRegistry.class)
-    @ConditionalOnProperty(prefix = WebServiceValidationProperty.Handlers.METHOD_PARAMS_PROPERTY_PREFIX, value = "enabled", havingValue = "true")
+    @ConditionalOnProperty(prefix = WsValidationProperty.Handlers.METHOD_PARAMS_PROPERTY_PREFIX, value = "enabled", havingValue = "true")
     @Description("Method params validation aspect bean")
     public MethodParamsValidationAspect methodParamsValidationAspect(final ValidatorRegistry validatorRegistry) {
         return new MethodParamsValidationAspect(validatorRegistry);
