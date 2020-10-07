@@ -18,8 +18,6 @@
     <inceptionYear>2020</inceptionYear>
 
     <properties>
-        <validation-api.version>2.0.1.Final</validation-api.version>
-
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
 
