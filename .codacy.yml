@@ -1,3 +1,5 @@
 exclude_paths:
-  - 'src/main/resources/*.sql'
-  - '*.md'
+  - 'src/main/resources/**'
+  - '**.md'
+  - '**.yaml'
+  - '**.txt'
