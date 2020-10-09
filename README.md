@@ -1,4 +1,4 @@
-# README
+# Web-Documents
 
 ![Build](https://github.com/AlexRogalskiy/ws-documents/workflows/Build/badge.svg?branch=master&event=push)
 ![Create Release](https://github.com/AlexRogalskiy/ws-documents/workflows/Release-draft/badge.svg?branch=master)
