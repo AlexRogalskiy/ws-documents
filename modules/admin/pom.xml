@@ -31,7 +31,7 @@
         <postgresql.version>42.2.17</postgresql.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
-        <liquibase.version>4.1.0</liquibase.version>
+        <liquibase.version>4.1.1</liquibase.version>
 
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
 
