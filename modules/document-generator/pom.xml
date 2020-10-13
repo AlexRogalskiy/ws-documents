@@ -32,10 +32,10 @@
         <cache-api.version>1.1.1</cache-api.version>
         <ehcache.version>3.9.0</ehcache.version>
         <p6spy.version>3.9.1</p6spy.version>
-        <postgresql.version>42.2.16</postgresql.version>
+        <postgresql.version>42.2.17</postgresql.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
-        <liquibase.version>4.1.0</liquibase.version>
+        <liquibase.version>4.1.1</liquibase.version>
 
         <image.to.path>registry.hub.docker.com/alexanderr/ws-documents</image.to.path>
         <jaxb2-basics.version>1.11.1-PUBLISHED-BY-MISTAKE</jaxb2-basics.version>
@@ -44,7 +44,7 @@
 
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
-        <maven-liquibase-plugin.version>4.0.0</maven-liquibase-plugin.version>
+        <maven-liquibase-plugin.version>4.1.1</maven-liquibase-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     </properties>
 
