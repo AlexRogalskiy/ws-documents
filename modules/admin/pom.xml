@@ -35,7 +35,7 @@
 
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
 
-        <maven-liquibase-plugin.version>4.0.0</maven-liquibase-plugin.version>
+        <maven-liquibase-plugin.version>4.1.1</maven-liquibase-plugin.version>
     </properties>
 
     <dependencyManagement>
