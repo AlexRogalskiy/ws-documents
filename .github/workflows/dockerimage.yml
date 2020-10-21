@@ -38,7 +38,7 @@ jobs:
           skaffold build -p remote  | tee /tmp/build-log.txt
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2.1.4
+        uses: actions/upload-artifact@v2.2.0
         with:
           # Artifact name
           name: build-log
