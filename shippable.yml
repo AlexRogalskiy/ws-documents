@@ -20,6 +20,9 @@ branches:
 # using pre-defined build variables
 # full list http://docs.shippable.com/ci/advancedOptions/environmentVariables/
 env:
+  - PROFILE=non_module_java,test-jar,xsd
+  - PROFILE=module_java,test-jar,xsd
+
   global:
     - TEST_RESULTS_DIR=$SHIPPABLE_REPO_DIR/shippable/testresults
     - CODE_COVERAGE_DIR=$SHIPPABLE_REPO_DIR/shippable/codecoverage
@@ -37,14 +40,11 @@ matrix:
         - ARCH=aarch64
         - PROFILE=non_module_java,test-jar,xsd
     - jdk: oraclejdk8
-      env:
-        - PROFILE=non_module_java,test-jar,xsd
+      env: PROFILE=non_module_java,test-jar,xsd
     - jdk: oraclejdk11
-      env:
-        - PROFILE=module_java,test-jar,xsd
+      env: PROFILE=module_java,test-jar,xsd
     - jdk: openjdk11
-      env:
-        - PROFILE=module_java,test-jar,xsd
+      env: PROFILE=module_java,test-jar,xsd
 
 build:
   cache: false
@@ -62,9 +62,7 @@ build:
   ci:
     # npm mirrors can sometimes be flacky, better to use shippable_retry
     # http://docs.shippable.com/ci/advancedOptions/retry/
-    - echo ">>> Running CI build phase"
-    - chmod +x ./mvnw
-    - shippable_retry ./mvnw clean install -B -P$PROFILE -DskipTests
+    - *template-ci
   #    - gradle check --no-daemon --stacktrace  --max-workers 2
 
   post_ci:
