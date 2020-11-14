@@ -2731,7 +2731,7 @@
         <profile>
             <id>non_module_java</id>
             <activation>
-                <jdk>(,8]</jdk>
+                <jdk>(,9)</jdk>
             </activation>
             <properties>
                 <compilerArgs>
