@@ -20,9 +20,9 @@ branches:
 # using pre-defined build variables
 # full list http://docs.shippable.com/ci/advancedOptions/environmentVariables/
 env:
-  - PROFILE=non_module_java,test-jar,xsd
-  - PROFILE=module_java,test-jar,xsd
-
+  matrix:
+    - PROFILE=non_module_java,test-jar,xsd
+    - PROFILE=module_java,test-jar,xsd
   global:
     - TEST_RESULTS_DIR=$SHIPPABLE_REPO_DIR/shippable/testresults
     - CODE_COVERAGE_DIR=$SHIPPABLE_REPO_DIR/shippable/codecoverage
