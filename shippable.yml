@@ -46,22 +46,22 @@ matrix:
       env:
         - PROFILE=module_java,test-jar,xsd
 
-build:
-  cache: false
-  advancedReporting: true
-
-  pre_ci:
-    - *template-pre-ci
-
-  # http://docs.shippable.com/ci/shippableyml/#ci
-  ci:
-    # npm mirrors can sometimes be flacky, better to use shippable_retry
-    # http://docs.shippable.com/ci/advancedOptions/retry/
-    - *template-ci
-  #    - gradle check --no-daemon --stacktrace  --max-workers 2
-
-  post_ci:
-    - *template-post-ci
+#build:
+#  cache: false
+#  advancedReporting: true
+#
+#  pre_ci:
+#    - *template-pre-ci
+#
+#  # http://docs.shippable.com/ci/shippableyml/#ci
+#  ci:
+#    # npm mirrors can sometimes be flacky, better to use shippable_retry
+#    # http://docs.shippable.com/ci/advancedOptions/retry/
+#    - *template-ci
+#  #    - gradle check --no-daemon --stacktrace  --max-workers 2
+#
+#  post_ci:
+#    - *template-post-ci
 
 # Integrations are used to connect external resources to CI
 # http://docs.shippable.com/integrations/overview/
@@ -87,7 +87,3 @@ integrations:
       sendCoverageReports: false
       sendFailingSnippet: true
       #### special tags for email type ####
-
-# TODO: Follow-up:
-# https://documentation.codeship.com/pro/languages-frameworks/java/#gradle
-# https://documentation.codeship.com/pro/builds-and-configuration/services/
