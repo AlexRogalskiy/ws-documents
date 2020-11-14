@@ -1,54 +1,54 @@
 jobs:
-  - name: host_single_task
-    type: runSh
-    steps:
-      - TASK:
-          name: check_host_OS
-          runtime:
-            container: false
-          script:
-            - echo "Checking OS of the host"
-            - uname -a
-
-  - name: container_custom_opts
-    type: runSh
-    steps:
-      - TASK:
-          name: custom_container_opts
-          runtime:
-            options:
-              env:
-                - CONTAINER_ENV_1: foo
-                - CONTAINER_ENV_2: bar
-          script:
-            - echo "Checking environment variables"
-            - env
-
-  - name: container_multiple_tasks
-    type: runSh
-    steps:
-      - TASK:
-          name: check_images
-          script:
-            - echo "Checking available docker images"
-            - sudo docker images
-      - TASK:
-          name: check_container_uptime
-          script:
-            - echo "Checking container uptime"
-            - uptime
-    on_success:
-      script:
-        - echo "Task successfully completed"
-    on_failure:
-      script:
-        - echo "This should be executed if any step in TASK fails"
-    always:
-      script:
-        - echo "This should always be executed, regardless of job status"
+  #  - name: host_single_task
+  #    type: runSh
+  #    steps:
+  #      - TASK:
+  #          name: check_host_OS
+  #          runtime:
+  #            container: false
+  #          script:
+  #            - echo "Checking OS of the host"
+  #            - uname -a
+  #
+  #  - name: container_custom_opts
+  #    type: runSh
+  #    steps:
+  #      - TASK:
+  #          name: custom_container_opts
+  #          runtime:
+  #            options:
+  #              env:
+  #                - CONTAINER_ENV_1: foo
+  #                - CONTAINER_ENV_2: bar
+  #          script:
+  #            - echo "Checking environment variables"
+  #            - env
+  #
+  #  - name: container_multiple_tasks
+  #    type: runSh
+  #    steps:
+  #      - TASK:
+  #          name: check_images
+  #          script:
+  #            - echo "Checking available docker images"
+  #            - sudo docker images
+  #      - TASK:
+  #          name: check_container_uptime
+  #          script:
+  #            - echo "Checking container uptime"
+  #            - uptime
+  #    on_success:
+  #      script:
+  #        - echo "Task successfully completed"
+  #    on_failure:
+  #      script:
+  #        - echo "This should be executed if any step in TASK fails"
+  #    always:
+  #      script:
+  #        - echo "This should always be executed, regardless of job status"
 
   - name: build_ci_job
-    type: runCI
+    type: runSh
     steps:
       - TASK:
           name: template_pre_ci
@@ -62,6 +62,12 @@ jobs:
           name: template_post_ci
           script:
             - *template-post-ci
-    on_success:
-      script:
-        - echo "SUCCESS"
+      on_success:
+        script:
+          - echo "Task successfully completed"
+      on_failure:
+        script:
+          - echo "This should be executed if any step in TASK fails"
+      always:
+        script:
+          - echo "This should always be executed, regardless of job status"

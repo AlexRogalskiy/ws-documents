@@ -48,7 +48,7 @@ matrix:
 
 #build:
 #  cache: false
-#  advancedReporting: true
+#  advancedReportinsg: true
 #
 #  pre_ci:
 #    - *template-pre-ci
