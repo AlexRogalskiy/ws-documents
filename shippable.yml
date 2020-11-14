@@ -29,17 +29,22 @@ env:
 matrix:
   include:
     - jdk: openjdk8
-      env: ARCH=x86_64
-      profile: non_module_java,test-jar,xsd
+      env:
+        - ARCH=x86_64
+        - PROFILE=non_module_java,test-jar,xsd
     - jdk: openjdk8
-      env: ARCH=aarch64
-      profile: non_module_java,test-jar,xsd
+      env:
+        - ARCH=aarch64
+        - PROFILE=non_module_java,test-jar,xsd
     - jdk: oraclejdk8
-      profile: non_module_java,test-jar,xsd
+      env:
+        - PROFILE=non_module_java,test-jar,xsd
     - jdk: oraclejdk11
-      profile: module_java,test-jar,xsd
+      env:
+        - PROFILE=module_java,test-jar,xsd
     - jdk: openjdk11
-      profile: module_java,test-jar,xsd
+      env:
+        - PROFILE=module_java,test-jar,xsd
 
 build:
   cache: false
