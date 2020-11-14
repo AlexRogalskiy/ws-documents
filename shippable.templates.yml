@@ -1,5 +1,5 @@
-externalReferences:
-  - https://github.com/AlexRogalskiy/ws-documents/raw/master/shippable.templates.yml
+#externalReferences:
+#s  - https://github.com/AlexRogalskiy/ws-documents/raw/master/shippable.templates.yml
 
 template-pre-ci: &template-pre-ci
   - echo ">>> Running pre CI build phase"
