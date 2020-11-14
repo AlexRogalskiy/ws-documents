@@ -46,22 +46,29 @@ matrix:
       env:
         - PROFILE=module_java,test-jar,xsd
 
-#build:
-#  cache: false
-#  advancedReportinsg: true
-#
-#  pre_ci:
-#    - *template-pre-ci
-#
-#  # http://docs.shippable.com/ci/shippableyml/#ci
-#  ci:
-#    # npm mirrors can sometimes be flacky, better to use shippable_retry
-#    # http://docs.shippable.com/ci/advancedOptions/retry/
-#    - *template-ci
-#  #    - gradle check --no-daemon --stacktrace  --max-workers 2
-#
-#  post_ci:
-#    - *template-post-ci
+build:
+  cache: false
+  advancedReportinsg: true
+
+  pre_ci_boot:
+    image_name: drydock/u16javall
+    image_tag: latest
+    pull: true
+
+  pre_ci:
+    - *template-pre-ci
+
+  # http://docs.shippable.com/ci/shippableyml/#ci
+  ci:
+    # npm mirrors can sometimes be flacky, better to use shippable_retry
+    # http://docs.shippable.com/ci/advancedOptions/retry/
+    - echo ">>> Running CI build phase"
+    - chmod +x ./mvnw
+    - shippable_retry ./mvnw clean install -B -P$PROFILE -DskipTests
+  #    - gradle check --no-daemon --stacktrace  --max-workers 2
+
+  post_ci:
+    - *template-post-ci
 
 # Integrations are used to connect external resources to CI
 # http://docs.shippable.com/integrations/overview/
