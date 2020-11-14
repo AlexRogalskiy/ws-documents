@@ -8,9 +8,6 @@ jdk:
   - oraclejdk11
   - openjdk11
 
-runtime:
-  nodePool: centos7
-
 # use this to control what branches get built.
 # http://docs.shippable.com/ci/advancedOptions/branches/
 branches:
