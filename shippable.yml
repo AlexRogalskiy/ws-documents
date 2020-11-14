@@ -33,7 +33,6 @@ matrix:
       profile: non_module_java,test-jar,xsd
     - jdk: openjdk8
       env: ARCH=aarch64
-      nodePool: Arm64
       profile: non_module_java,test-jar,xsd
     - jdk: oraclejdk8
       profile: non_module_java,test-jar,xsd
