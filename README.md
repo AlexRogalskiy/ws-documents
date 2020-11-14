@@ -18,6 +18,7 @@
 ![Docker Automated build](https://img.shields.io/docker/automated/alexanderr/ws-documents)
 ![Docker Pulls](https://img.shields.io/docker/pulls/alexanderr/ws-documents)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AlexRogalskiy_ws-documents&metric=alert_status)](https://sonarcloud.io/dashboard?id=AlexRogalskiy_ws-documents)
+[![Run Status](https://api.shippable.com/projects/5f9d5ae450f5ab000c514b24/badge?branch=master)]()
 
 ![](./images/logo-webdocs.png)
 
