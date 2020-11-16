@@ -8,6 +8,11 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  MAVEN_ARGS: >-
+    -V -B
+    --file pom.xml --errors --lax-checksums -DskipTests=true
+
 jobs:
   non_module_java:
     runs-on: ${{ matrix.os }}
@@ -52,7 +57,7 @@ jobs:
       - name: Build with Maven
         timeout-minutes: 20
         run: |
-          ./mvnw clean package --file pom.xml --errors --batch-mode --lax-checksums -DskipTests=true -P"non_module_java","test-jar","xsd","dev"
+          ./mvnw clean package ${MAVEN_ARGS} -P"non_module_java","test-jar","xsd","dev"
   module_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -96,7 +101,7 @@ jobs:
       - name: Build with Maven
         timeout-minutes: 20
         run: |
-          ./mvnw clean package --file pom.xml --errors --batch-mode --lax-checksums -DskipTests=true -P"module_java","test-jar","xsd","dev"
+          ./mvnw clean package ${MAVEN_ARGS} -P"module_java","test-jar","xsd","dev"
   module_zing_java:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
@@ -133,4 +138,4 @@ jobs:
       - name: Build with Maven
         timeout-minutes: 20
         run: |
-          ./mvnw clean package --file pom.xml --errors --batch-mode --lax-checksums -DskipTests=true -P"module_java","test-jar","xsd","dev"
+          ./mvnw clean package ${MAVEN_ARGS} -P"module_java","test-jar","xsd","dev"
