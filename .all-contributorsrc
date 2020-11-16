@@ -1,5 +1,5 @@
 {
-  "projectName": "ws-documents",
+  "projectName": "web2Docs",
   "projectOwner": "AlexRogalskiy",
   "repoType": "github",
   "repoHost": "https://github.com",
@@ -16,7 +16,7 @@
       "profile": "https://github.com/AlexRogalskiy",
       "contributions": [
         "code",
-        "design"
+        "design",
         "doc",
         "ideas",
         "infra",
@@ -33,7 +33,5 @@
          "maintenance"
       ]
     }
-  ],
-  "contributorsPerLine": 1,
-  "skipCi": true
+  ]
 }
