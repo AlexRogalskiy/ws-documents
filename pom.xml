@@ -228,7 +228,7 @@
         <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
         <maven-jasypt-plugin.version>3.0.3</maven-jasypt-plugin.version>
 
-        <micrometer-jvm.version>0.2.0</micrometer-jvm.version>
+        <micrometer-jvm.version>0.2.1</micrometer-jvm.version>
         <micrometer-prometheus.version>1.5.5</micrometer-prometheus.version>
         <micrometer.version>1.6.0</micrometer.version>
         <jolokia.version>1.6.2</jolokia.version>
