@@ -205,7 +205,7 @@
         <maven-rpm-plugin.version>2.2.0</maven-rpm-plugin.version>
         <maven-modernizer-plugin.version>2.2.0</maven-modernizer-plugin.version>
         <maven-plugin-os.version>1.7.0</maven-plugin-os.version>
-        <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
+        <maven-plugin-plugin.version>3.6.1</maven-plugin-plugin.version>
         <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
         <maven-qulice-plugin.version>0.18.19</maven-qulice-plugin.version>
