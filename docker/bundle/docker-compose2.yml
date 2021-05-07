@@ -117,7 +117,7 @@ services:
   neo4j:
     environment:
       NEO4J_AUTH: none
-    image: neo4j:3.5.22
+    image: neo4j:3.5.28
     ports:
       - "7474:7474/tcp"
       - "7687:7687/tcp"
