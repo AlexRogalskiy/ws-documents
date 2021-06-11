@@ -235,7 +235,7 @@
 
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <mockito-junit-jupiter.version>3.11.0</mockito-junit-jupiter.version>
-        <mockito.version>3.11.0</mockito.version>
+        <mockito.version>3.11.1</mockito.version>
         <modernizer.version>2.2.0</modernizer.version>
         <plexus-utils.version>3.3.0</plexus-utils.version>
 
