@@ -18,7 +18,7 @@
     <inceptionYear>2020</inceptionYear>
 
     <properties>
-        <spring-boot-admin-client.version>2.4.1</spring-boot-admin-client.version>
+        <spring-boot-admin-client.version>2.4.2</spring-boot-admin-client.version>
         <spring-cloud-eureka-server.version>2.2.5.RELEASE</spring-cloud-eureka-server.version>
 
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
