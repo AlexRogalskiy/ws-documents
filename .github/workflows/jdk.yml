@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: wget https://download.java.net/java/early_access/jdk16/13/GPL/openjdk-16-ea+13_linux-x64_bin.tar.gz --output-document jdk.tar.gz
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
           java-version: '16-ea'
           jdkFile: jdk.tar.gz
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: wget https://download.java.net/java/early_access/jdk15/1/GPL/openjdk-15-ea+1_linux-x64_bin.tar.gz --output-document jdk.tar.gz
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
           java-version: '15-ea'
           jdkFile: jdk.tar.gz
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: wget https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_linux-x64_bin.tar.gz --output-document jdk.tar.gz
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
           java-version: '14.0.2'
           jdkFile: jdk.tar.gz
@@ -45,7 +45,7 @@ jobs:
           wget --directory-prefix ${HOME} ${JAVA_URL}
           echo ::set-env name=JAVA_VERSION::${JAVA_VERSION}
           echo ::set-env name=JDK_FILE::"${HOME}/$(basename ${JAVA_URL})"
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
           java-version: "${{ env.JAVA_VERSION }}"
           jdkFile: "${{ env.JDK_FILE }}"
