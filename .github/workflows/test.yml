@@ -33,6 +33,6 @@ jobs:
           ./mvnw clean verify --errors --batch-mode --lax-checksums -P"module_java","test-jar","xsd","unit-test","integration-test","dev"
 
       - name: Test Coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
