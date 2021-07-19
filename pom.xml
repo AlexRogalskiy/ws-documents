@@ -197,7 +197,7 @@
         <maven-jacoco-plugin.version>0.8.6</maven-jacoco-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
-        <maven-asciidoctor-plugin.version>2.1.0</maven-asciidoctor-plugin.version>
+        <maven-asciidoctor-plugin.version>2.2.0</maven-asciidoctor-plugin.version>
         <maven-jib-plugin.version>2.7.1</maven-jib-plugin.version>
         <maven-jvcn-plugin.version>0.0.1</maven-jvcn-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
