@@ -236,7 +236,7 @@
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
         <mockito-junit-jupiter.version>3.11.2</mockito-junit-jupiter.version>
         <mockito.version>3.11.2</mockito.version>
-        <modernizer.version>2.2.0</modernizer.version>
+        <modernizer.version>2.3.0</modernizer.version>
         <plexus-utils.version>3.4.0</plexus-utils.version>
 
         <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
