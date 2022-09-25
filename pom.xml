@@ -167,7 +167,7 @@
 
         <logback.version>1.4.1</logback.version>
         <logback-contrib.version>0.1.5</logback-contrib.version>
-        <logstash-logback-encoder.version>6.5</logstash-logback-encoder.version>
+        <logstash-logback-encoder.version>6.6</logstash-logback-encoder.version>
 
         <lombok.version>1.18.20</lombok.version>
 
