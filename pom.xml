@@ -208,7 +208,7 @@
         <maven-plugin-plugin.version>3.6.1</maven-plugin-plugin.version>
         <maven-project-info-reports-plugin.version>3.1.2</maven-project-info-reports-plugin.version>
         <maven-qameta-allure-plugin.version>2.10.0</maven-qameta-allure-plugin.version>
-        <maven-qulice-plugin.version>0.18.19</maven-qulice-plugin.version>
+        <maven-qulice-plugin.version>0.22.0</maven-qulice-plugin.version>
         <maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
         <maven-scm-provider-gitexe.version>1.11.3</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.11.3</maven-scm-api.version>
