@@ -24,7 +24,7 @@
         <spring-boot-admin-server-ui.version>1.5.7</spring-boot-admin-server-ui.version>
         <spring-cloud-eureka-client.version>2.2.7.RELEASE</spring-cloud-eureka-client.version>
 
-        <hikari.version>3.4.5</hikari.version>
+        <hikari.version>3.4.6-SNAPSHOT</hikari.version>
         <hibernate.version>6.0.0.Alpha9</hibernate.version>
         <hibernate-types.version>2.12.1</hibernate-types.version>
         <p6spy.version>3.9.1</p6spy.version>
