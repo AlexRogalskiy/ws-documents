@@ -185,7 +185,7 @@
         <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
         <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
         <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
-        <maven-findbugs-plugin.version>3.0.5</maven-findbugs-plugin.version>
+        <maven-findbugs-plugin.version>3.0.6-SNAPSHOT</maven-findbugs-plugin.version>
         <maven-fizzed-plugin.version>1.0.6</maven-fizzed-plugin.version>
         <maven-flatten-plugin.version>1.2.5</maven-flatten-plugin.version>
         <maven-spring-javaformat-plugin.version>0.0.28</maven-spring-javaformat-plugin.version>
