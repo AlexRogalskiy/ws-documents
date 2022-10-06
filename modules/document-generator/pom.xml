@@ -44,7 +44,7 @@
 
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
-        <maven-liquibase-plugin.version>4.1.1</maven-liquibase-plugin.version>
+        <maven-liquibase-plugin.version>4.16.1</maven-liquibase-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     </properties>
 
