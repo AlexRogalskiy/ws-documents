@@ -201,7 +201,7 @@
         <maven-jib-plugin.version>2.8.0</maven-jib-plugin.version>
         <maven-jvcn-plugin.version>0.0.1</maven-jvcn-plugin.version>
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
-        <maven-lombok-plugin.version>1.18.12.0</maven-lombok-plugin.version>
+        <maven-lombok-plugin.version>1.18.20.0</maven-lombok-plugin.version>
         <maven-rpm-plugin.version>2.2.1-SNAPSHOT</maven-rpm-plugin.version>
         <maven-modernizer-plugin.version>2.3.0</maven-modernizer-plugin.version>
         <maven-plugin-os.version>1.7.0</maven-plugin-os.version>
