@@ -28,7 +28,7 @@
         <hibernate.version>6.2.0-SNAPSHOT</hibernate.version>
         <hibernate-types.version>2.19.2</hibernate-types.version>
         <p6spy.version>3.9.1</p6spy.version>
-        <postgresql.version>42.2.23</postgresql.version>
+        <postgresql.version>42.4.1</postgresql.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
         <liquibase.version>4.17.2</liquibase.version>
