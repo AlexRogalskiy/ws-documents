@@ -32,7 +32,7 @@
         <cache-api.version>1.1.1</cache-api.version>
         <ehcache.version>3.10.3</ehcache.version>
         <p6spy.version>3.9.1</p6spy.version>
-        <postgresql.version>42.2.23</postgresql.version>
+        <postgresql.version>42.5.2-SNAPSHOT</postgresql.version>
 
         <liquibase.propertyFile>${project.basedir}/src/main/resources/liquibase.properties</liquibase.propertyFile>
         <liquibase.version>4.17.2</liquibase.version>
