@@ -16,7 +16,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout repository
-        uses: actions/checkout@v2.4.2
+        uses: actions/checkout@v3.6.0
 
       - name: Run Labeler
         uses: crazy-max/ghaction-github-labeler@v3.2.0
