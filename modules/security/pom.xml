@@ -18,7 +18,7 @@
     <inceptionYear>2020</inceptionYear>
 
     <properties>
-        <spring-boot-jasypt.version>3.0.4</spring-boot-jasypt.version>
+        <spring-boot-jasypt.version>3.0.5</spring-boot-jasypt.version>
 
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
     </properties>
