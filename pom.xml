@@ -142,7 +142,7 @@
         <guava.version>30.1.1-jre</guava.version>
         <hamcrest-matchers.version>2.0.0</hamcrest-matchers.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
+        <hibernate-validator.version>7.0.5.Final</hibernate-validator.version>
 
         <commons-net.version>3.8.0</commons-net.version>
         <ant-commons-net.version>1.10.11</ant-commons-net.version>
