@@ -212,7 +212,7 @@
         <maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
         <maven-scm-provider-gitexe.version>1.11.3</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.11.3</maven-scm-api.version>
-        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <maven-moditect-plugin.version>1.0.0.RC1</maven-moditect-plugin.version>
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
