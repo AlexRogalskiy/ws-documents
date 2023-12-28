@@ -194,7 +194,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-help-plugin.version>3.2.0</maven-help-plugin.version>
         <maven-install-plugin.version>3.0.0-M1</maven-install-plugin.version>
-        <maven-jacoco-plugin.version>0.8.9-SNAPSHOT</maven-jacoco-plugin.version>
+        <maven-jacoco-plugin.version>0.8.12-SNAPSHOT</maven-jacoco-plugin.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
         <maven-asciidoctor-plugin.version>2.2.2</maven-asciidoctor-plugin.version>
