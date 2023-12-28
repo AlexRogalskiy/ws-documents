@@ -225,7 +225,7 @@
         <maven-toolchains-plugin.version>3.0.0</maven-toolchains-plugin.version>
         <maven-versionizer-plugin.version>1.0.6</maven-versionizer-plugin.version>
         <maven-versions-plugin.version>2.14.0-SNAPSHOT</maven-versions-plugin.version>
-        <maven-xml-plugin.version>1.0.2</maven-xml-plugin.version>
+        <maven-xml-plugin.version>1.1.0</maven-xml-plugin.version>
         <maven-jasypt-plugin.version>3.0.4</maven-jasypt-plugin.version>
 
         <micrometer-jvm.version>0.2.3-SNAPSHOT</micrometer-jvm.version>
