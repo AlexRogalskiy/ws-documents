@@ -172,7 +172,7 @@
         <lombok.version>1.18.24</lombok.version>
 
         <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
-        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-assembly-plugin.version>3.7.1</maven-assembly-plugin.version>
         <maven-build-helper-plugin.version>3.3.0</maven-build-helper-plugin.version>
         <maven-changes-plugin.version>2.12.1</maven-changes-plugin.version>
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
