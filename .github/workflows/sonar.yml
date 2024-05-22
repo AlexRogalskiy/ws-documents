@@ -9,7 +9,7 @@ on:
 
 jobs:
   sonarcloud:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Prepare git
         run: git config --global core.autocrlf false
