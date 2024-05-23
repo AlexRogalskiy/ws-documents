@@ -203,7 +203,7 @@
         <maven-license-plugin.version>2.0.0</maven-license-plugin.version>
         <maven-lombok-plugin.version>1.18.20.0</maven-lombok-plugin.version>
         <maven-rpm-plugin.version>2.2.1-SNAPSHOT</maven-rpm-plugin.version>
-        <maven-modernizer-plugin.version>2.5.0</maven-modernizer-plugin.version>
+        <maven-modernizer-plugin.version>2.9.0</maven-modernizer-plugin.version>
         <maven-plugin-os.version>1.7.0</maven-plugin-os.version>
         <maven-plugin-plugin.version>3.6.1</maven-plugin-plugin.version>
         <maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
