@@ -178,7 +178,7 @@
         <maven-checkstyle-plugin.version>3.1.2</maven-checkstyle-plugin.version>
         <maven-checksum-plugin.version>1.4</maven-checksum-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>4.0.0-beta-1</maven-compiler-plugin.version>
         <maven-dependency-check-plugin.version>5.3.2</maven-dependency-check-plugin.version>
         <maven-dependency-check-plugin.version>6.5.4-SNAPSHOT</maven-dependency-check-plugin.version>
         <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
