@@ -230,7 +230,7 @@
 
         <micrometer-jvm.version>0.2.3-SNAPSHOT</micrometer-jvm.version>
         <micrometer-prometheus.version>1.10.0</micrometer-prometheus.version>
-        <micrometer.version>1.10.0</micrometer.version>
+        <micrometer.version>1.13.6</micrometer.version>
         <jolokia.version>1.7.0</jolokia.version>
 
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
