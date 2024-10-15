@@ -234,8 +234,8 @@
         <jolokia.version>1.7.0</jolokia.version>
 
         <mockito-helpers.version>2.0.0</mockito-helpers.version>
-        <mockito-junit-jupiter.version>3.12.4</mockito-junit-jupiter.version>
-        <mockito.version>3.12.4</mockito.version>
+        <mockito-junit-jupiter.version>5.14.2</mockito-junit-jupiter.version>
+        <mockito.version>5.14.2</mockito.version>
         <modernizer.version>2.5.0</modernizer.version>
         <plexus-utils.version>3.4.2</plexus-utils.version>
 
