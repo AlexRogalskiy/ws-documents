@@ -165,7 +165,7 @@
         <junit-platform.version>1.10.0-SNAPSHOT</junit-platform.version>
         <junit-quickcheck.version>0.9.1</junit-quickcheck.version>
 
-        <logback.version>1.4.1</logback.version>
+        <logback.version>1.5.11</logback.version>
         <logback-contrib.version>0.1.5</logback-contrib.version>
         <logstash-logback-encoder.version>6.6</logstash-logback-encoder.version>
 
