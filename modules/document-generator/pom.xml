@@ -42,7 +42,7 @@
 
         <sensiblemetrics.version>0.1.0-SNAPSHOT</sensiblemetrics.version>
 
-        <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
+        <maven-exec-plugin.version>3.5.0</maven-exec-plugin.version>
         <maven-jaxb2-plugin.version>2.5.0</maven-jaxb2-plugin.version>
         <maven-liquibase-plugin.version>4.17.2</maven-liquibase-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
