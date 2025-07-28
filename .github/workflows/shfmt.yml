@@ -14,7 +14,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - run: docker run -v "$(pwd)":/sh -w /sh peterdavehello/shfmt:2.6.3 shfmt -sr -i 2 -l -w -ci .
   shellcheck:
@@ -25,7 +25,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - run: shellcheck *.sh
   shellcheck2:
@@ -36,7 +36,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
