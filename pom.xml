@@ -242,7 +242,7 @@
         <spring-boot.version>2.7.5</spring-boot.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
         <spring-cloud-kubernetes.version>1.1.10.RELEASE</spring-cloud-kubernetes.version>
-        <throwing-function.version>1.5.1</throwing-function.version>
+        <throwing-function.version>1.6.1</throwing-function.version>
 
         <wsdl4j.version>1.6.3.wso2v3</wsdl4j.version>
     </properties>
