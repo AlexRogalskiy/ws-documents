@@ -24,7 +24,7 @@
 
         <docx4j.version>6.1.2</docx4j.version>
 
-        <modelmapper.version>2.4.4</modelmapper.version>
+        <modelmapper.version>2.4.5</modelmapper.version>
 
         <hikari.version>3.4.6-SNAPSHOT</hikari.version>
         <hibernate.version>6.2.0-SNAPSHOT</hibernate.version>
