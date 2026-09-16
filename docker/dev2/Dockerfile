@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:8
 
 # Configure apt
 RUN yum update -y \
